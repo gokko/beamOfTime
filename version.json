@@ -3,16 +3,22 @@
     "major": 1,
     "minor": 0,
     "date": "2019.10.28",
-    "release_notes": {
-      "1.0": "initial version"
-    }
+    "release_notes": [
+      {
+        "version: "1.0",
+        "info": "initial version"
+      }
+    ]
   },
   "web": {
     "major": 1,
     "minor": 0,
     "date": "2019.10.28",
-    "release_notes": {
-      "1.0": "initial version"
-    }
+    "release_notes": [
+      {
+        "version: "1.0",
+        "info": "initial version"
+      }
+    ]
   }
 }
