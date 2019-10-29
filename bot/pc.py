@@ -24,13 +24,17 @@ def index():
 def send_js(path):
     return send_from_directory('js', path, mimetype="application/javascript")
 
+@app.route('/favicon.ico')
+def send_favicon():
+    return send_from_directory('files', 'favicon.ico', mimetype="image/x-icon")
+
 @app.route('/version/<path:path>')
 def send_version(path):
     data= ''
     if path == 'local':
         data= send_from_directory('./', 'version.json', mimetype="application/json")
     if path == 'remote':
-        u= ''
+        u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
         with urllib.request.urlopen(u) as url:
             data = json.loads(url.read().decode())
     return data
