@@ -1,22 +1,24 @@
 {
   "clock": {
-    "major": 1,
-    "minor": 0,
-    "date": "2019.10.28",
+    "version": 1.0,
+    "date": "2019.10.01",
     "release_notes": [
       {
-        "version": "1.0",
+        "version": 1.0,
         "info": "initial version"
+      },
+      {
+        "version": 0.9,
+        "info": "beta version"
       }
     ]
   },
   "web": {
-    "major": 1,
-    "minor": 0,
+    "version": 1.0,
     "date": "2019.10.28",
     "release_notes": [
       {
-        "version": "1.0",
+        "version": 1.0,
         "info": "initial version"
       }
     ]
