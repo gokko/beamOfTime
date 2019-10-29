@@ -1,6 +1,7 @@
 const botConfigTemplate= `<v-container mb-12>
   <v-form ref="form" v-model="form_valid" lazy-validation>
-  <v-dialog v-model="info_dialog" persistent max-width="350">
+    
+    <v-dialog v-model="info_dialog" persistent max-width="350">
       <v-card outlined>
         <v-card-title class="headline">{{i18n.dlg_info_title}}</v-card-title>
         <v-card-text>{{i18n.dlg_info_msg_into}}</v-card-text>
@@ -12,7 +13,18 @@ const botConfigTemplate= `<v-container mb-12>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="update_dialog" persistent max-width="350">
+    <v-dialog v-model="update_done_dialog" persistent scrollable max-width="350">
+      <v-card outlined>
+        <v-card-title class="headline">{{i18n.dlg_update_title}}</v-card-title>
+        <v-card-text>{{update_result}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="update_done_dialog = false">{{i18n.dlg_info_btn_ok}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="update_dialog" persistent scrollable max-width="350">
       <template v-slot:activator="{ on }">
         <v-badge>
           <template v-if="version.update_available" v-slot:badge><v-icon>mdi-check</v-icon></template>
@@ -31,7 +43,7 @@ const botConfigTemplate= `<v-container mb-12>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn v-if="version.update_available" color="orange darken-1" text @click="update_dialog = false">{{i18n.dlg_update_btn_install}}</v-btn>
+          <v-btn v-if="version.update_available" color="orange darken-1" text @click="runUpdate">{{i18n.dlg_update_btn_install}}</v-btn>
           <v-btn v-if="version.update_available" color="green darken-1" text @click="update_dialog = false">{{i18n.dlg_update_btn_cancel}}</v-btn>
           <v-btn v-if="!version.update_available" color="green darken-1" text @click="update_dialog = false">{{i18n.dlg_update_btn_ok}}</v-btn>
         </v-card-actions>
@@ -92,9 +104,24 @@ var bot_config = Vue.component("bot_config", {
     info_dialog: true,
     restart_dialog: false,
     update_dialog: false,
+    update_done_dialog: false,
+    update_result: '',
     ledStartRule: [
       v => (parseInt(v) <= 120) || 'start must be <= 120',
       v => (parseInt(v) >= 0) || 'start must be >= 0',
-    ],
-  })
+    ]
+  }),
+  methods: {
+    runUpdate() {
+      this.update_dialog = false;
+      $.ajax({
+        cache: false,
+        url: "/update",
+        dataType: 'text'
+      }).then((data) => {
+        this.update_result= data;
+        this.update_done_dialog= true;
+      });
+    }
+  }
 });

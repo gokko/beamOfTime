@@ -3,14 +3,23 @@ from threading import Thread
 
 import time
 import os
+from subprocess import Popen, PIPE, STDOUT
+import urllib.request
 import json
 import signal
+import platform
 
-from clock.botclock import BotClock
-from clock.botAnimations import * 
+# check if this script is running on a raspberry pi (Linux with arm processor)
+isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
+
+# only load the clock if it's running on the raspberry pi
+if isRaspi:
+    from clock.botclock import BotClock
+    from clock.botAnimations import *
 
 app = Flask(__name__)
-configFolder = './clock'
+rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+configFolder = rootFolder+ '/bot/clock'
 global clock
 
 @app.route('/')
@@ -22,6 +31,21 @@ def index():
 @app.route('/js/<path:path>')
 def send_js(path):
     return send_from_directory('js', path, mimetype="application/javascript")
+
+@app.route('/favicon.ico')
+def send_favicon():
+    return send_from_directory('files', 'favicon.ico', mimetype="image/x-icon")
+
+@app.route('/version/<path:path>')
+def send_version(path):
+    data= ''
+    if path == 'local':
+        data= send_from_directory('./', 'version.json', mimetype="application/json")
+    if path == 'remote':
+        u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
+        with urllib.request.urlopen(u) as url:
+            data = json.loads(url.read().decode())
+    return data
 
 @app.route('/css/<path:path>')
 def send_css(path):
@@ -56,6 +80,11 @@ def get_version():
 def get_config():
     return send_from_directory(configFolder, 'config.json', mimetype="application/json")
 
+@app.route('/update')
+def send_update():
+    res= Popen(['git', '-C', rootFolder, 'pull', '--depth=1', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    return res.stdout.read()
+
 @app.route('/config', methods = ['POST'])
 def send_config():
     conf = json.dumps(json.loads(request.data), indent=4)
@@ -82,11 +111,13 @@ def send_restart():
 
 
 if __name__ == '__main__':
-    clock = BotClock()
-    t = Thread(target=clock.run, args=())
-    t.start()
+    if isRaspi:
+        clock = BotClock()
+        t = Thread(target=clock.run, args=())
+        t.start()
     app.run(debug=False, host='0.0.0.0', port=int("80"))
     
-    clock.stop()
-    
+    if isRaspi:
+        clock.stop()
+
     

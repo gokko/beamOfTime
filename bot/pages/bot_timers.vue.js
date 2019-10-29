@@ -5,9 +5,6 @@ const botTimersTemplate= `<v-container ma-12>
 var bot_timers = Vue.component("bot_timers", {
   template: botTimersTemplate,
   props: ["cfg", "i18n"],
-  $_veeValidate: {
-    validator: "new"
-  },
   methods: {
     GetDelays() {
     }
