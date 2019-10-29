@@ -55,6 +55,8 @@
     "dlg_update_title": "software update",
     "dlg_update_msg_new": "An updated software version is available.",
     "dlg_update_msg_old": "Your software version is up to date.",
+    "dlg_update_clock_title": "clock",
+    "dlg_update_web_title": "web-application",
     "dlg_update_btn_install": "install",
     "dlg_update_btn_cancel": "cancel",
     "dlg_update_btn_ok": "ok",
