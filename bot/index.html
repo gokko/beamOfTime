@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+	Create a SPA Vuejs Application Without Node, WebPack, or Any Other Build Process using Vue, Router, Vuetify, and Axios. 
+	https://medium.com/@steveolensky/create-a-spa-vuejs-application-without-node-webpack-or-any-other-build-process-using-vue-router-b9bf8e36e958 
+-->
+<html>
+
+<head>
+	<link href="./css/roboto-fonts.css" rel="stylesheet">
+	<link href="./css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="./css/vuetify-v2.1.7.css" rel="stylesheet">
+	<link href="./css/index.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body >
+	<div id="app">
+		<v-app>
+			<v-app-bar app color='#00685d'>
+				<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" >
+					<v-container class="headline">{{model.i18n.app_title}} <i style="color:grey">{{page_name}}</i></v-container>
+					<v-spacer></v-spacer>
+					<v-img class="logoImg" src="./files/bot-small.png" />
+				</v-container>
+			</v-app-bar>
+			<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" mt-10 mb-12>
+				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_home>
+				<bot_themes v-if="model.ui.bottomNav=='bot_themes'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_themes>
+				<bot_timers v-if="model.ui.bottomNav=='bot_timers'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_timers>
+				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :version="model.version" :i18n="model.i18n"></bot_config>
+				<v-img v-if="model.ui.bottomNav=='bot_intro'" src="./files/bot-intro.png" style="width: 320px; display: block; margin-left: auto; margin-right: auto; top:100px;" />
+			</v-container>
+			<v-snackbar :color="model.ui.snackbar_color" v-model="model.ui.snackbar" :timeout="3000">
+      			{{ model.ui.snackbar_text }}
+			</v-snackbar>
+			<v-footer app color='#00685d'>
+				<v-bottom-navigation v-model="model.ui.bottomNav">
+					<v-btn value="bot_home">
+						<span>{{model.i18n.home_title}}</span>
+						<v-icon>mdi-home</v-icon>
+					</v-btn>
+
+					<v-btn value="bot_themes">
+						<span>{{model.i18n.themes_title}}</span>
+						<v-icon>mdi-format-paint</v-icon>
+					</v-btn>
+
+					<v-btn value="bot_timers">
+						<span>{{model.i18n.timers_title}}</span>
+						<v-icon>mdi-timetable</v-icon>
+					</v-btn>
+
+					<v-btn value="bot_config">
+						<span>{{model.i18n.config_title}}</span>
+						<v-badge>
+							<template v-if="model.version.update_available" v-slot:badge><v-icon>mdi-check</v-icon></template>
+							<v-icon>mdi-settings</v-icon>
+						</v-badge>
+					</v-btn>
+
+				</v-bottom-navigation>
+				<v-spacer></v-spacer>
+				<v-container class="caption font-weight-light text-center">&copy; {{ new Date().getFullYear() }}
+					Gottfried Koschel</v-container>
+			</v-footer>
+		</v-app>
+	</div>
+
+	<script src="./js/jquery-v3.4.1.js"></script> <!-- https://github.com/jquery/jquery/releases -->
+	<script src="./js/vue-v2.6.10.js"></script> <!-- https://github.com/vuejs/vue/releases -->
+	<script src="./js/vuetify-v2.1.7.js"></script> <!-- https://github.com/vuetifyjs/vuetify/releases -->
+
+	<!-- Vue Pages and Components here -->
+	<script src='./pages/bot_home.vue.js'></script>
+	<script src='./pages/bot_themes.vue.js'></script>
+	<script src='./pages/bot_timers.vue.js'></script>
+	<script src='./pages/bot_config.vue.js'></script>
+
+	<script src="./js/main.js"></script>
+
+</body>
+
+</html>
