@@ -54,7 +54,7 @@
     "dlg_update_btn": "Aktualisierung prüfen",
     "dlg_update_title": "Aktualisierung",
     "dlg_update_msg_new": "Eine aktuellere Version der Software ist verfügbar.",
-    "dlg_update_msg_old": "Deine Version ist auf dem aktuellen Stand.",
+    "dlg_update_msg_old": "Diese Version ist auf dem aktuellen Stand.",
     "dlg_update_clock_title": "Uhr",
     "dlg_update_web_title": "Web-Applikation",
     "dlg_update_btn_install": "Installieren",

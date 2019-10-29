@@ -1,11 +1,11 @@
 {
   "clock": {
-    "version": 1.0,
-    "date": "2019.11.01",
+    "version": 0.9,
+    "date": "2019.10.01",
     "release_notes": [
       {
         "version": 1.0,
-        "date": "2019.10.01",
+        "date": "2019.11.01",
         "info": "initial version"
       },
       {

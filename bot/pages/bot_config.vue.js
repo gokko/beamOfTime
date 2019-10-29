@@ -24,10 +24,10 @@ const botConfigTemplate= `<v-container mb-12>
         <v-card-text v-if="!version.update_available">{{i18n.dlg_update_msg_old}}</v-card-text>
         <v-card-text v-if="version.update_available">
           <div>{{i18n.dlg_update_msg_new}}<br/></div>
-          <div><br/>{{i18n.dlg_update_clock_title}} ({{'v'+ version.current.clock.version}} => {{'v'+ version.new.clock.version}}):<br/></div>
-          <div v-if="note.version > version.current.clock.version" v-for="note in version.new.clock.release_notes">v{{note.version}} ({{note.date}})<br/>{{note.info}}<br/></div>
-          <div><br/>{{i18n.dlg_update_web_title}} ({{'v'+ version.current.web.version}} => {{'v'+ version.new.web.version}}):<br/></div>
-          <div v-if="note.version > version.current.web.version" v-for="note in version.new.web.release_notes">v{{note.version}} ({{note.date}})<br/>{{note.info}}<br/></div>
+          <div><br/><b>{{i18n.dlg_update_clock_title}} ({{'v'+ version.current.clock.version}} => {{'v'+ version.new.clock.version}}):</b><br/></div>
+          <div v-if="note.version > version.current.clock.version" v-for="note in version.new.clock.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
+          <div><br/><b>{{i18n.dlg_update_web_title}} ({{'v'+ version.current.web.version}} => {{'v'+ version.new.web.version}}):</b><br/></div>
+          <div v-if="note.version > version.current.web.version" v-for="note in version.new.web.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
