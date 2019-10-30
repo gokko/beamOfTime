@@ -1,13 +1,14 @@
-from flask import *
-from threading import Thread
 
-import time
 import os
-from subprocess import Popen, PIPE, STDOUT
-import urllib.request
+import time
 import json
 import signal
 import platform
+import urllib.request
+from flask import *
+from threading import Thread
+from subprocess import Popen, PIPE, STDOUT
+from wpasupplicantconf import WpaSupplicantConf
 
 # check if this script is running on a raspberry pi (Linux with arm processor)
 isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
@@ -19,28 +20,34 @@ if isRaspi:
 
 app = Flask(__name__)
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-configFolder = rootFolder+ '/bot/clock'
+webFolder = rootFolder+ '/bot'
+clockFolder = rootFolder+ '/bot/clock'
+wifiFolder = '/etc/wpa_supplicant/'
+# if script is not running on raspi, use the local version of wpa_supplicant.conf file
+if not isRaspi:
+    wifiFolder= rootFolder+ '/raspi-setup'
+
 global clock
 
 @app.route('/')
 @app.route('/index')
 @app.route('/index.html')
 def index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory(webFolder, 'index.html')
     
 @app.route('/js/<path:path>')
 def send_js(path):
-    return send_from_directory('js', path, mimetype="application/javascript")
+    return send_from_directory(webFolder+ '/js', path, mimetype="application/javascript")
 
 @app.route('/favicon.ico')
 def send_favicon():
-    return send_from_directory('files', 'favicon.ico', mimetype="image/x-icon")
+    return send_from_directory(webFolder+ '/files', 'favicon.ico', mimetype="image/x-icon")
 
 @app.route('/version/<path:path>')
 def send_version(path):
     data= ''
     if path == 'local':
-        data= send_from_directory('./', 'version.json', mimetype="application/json")
+        data= send_from_directory(webFolder, 'version.json', mimetype="application/json")
     if path == 'remote':
         u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
         with urllib.request.urlopen(u) as url:
@@ -49,36 +56,42 @@ def send_version(path):
 
 @app.route('/css/<path:path>')
 def send_css(path):
-    return send_from_directory('css', path, mimetype="text/css")
+    return send_from_directory(webFolder+ '/css', path, mimetype="text/css")
 
 @app.route('/i18n/<path:path>')
 def send_i18n(path):
     # check if translation for requested language exists
-    if (os.path.isfile('i18n/'+ path)):
-        return send_from_directory('i18n', path)
+    if (os.path.isfile(webFolder+ '/i18n/'+ path)):
+        return send_from_directory(webFolder+ '/i18n', path)
     # if not, return en-US
     else:
-        return send_from_directory('i18n', 'en-US.json')
+        return send_from_directory(webFolder+ '/i18n', 'en-US.json')
 
 @app.route('/files/<path:path>')
 def send_files(path):
-    return send_from_directory('files', path)
+    return send_from_directory(webFolder+ '/files', path)
 
 @app.route('/fonts/<path:path>')
 def send_webfonts(path):
-    return send_from_directory('fonts', path)
+    return send_from_directory(webFolder+ '/fonts', path)
 
 @app.route('/pages/<path:path>')
 def send_pages(path):
-    return send_from_directory('pages', path, mimetype="application/javascript")
+    return send_from_directory(webFolder+ '/pages', path, mimetype="application/javascript")
 
 @app.route('/version', methods = ['GET'])
 def get_version():
-    return send_from_directory('./', 'version.json', mimetype="application/json")
+    return send_from_directory(webFolder, 'version.json', mimetype="application/json")
+
+@app.route('/wifi', methods = ['GET'])
+def get_wifi():
+    wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
+    wifi = WpaSupplicantConf(wpaConf.split('\n'))
+    res= 
 
 @app.route('/config', methods = ['GET'])
 def get_config():
-    return send_from_directory(configFolder, 'config.json', mimetype="application/json")
+    return send_from_directory(clockFolder, 'config.json', mimetype="application/json")
 
 @app.route('/update')
 def send_update():
@@ -88,8 +101,8 @@ def send_update():
 @app.route('/config', methods = ['POST'])
 def send_config():
     conf = json.dumps(json.loads(request.data), indent=4)
-    tmpFile = os.path.join(configFolder, 'config-new.json')
-    confFile = os.path.join(configFolder, 'config.json')
+    tmpFile = os.path.join(clockFolder, 'config-new.json')
+    confFile = os.path.join(clockFolder, 'config.json')
     # create temporary file
     with open(tmpFile, 'w') as f:
         f.write(conf)
@@ -100,8 +113,8 @@ def send_config():
 
 @app.route('/restart', methods = ['POST'])
 def send_restart():
-    tmpFile = os.path.join(configFolder, 'restart-new.req')
-    restartFile = os.path.join(configFolder, 'restart.req')
+    tmpFile = os.path.join(clockFolder, 'restart-new.req')
+    restartFile = os.path.join(clockFolder, 'restart.req')
     # create temporary file
     with open(tmpFile, 'wb') as f:
         f.write(request.data)

@@ -8,6 +8,10 @@ var model = {
       update_changelog_clock: '',
       update_changelog_web: '',
     },
+    wifi: {
+      region: '',
+      connections: []
+    },
     ui: {
       bottomNav: 'bot_intro',
       snackbar: false,
@@ -51,7 +55,7 @@ var vueApp= new Vue({
     },
 });
 
-
+// read translation for browser language  (english will be used as fallback)
 $.getJSON("/i18n/" + navigator.language + ".json", function (data) {
   model.i18n = data;  
   // read configuration json from webserver and initialize UI
@@ -84,6 +88,14 @@ $.getJSON("/version/local", function (curVersion) {
   });
 });
 
+// get wifi configuration
+$.ajax({url: '/wifi', type: 'GET'}).done(function (data) {
+  
+  model.wifi.region= model.i18n.msg_config_saved;
+  model.ui.snackbar_color= 'green';
+  model.ui.snackbar= true;
+})
+
 
 // send configuration back to webserver on each change
 function sendUpdatedConfig(newConfig) {
@@ -100,17 +112,17 @@ function sendUpdatedConfig(newConfig) {
     model.ui.snackbar_color= 'green';
     model.ui.snackbar= true;
   })
-    .fail(function (data) {
-      if (data.status == 200) {
-        model.ui.snackbar_text= model.i18n.msg_config_saved;
-        model.ui.snackbar_color= 'green';
-        model.ui.snackbar= true;
-      }
-      else {
-        model.ui.snackbar_text= model.i18n.msg_config_save_error + data.status;
-        model.ui.snackbar_color= 'orange';
-        model.ui.snackbar= true;
-      }
-    });
+  .fail(function (data) {
+    if (data.status == 200) {
+      model.ui.snackbar_text= model.i18n.msg_config_saved;
+      model.ui.snackbar_color= 'green';
+      model.ui.snackbar= true;
+    }
+    else {
+      model.ui.snackbar_text= model.i18n.msg_config_save_error + data.status;
+      model.ui.snackbar_color= 'orange';
+      model.ui.snackbar= true;
+    }
+  });
 }
 
