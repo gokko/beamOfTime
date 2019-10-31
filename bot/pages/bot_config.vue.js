@@ -1,6 +1,6 @@
 const botConfigTemplate= `<v-container mb-12>
     
-  <v-expansion-panels v-model="panel" focusable>
+  <v-expansion-panels v-model="cfg_panel" focusable>
 
     <v-expansion-panel>
       <v-expansion-panel-header>{{i18n.cfg_info_title}}</v-expansion-panel-header>
@@ -53,33 +53,31 @@ const botConfigTemplate= `<v-container mb-12>
       <v-expansion-panel-header>{{i18n.cfg_wifi_title}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form>
-          <v-text-field type="text" v-model="wifi_region" counter="2" :label="i18n.cfg_wifi_region" required></v-text-field>
-          <v-card class="mx-auto" max-width="344" outlined>
-            <v-toolbar>
-              <v-toolbar-title>{{wifi_ssid}}</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-icon @click="console.log('delete');">mdi-close</v-icon>
-            </v-toolbar>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle>
-                  <v-text-field type="text" counter v-model="wifi_ssid" :label="i18n.cfg_wifi_ssid" :rules="[pwd_rules.required]"></v-text-field>
-                  <v-text-field v-model="wifi_pwd" counter
-                    :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[pwd_rules.required, pwd_rules.min]"
-                    :type="showPwd ? 'text' : 'password'"
-                    name="wifi_pwd"
-                    :label="i18n.cfg_wifi_password"
-                    @click:append="showPwd = !showPwd">
-                  </v-text-field>
-                  <v-select :items="wifi_type_items" v-model="wifi_type" :label="i18n.cfg_wifi_type"></v-select>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-card>
+          <v-text-field type="text" v-model="wifi.country" counter="2" :label="i18n.cfg_wifi_country" required></v-text-field>
+
+          <v-col cols="12">{{i18n.cfg_wifi_connections}}</v-col>
+          <v-expansion-panels v-model="wifi_panel" focusable>
+            <v-expansion-panel v-for="(network, index) in wifi.networks" :key="index" class="grey darken-1">
+              <v-expansion-panel-header>{{network.ssid}}</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-text-field type="text" counter v-model="network.ssid" :label="i18n.cfg_wifi_ssid" :rules="[pwd_rules.required]"></v-text-field>
+                    <v-text-field v-model="network.psk" counter
+                      :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[pwd_rules.required, pwd_rules.min]"
+                      :type="showPwd ? 'text' : 'password'"
+                      name="wifi_pwd"
+                      :label="i18n.cfg_wifi_password"
+                      @click:append="showPwd = !showPwd">
+                    </v-text-field>
+                  <v-select :items="wifi_type_items" v-model="network.key_mgmt" :label="i18n.cfg_wifi_type"></v-select>
+                  <v-btn color="orange darken-1" @click="removeWifi(index)">delete</v-btn>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
           <br/>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1">add</v-btn>
+          <v-btn color="blue darken-1" @click="addWifi()">add</v-btn>
           <v-btn color="green darken-1">save</v-btn>
         </v-form>
       </v-expansion-panel-content>
@@ -128,19 +126,31 @@ const botConfigTemplate= `<v-container mb-12>
     </v-card>
   </v-dialog>
 
+  <v-dialog v-model="wifi_confirm_dialog" max-width="350">
+      <v-card>
+        <v-card-title class="headline">{{i18n.cfg_wifi_confirm_title}}</v-card-title>
+        <v-card-text>{{i18n.cfg_wifi_confirm_question}}</v-card-text>
+        <v-card-text v-if="wifi.networks.length== 1">{{i18n.cfg_wifi_confirm_question2}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="wifi_confirm_dialog = false">{{i18n.cfg_wifi_btn_no}}</v-btn>
+          <v-btn color="orange darken-1" text @click="removeWifiConfirm()">{{i18n.cfg_wifi_btn_yes}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
 </v-container>`
 
 var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
-  props: ["cfg", "version", "i18n"],
+  props: ["cfg", "wifi", "version", "i18n"],
   data: () => ({
-    panel: 0,
-    wifi_region: 'DE',
-    wifi_ssid: 'gogoHome',
-    wifi_pwd: 'PeterPan92',
+    cfg_panel: 0,
+    wifi_panel: null,
     showPwd: false,
-    wifi_type: 'WPA-PSK',
     wifi_type_items: ['WPA-PSK'],
+    wifi_confirm_dialog: false,
+    wifi_confirm_idx: null,
     form_valid: true,
     update_done_dialog: false,
     update_result: '',
@@ -154,6 +164,28 @@ var bot_config = Vue.component("bot_config", {
     ]
   }),
   methods: {
+    addWifi() {
+      con= {
+        scan_ssid: 1,
+        ssid: 'bot',
+        psk: 'beamoftime',
+        key_mgmt: 'WPA-PSK'
+      };
+      this.wifi.networks.push(con);
+      this.wifi_panel= this.wifi.networks.length- 1;
+    },
+    removeWifi(idx) {
+      this.wifi_confirm_idx= idx;
+      this.wifi_confirm_dialog= true;
+    },
+    removeWifiConfirm() {
+      this.wifi.networks.splice(this.wifi_confirm_idx, 1);
+      this.wifi_panel= null;
+      this.wifi_confirm_dialog= false;
+      if (this.wifi.networks.length== 0) {
+        this.addWifi();
+      }
+    },
     runUpdate() {
       this.update_result= this.i18n.cfg_update_please_wait;
       this.update_done_dialog= true;

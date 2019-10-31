@@ -44,10 +44,16 @@
     "cfg_restart_msg": "Es ist ein Neustart notwendig um die Änderungen auf dieser Seite zu aktivieren.",
 
     "cfg_wifi_title": "WLAN",
-    "cfg_wifi_region": "Region",
+    "cfg_wifi_country": "Land",
+    "cfg_wifi_connections": "Verbindungen",
     "cfg_wifi_ssid": "Netzwerkname",
     "cfg_wifi_password": "Passwort",
     "cfg_wifi_type": "Typ",
+    "cfg_wifi_confirm_title": "WLAN löschen?",
+    "cfg_wifi_confirm_question": "Soll diese Verbindung wirklich gelöscht werden?",
+    "cfg_wifi_confirm_question2": "Wenn die letzte Verbindung gelöscht wird, wird automatisch eine Standardverbindung erstellt.",
+    "cfg_wifi_btn_yes": "Ja",
+    "cfg_wifi_btn_no": "Nein",
 
     "cfg_restart_btn": "Neustart",
     "cfg_restart_title": "Neustart",

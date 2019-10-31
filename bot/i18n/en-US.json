@@ -44,10 +44,16 @@
     "cfg_restart_msg": "A restart is required to activate the changes on this page.",
 
     "cfg_wifi_title": "wifi",
-    "cfg_wifi_region": "region",
+    "cfg_wifi_country": "country",
+    "cfg_wifi_connections": "connections",
     "cfg_wifi_ssid": "SSID",
     "cfg_wifi_password": "password",
     "cfg_wifi_type": "type",
+    "cfg_wifi_confirm_title": "delete wifi?",
+    "cfg_wifi_confirm_question": "Are you sure you want to delete this connection?",
+    "cfg_wifi_confirm_question2": "When the last connection is deleted a default one will be created.",
+    "cfg_wifi_btn_yes": "yes",
+    "cfg_wifi_btn_no": "no",
 
     "cfg_restart_btn": "restart",
     "cfg_restart_title": "restart",

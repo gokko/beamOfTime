@@ -86,8 +86,8 @@ def get_version():
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
     wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
-    wifi = WpaSupplicantConf(wpaConf.split('\n'))
-    res= 
+    wifi = WpaSupplicantConf(wpaConf)
+    return wifi.toJson()
 
 @app.route('/config', methods = ['GET'])
 def get_config():

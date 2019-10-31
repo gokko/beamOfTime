@@ -8,10 +8,7 @@ var model = {
       update_changelog_clock: '',
       update_changelog_web: '',
     },
-    wifi: {
-      region: '',
-      connections: []
-    },
+    wifi: {},
     ui: {
       bottomNav: 'bot_intro',
       snackbar: false,
@@ -89,12 +86,9 @@ $.getJSON("/version/local", function (curVersion) {
 });
 
 // get wifi configuration
-$.ajax({url: '/wifi', type: 'GET'}).done(function (data) {
-  
-  model.wifi.region= model.i18n.msg_config_saved;
-  model.ui.snackbar_color= 'green';
-  model.ui.snackbar= true;
-})
+$.getJSON("/wifi", function (data) {
+  model.wifi= data
+});
 
 
 // send configuration back to webserver on each change
