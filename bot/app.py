@@ -53,7 +53,7 @@ def get_version(path):
     if path == 'remote':
         u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
         with urllib.request.urlopen(u) as url:
-            data = json.loads(url.read().decode())
+            data = url.read().decode()
     return data
 
 @app.route('/css/<path:path>')
