@@ -25,7 +25,7 @@ const botConfigTemplate= `<v-container mb-12>
         <div v-if="version.update_available">
           <div>{{i18n.cfg_update_msg_new}}<br/></div>
           <div><br/><b>{{i18n.cfg_update_change_history}} ({{'v'+ version.current.version}} => {{'v'+ version.new.version}}):</b><br/></div>
-          <div v-if="note.version > version.current.clock.version" v-for="note in version.new.clock.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
+          <div v-if="note.version > version.current.version" v-for="note in version.new.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
           <br/>
         </div>
         <v-spacer></v-spacer>
