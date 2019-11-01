@@ -1,54 +1,26 @@
 {
-  "clock": {
-    "version": 1.2,
-    "date": "2019.11.01",
-    "release_notes": [
-      {
-        "version": 1.0,
-        "date": "2019.11.01",
-        "info": "initial version"
-      },
-      {
-        "version": 0.9,
-        "date": "2019.10.01",
-        "info": "beta version"
-      },
-      {
-        "version": 0.8,
-        "date": "2019.06.12",
-        "info": "alpha version"
-      },
-      {
-        "version": 0.7,
-        "date": "2019.04.20",
-        "info": "pre-alpha version"
-      }
-    ]
-  },
-  "web": {
-    "version": 1.0,
-    "date": "2019.10.28",
-    "release_notes": [
-      {
-        "version": 1.0,
-        "date": "2019.10.01",
-        "info": "initial version"
-      },
-      {
-        "version": 0.9,
-        "date": "2019.10.01",
-        "info": "beta version"
-      },
-      {
-        "version": 0.8,
-        "date": "2019.06.12",
-        "info": "alpha version"
-      },
-      {
-        "version": 0.7,
-        "date": "2019.04.20",
-        "info": "pre-alpha version"
-      }
-    ]
-  }
+  "version": 1.0,
+  "date": "2019.11.01",
+  "release_notes": [
+    {
+      "version": 1.0,
+      "date": "2019.11.01",
+      "info": "initial version"
+    },
+    {
+      "version": 0.9,
+      "date": "2019.10.01",
+      "info": "beta version"
+    },
+    {
+      "version": 0.8,
+      "date": "2019.06.12",
+      "info": "alpha version"
+    },
+    {
+      "version": 0.7,
+      "date": "2019.04.20",
+      "info": "pre-alpha version"
+    }
+  ]
 }

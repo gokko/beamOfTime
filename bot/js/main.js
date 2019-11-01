@@ -76,7 +76,7 @@ $.getJSON("/version/local", function (curVersion) {
   $.getJSON("/version/remote", function (newVersion) {
     model.version.new = newVersion;
 
-    if (newVersion.clock.version > curVersion.clock.version || newVersion.web.version > curVersion.web.version) {
+    if (newVersion.version > curVersion.version) {
       model.version.update_available= true;
     }
     else {

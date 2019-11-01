@@ -67,8 +67,7 @@
     "cfg_update_title": "Aktualisierung",
     "cfg_update_msg_new": "Eine aktuellere Version der Software ist verfügbar.",
     "cfg_update_msg_old": "Diese Version ist auf dem aktuellen Stand.",
-    "cfg_update_clock_title": "Uhr",
-    "cfg_update_web_title": "Web-Applikation",
+    "cfg_update_change_history": "Änderungshistorie",
     "cfg_update_btn_install": "Installieren",
     "cfg_update_please_wait": "... bitte warten ...",
 

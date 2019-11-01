@@ -24,10 +24,8 @@ const botConfigTemplate= `<v-container mb-12>
         <div v-if="!version.update_available">{{i18n.cfg_update_msg_old}}</div>
         <div v-if="version.update_available">
           <div>{{i18n.cfg_update_msg_new}}<br/></div>
-          <div><br/><b>{{i18n.cfg_update_clock_title}} ({{'v'+ version.current.clock.version}} => {{'v'+ version.new.clock.version}}):</b><br/></div>
+          <div><br/><b>{{i18n.cfg_update_change_history}} ({{'v'+ version.current.version}} => {{'v'+ version.new.version}}):</b><br/></div>
           <div v-if="note.version > version.current.clock.version" v-for="note in version.new.clock.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
-          <div><br/><b>{{i18n.cfg_update_web_title}} ({{'v'+ version.current.web.version}} => {{'v'+ version.new.web.version}}):</b><br/></div>
-          <div v-if="note.version > version.current.web.version" v-for="note in version.new.web.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
           <br/>
         </div>
         <v-spacer></v-spacer>
@@ -135,13 +133,13 @@ const botConfigTemplate= `<v-container mb-12>
 
   </v-expansion-panels>
     
-  <v-dialog v-model="update_done_dialog" persistent scrollable max-width="350">
+  <v-dialog v-model="update_dialog" persistent scrollable max-width="350">
     <v-card outlined>
       <v-card-title class="headline">{{i18n.cfg_update_title}}</v-card-title>
       <v-card-text>{{update_result}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text @click="update_done_dialog = false">{{i18n.cfg_info_btn_ok}}</v-btn>
+        <v-btn color="green darken-1" text :loading="update_running" @click="update_dialog = false">{{i18n.cfg_info_btn_ok}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -172,7 +170,8 @@ var bot_config = Vue.component("bot_config", {
     wifi_confirm_dialog: false,
     wifi_confirm_idx: null,
     form_valid: true,
-    update_done_dialog: false,
+    update_dialog: false,
+    update_running: false,
     update_result: '',
     pwd_rules: {
       required: value => !!value || 'Required.',
@@ -208,16 +207,19 @@ var bot_config = Vue.component("bot_config", {
     },
     runUpdate() {
       this.update_result= this.i18n.cfg_update_please_wait;
-      this.update_done_dialog= true;
+      this.update_dialog= true;
+      this.update_running= true;
       $.ajax({
         cache: false,
         url: "/update",
         dataType: 'text'
       }).then((data) => {
         this.update_result= data;
+        this.update_running= false;
       },
       (data) => {
         this.update_result= data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
+        this.update_running= false;
       });
     },
     sendRestartRequest(req) {
