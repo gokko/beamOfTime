@@ -111,7 +111,10 @@ def get_config():
 
 @app.route('/update')
 def send_update():
-    res= Popen(['git', '-C', rootFolder, 'pull', '--depth=1', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    if isRaspi:
+        res= Popen(['git', '-C', rootFolder, 'reset', '--hard', 'origin/master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    else:
+        res= Popen(['git', '-C', rootFolder, 'pull', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     return res.stdout.read()
 
 @app.route('/config', methods = ['POST'])

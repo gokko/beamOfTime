@@ -215,6 +215,9 @@ var bot_config = Vue.component("bot_config", {
         dataType: 'text'
       }).then((data) => {
         this.update_result= data;
+      },
+      (data) => {
+        this.update_result= data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
       });
     },
     sendRestartRequest(req) {
@@ -223,13 +226,13 @@ var bot_config = Vue.component("bot_config", {
         type: 'POST',
         data: req,
         contentType: 'text/plain; charset=utf-8'
-      }).then(function (data) {
+      }).then((data) => {
         // success
         model.ui.snackbar_text= req+ ' OK';
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
       },
-      function (data) {
+      (data) => {
         // error
         if (data.status == 200) {
           model.ui.snackbar_text= req+ ' OK';
@@ -237,7 +240,7 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          model.ui.snackbar_text= req+ ' error: '+ data.responseText.match(/<h1>(.*)</)[1];
+          model.ui.snackbar_text= req+ ' error: '+ data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
           model.ui.snackbar_color= 'orange';
           model.ui.snackbar= true;
           }
