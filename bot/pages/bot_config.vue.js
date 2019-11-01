@@ -31,7 +31,7 @@ const botConfigTemplate= `<v-container mb-12>
           <br/>
         </div>
         <v-spacer></v-spacer>
-        <v-btn v-if="version.update_available" color="orange darken-1" @click="runUpdate">{{i18n.cfg_update_btn_install}}</v-btn>
+        <v-btn outlined v-if="version.update_available" color="orange darken-1" @click="runUpdate">{{i18n.cfg_update_btn_install}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
     
@@ -44,8 +44,28 @@ const botConfigTemplate= `<v-container mb-12>
         {{i18n.cfg_restart_msg_restart}}<br/><br/>
         {{i18n.cfg_restart_msg_reboot}}<br/><br/>
         <v-spacer></v-spacer>
-        <v-btn color="orange darken-1" @click="alert('restart')">{{i18n.cfg_restart_btn_restart}}</v-btn>
-        <v-btn color="red darken-1" @click="alert('reboot')">{{i18n.cfg_restart_btn_reboot}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{i18n.cfg_restart_btn_restart}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.cfg_restart_btn_reboot}}</v-btn>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-header>{{i18n.cfg_ip_title}}</v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-list one-line>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title v-text="i18n.cfg_ip_hostname"></v-list-item-title>
+              <v-list-item-subtitle v-text="wifi.ipconf.hostname"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-for="(ip, idx) in wifi.ipconf.ips" :key="idx">
+            <v-list-item-content>
+              <v-list-item-title v-text="ip.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="ip.ip"></v-list-item-subtitle>
+            </v-list-item-content>
+            </v-list-item>
+        </v-list>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -70,15 +90,15 @@ const botConfigTemplate= `<v-container mb-12>
                       @click:append="showPwd = !showPwd">
                     </v-text-field>
                   <v-select :items="wifi_type_items" v-model="network.key_mgmt" :label="i18n.cfg_wifi_type"></v-select>
-                  <v-btn color="orange darken-1" @click="removeWifi(index)">delete</v-btn>
+                  <v-btn outlined color="orange darken-1" @click="removeWifi(index)"><v-icon>mdi-delete</v-icon></v-btn>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
 
           <br/>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" @click="addWifi()">add</v-btn>
-          <v-btn color="green darken-1">save</v-btn>
+          <v-btn outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
+          <v-btn outlined color="green darken-1"><v-icon>mdi-content-save</v-icon></v-btn>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -89,24 +109,24 @@ const botConfigTemplate= `<v-container mb-12>
         <v-form ref="form" v-model="form_valid" lazy-validation>
           <v-col cols="12">{{i18n.cfg_led_pin_lbl}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledPin" mandatory>
-            <v-btn :value="12" color="green">12</v-btn>
-            <v-btn :value="18" color="green">18</v-btn>
+            <v-btn outlined :value="12" color="green">12</v-btn>
+            <v-btn outlined :value="18" color="green">18</v-btn>
           </v-btn-toggle>
           <v-col cols="12">{{i18n.cfg_led_count_lbl}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledCount" mandatory>
-            <v-btn :value="60" color="green">60</v-btn>
-            <v-btn :value="120" color="green">120</v-btn>
+            <v-btn outlined :value="60" color="green">60</v-btn>
+            <v-btn outlined :value="120" color="green">120</v-btn>
           </v-btn-toggle>
           <v-col cols="12">{{i18n.cfg_led_ring1_dir_lbl}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledDirection" mandatory>
-            <v-btn :value="1" color="green">{{i18n.cfg_led_clockwise}}</v-btn>
-            <v-btn :value="-1" color="green">{{i18n.cfg_led_anticlockwise}}</v-btn>
+            <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
+            <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
           <v-text-field type="number" v-model="cfg.system.ledStart" :rules="ledStartRule" :label="i18n.cfg_led_ring1_start_lbl" required></v-text-field>
           <v-col cols="12">{{i18n.cfg_led_ring2_dir_lbl}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
-            <v-btn :value="1" color="green">{{i18n.cfg_led_clockwise}}</v-btn>
-            <v-btn :value="-1" color="green">{{i18n.cfg_led_anticlockwise}}</v-btn>
+            <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
+            <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
           <v-text-field type="number" v-model="cfg.system.ledStart2" :rules="ledStartRule" :label="i18n.cfg_led_ring2_start_lbl" required></v-text-field>
         </v-form>
@@ -195,6 +215,32 @@ var bot_config = Vue.component("bot_config", {
         dataType: 'text'
       }).then((data) => {
         this.update_result= data;
+      });
+    },
+    sendRestartRequest(req) {
+      $.ajax({
+        url: '/restart',
+        type: 'POST',
+        data: req,
+        contentType: 'text/plain; charset=utf-8'
+      }).then(function (data) {
+        // success
+        model.ui.snackbar_text= req+ ' OK';
+        model.ui.snackbar_color= 'green';
+        model.ui.snackbar= true;
+      },
+      function (data) {
+        // error
+        if (data.status == 200) {
+          model.ui.snackbar_text= req+ ' OK';
+          model.ui.snackbar_color= 'green';
+          model.ui.snackbar= true;
+          }
+        else {
+          model.ui.snackbar_text= req+ ' error: '+ data.responseText.match(/<h1>(.*)</)[1];
+          model.ui.snackbar_color= 'orange';
+          model.ui.snackbar= true;
+          }
       });
     }
   }

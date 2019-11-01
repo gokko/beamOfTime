@@ -39,9 +39,11 @@
 	"cfg_led_ring1_start_lbl": "inner LEDs direction",
 	"cfg_led_ring2_dir_lbl": "outer LEDs direction",
 	"cfg_led_ring2_start_lbl": "outer LEDs direction",
-    "cfg_led_clockwise": "clockwise",
-    "cfg_led_anticlockwise": "anti-clockwise",
     "cfg_restart_msg": "A restart is required to activate the changes on this page.",
+
+    "cfg_ip_title": "Servername & IP-addresses",
+    "cfg_ip_hostname": "servername",
+    "cfg_ip_adresses": "IP-addresses",
 
     "cfg_wifi_title": "wifi",
     "cfg_wifi_country": "country",

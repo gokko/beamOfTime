@@ -39,9 +39,11 @@
 	"cfg_led_ring1_start_lbl": "Start innere LEDs",
     "cfg_led_ring2_dir_lbl": "Richtung äußere LEDs",
 	"cfg_led_ring2_start_lbl": "Start äußere LEDs",
-    "cfg_led_clockwise": "mit Uhrzeiger",
-    "cfg_led_anticlockwise": "gegen Uhrzeiger",
     "cfg_restart_msg": "Es ist ein Neustart notwendig um die Änderungen auf dieser Seite zu aktivieren.",
+
+    "cfg_ip_title": "Rechnername & IP-Adressen",
+    "cfg_ip_hostname": "Rechnername",
+    "cfg_ip_adresses": "IP-Adressen",
 
     "cfg_wifi_title": "WLAN",
     "cfg_wifi_country": "Land",

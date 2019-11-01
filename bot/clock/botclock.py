@@ -23,10 +23,6 @@ import neopixel
 import argparse
 
 
-# define custom Exception for restart request
-class RestartRequest(Exception):
-    pass
-
 # class with some helpful functions to deal with Color
 class ColorHelper(object):
 
@@ -60,7 +56,6 @@ class BotClock(object):
         self.LED_DIRECTION2 = -1      # 1 for clockwise, -1 for anticlockwise direction of LEDs
 
         # initialize configuration file
-        self.restartFileName = os.path.dirname(os.path.realpath(__file__)) + '/restart.req'
         self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + '/config.json'
         self.cfg = ""
 
@@ -161,10 +156,6 @@ class BotClock(object):
                 if (self.sec == self.secNew):
                     time.sleep(0.1)
                     continue
-
-                # check for restart/ reboot request, restart reboot will be handled in exception handling
-                if (os.path.isfile(self.restartFileName)):
-                    raise RestartRequest('')
 
                 # if config file changed, read and get settings and colors
                 cfgFileChangeTimeNew = os.stat(self.cfgFileName).st_mtime
@@ -287,18 +278,6 @@ class BotClock(object):
                 self.strip.show()
                 time.sleep(0.01)
                 
-        except RestartRequest:
-            # read content of restart request file
-            with open(self.restartFileName, 'r') as f:
-                restart = f.read()
-            # delete restart request file to avoid restart/ reboot loop
-            os.remove(self.restartFileName)
-            if (restart.lower() == 'reboot'):
-                call(['sudo', 'reboot'])
-            else:
-                call(['sudo', 'service', 'botclock', 'restart'])
-                call(['sudo', 'service', 'botweb', 'restart'])
-
         except:
             self.colorWipe((0,0,0), 10, 8)
             print("Unexpected error:", sys.exc_info()[0])

@@ -2,12 +2,14 @@
 import os
 import time
 import json
+import ifaddr
 import signal
+import socket
 import platform
 import urllib.request
 from flask import *
 from threading import Thread
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
 
 # check if this script is running on a raspberry pi (Linux with arm processor)
@@ -87,7 +89,25 @@ def get_version():
 def get_wifi():
     wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
     wifi = WpaSupplicantConf(wpaConf)
-    return wifi.toJson()
+    res= wifi.toJsonDict()
+    # add hostname and all ip addresses
+    ipconf= {}
+    ipconf['hostname']= socket.gethostname()
+    ipaddresses= []
+    adapters = ifaddr.get_adapters()
+    for adapter in adapters:
+        aName= adapter.nice_name.lower()
+        for ip in adapter.ips:
+            # cleanup adapter names on windows 
+            aName= aName.replace('intel(r) ', '')
+            aName= aName.replace('dual band wireless-ac', 'wifi')
+            aName= aName.replace('ethernet connection ', 'eth')
+            # exclude 'internal' adapters
+            if type(ip.ip) == str and aName!= 'lo' and not 'virtual' in aName and not 'loopback' in aName and not 'bluetooth' in aName:
+                ipaddresses.append({'name': aName, 'ip': ip.ip})
+    ipconf['ips']= ipaddresses
+    res['ipconf']= ipconf
+    return json.dumps(res)
 
 @app.route('/config', methods = ['GET'])
 def get_config():
@@ -113,13 +133,10 @@ def send_config():
 
 @app.route('/restart', methods = ['POST'])
 def send_restart():
-    tmpFile = os.path.join(clockFolder, 'restart-new.req')
-    restartFile = os.path.join(clockFolder, 'restart.req')
-    # create temporary file
-    with open(tmpFile, 'wb') as f:
-        f.write(request.data)
-    # rename when done writing
-    os.rename(tmpFile, restartFile)
+    if (request.data.lower() == 'reboot'):
+        call(['sudo', 'reboot'])
+    else:
+        call(['sudo', 'service', 'bot', 'restart'])
     return 'OK'
 
 
