@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/beamoftime/bot/app.py
+ExecStart=/usr/bin/python /home/pi/beamOfTime/bot/app.py
 Restart=on-abort
 
 [Install]
