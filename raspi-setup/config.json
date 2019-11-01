@@ -2,7 +2,7 @@
     "system": {
         "ledPin": 12,
         "ledCount": 120,
-        "ledStart": "0",
+        "ledStart": 0,
         "ledDirection": 1,
         "ledStart2": 60,
         "ledDirection2": -1
