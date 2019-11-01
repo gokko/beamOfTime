@@ -46,7 +46,7 @@ def send_favicon():
     return send_from_directory(webFolder+ '/files', 'favicon.ico', mimetype="image/x-icon")
 
 @app.route('/version/<path:path>')
-def send_version(path):
+def get_version(path):
     data= ''
     if path == 'local':
         data= send_from_directory(webFolder, 'version.json', mimetype="application/json")
@@ -80,10 +80,6 @@ def send_webfonts(path):
 @app.route('/pages/<path:path>')
 def send_pages(path):
     return send_from_directory(webFolder+ '/pages', path, mimetype="application/javascript")
-
-@app.route('/version', methods = ['GET'])
-def get_version():
-    return send_from_directory(webFolder, 'version.json', mimetype="application/json")
 
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
