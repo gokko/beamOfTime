@@ -127,7 +127,8 @@ def send_config():
     with open(tmpFile, 'w') as f:
         f.write(conf)
     # rename when done writing
-    os.remove(confFile);
+    if os.path.exists(confFile):
+        os.remove(confFile)
     os.rename(tmpFile, confFile)
     return 'OK'
 
