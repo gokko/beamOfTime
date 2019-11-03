@@ -25,9 +25,11 @@ var bot_home = Vue.component("bot_home", {
   computed: {
     theme_names: function () {
       let themes = []
-      this.cfg.themes.forEach(theme => {
-        themes.push(theme.name);
-      });
+      if (this.cfg.themes!= null) {
+        this.cfg.themes.forEach(theme => {
+          themes.push(theme.name);
+        });
+      }
       return themes.sort();
     },
   }

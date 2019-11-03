@@ -2,12 +2,13 @@
 import os
 import time
 import json
+import glob
 import ifaddr
 import signal
 import socket
 import platform
 import urllib.request
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from threading import Thread
 from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
@@ -23,6 +24,7 @@ if isRaspi:
 app = Flask(__name__)
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 webFolder = rootFolder+ '/bot'
+i18nFolder = webFolder+ '/i18n/'
 clockFolder = rootFolder+ '/bot/clock'
 wifiFolder = '/etc/wpa_supplicant/'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
@@ -63,11 +65,11 @@ def send_css(path):
 @app.route('/i18n/<path:path>')
 def send_i18n(path):
     # check if translation for requested language exists
-    if (os.path.isfile(webFolder+ '/i18n/'+ path)):
-        return send_from_directory(webFolder+ '/i18n', path)
-    # if not, return en-US
+    if (os.path.isfile(i18nFolder+  path)):
+        return send_from_directory(i18nFolder, path, mimetype="application/json")
+    # if not, return English
     else:
-        return send_from_directory(webFolder+ '/i18n', 'en-US.json')
+        return send_from_directory(i18nFolder, 'en-US.json', mimetype="application/json")
 
 @app.route('/files/<path:path>')
 def send_files(path):
@@ -103,7 +105,7 @@ def get_wifi():
                 ipaddresses.append({'name': aName, 'ip': ip.ip})
     ipconf['ips']= ipaddresses
     res['ipconf']= ipconf
-    return json.dumps(res, ensure_ascii=False).encode('utf8')
+    return  jsonify(res)
 
 @app.route('/wifi', methods = ['POST'])
 def send_wifi():
@@ -117,7 +119,20 @@ def send_wifi():
 
 @app.route('/config', methods = ['GET'])
 def get_config():
-    return send_from_directory(clockFolder, 'config.json', mimetype="application/json")
+    res= {}
+    with open(clockFolder+ '/config.json', 'rb') as f:
+        res = json.load(f)
+    languages= []
+    for file in glob.glob(i18nFolder + '*.json'):
+        langCode = os.path.basename(os.path.splitext(file)[0])
+        langName= ''
+        with open(file, 'rb') as f:
+            langContent = json.load(f)
+            langName= langContent['language_name']
+        languages.append({"value": langCode, "text": langName})
+    res['languages']= languages
+
+    return jsonify(res)
 
 @app.route('/update')
 def send_update():

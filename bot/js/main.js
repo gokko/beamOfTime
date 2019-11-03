@@ -41,13 +41,6 @@ function readI18n(lang) {
   });
 }
 
-function readLanguages() {
-  // read translation for browser language  (english will be used as fallback)
-   $.getJSON("/languages", function (data) {
-     model.cfg.languages = data;
-   });
- }
- 
  // get current version and check for version updates
 function readVersion() {
   $.getJSON("/version/local", function (curVersion) {
@@ -162,7 +155,6 @@ var vueApp= new Vue({
 
 readConfig();
 readI18n(navigator.language.substr(0, 2));
-readLanguages();
 readVersion();
 readWifi();
 
