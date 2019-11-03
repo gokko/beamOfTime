@@ -249,24 +249,19 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'text/plain; charset=utf-8'
       }).then((data) => {
         // success
-        model.ui.snackbar_text= req+ ' OK';
+        model.ui.snackbar_text= data;
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
       },
       (data) => {
         // error
         if (data.status == 200) {
-          model.ui.snackbar_text= req+ ' OK';
+          model.ui.snackbar_text= data.statusText;
           model.ui.snackbar_color= 'green';
           model.ui.snackbar= true;
           }
         else {
-          txt= data;
-          if (!data.responseText === undefined)
-            txt= data.responseText.toLowerCase();
-          if (txt.index('<h1>')>= 0)
-            txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
-          model.ui.snackbar_text= req+ ' error: '+ txt
+          model.ui.snackbar_text= data.statusText;
           model.ui.snackbar_color= 'orange';
           model.ui.snackbar= true;
           }
@@ -292,12 +287,7 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          txt= data;
-          if (!data.responseText === undefined)
-            txt= data.responseText.toLowerCase();
-          if (txt.index('<h1>')>= 0)
-            txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
-          model.ui.snackbar_text= 'Error: '+ txt
+          model.ui.snackbar_text= data.statusText;
           model.ui.snackbar_color= 'orange';
           model.ui.snackbar= true;
           }

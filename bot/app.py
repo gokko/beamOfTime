@@ -155,11 +155,14 @@ def send_config():
 
 @app.route('/restart', methods = ['POST'])
 def send_restart():
+    if not isRaspi:
+        return 'OK (not restarted)'
+
     if (request.data.lower() == 'reboot'):
         call(['sudo', 'reboot'])
     else:
         call(['sudo', 'service', 'bot', 'restart'])
-    return 'OK'
+    return request.data.lower()+ ' OK'
 
 
 if __name__ == '__main__':
