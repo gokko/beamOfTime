@@ -6,9 +6,11 @@
 <html>
 
 <head>
+	<meta charset="utf-8"/>
+
 	<link href="./css/roboto-fonts.css" rel="stylesheet">
 	<link href="./css/materialdesignicons.min.css" rel="stylesheet">
-	<link href="./css/vuetify-v2.1.7.css" rel="stylesheet">
+	<link href="./css/vuetify-v2.1.9.css" rel="stylesheet">
 	<link href="./css/index.css" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
@@ -17,10 +19,11 @@
 	<div id="app">
 		<v-app>
 			<v-app-bar app color='#00685d'>
-				<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" >
-					<v-container class="headline">{{model.i18n.app_title}} <i style="color:grey">{{page_name}}</i></v-container>
+				<v-toolbar-title>{{model.i18n.app_title}} <i style="color:grey">{{page_name}}</i></v-toolbar-title>
 					<v-spacer></v-spacer>
-					<v-img class="logoImg" src="./files/bot-small.png" />
+					<div>
+						<v-img src="./files/bot-logo-small.png" />
+					</div>
 				</v-container>
 			</v-app-bar>
 			<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" mt-10 mb-12>
@@ -51,7 +54,7 @@
 					</v-btn>
 
 					<v-btn value="bot_config">
-						<span>{{model.i18n.cfg_title}}</span>
+						<span>{{model.i18n.config_title}}</span>
 						<v-badge>
 							<template v-if="model.version.update_available" v-slot:badge><v-icon>mdi-check</v-icon></template>
 							<v-icon>mdi-settings</v-icon>
@@ -68,7 +71,7 @@
 
 	<script src="./js/jquery-v3.4.1.js"></script> <!-- https://github.com/jquery/jquery/releases -->
 	<script src="./js/vue-v2.6.10.js"></script> <!-- https://github.com/vuejs/vue/releases -->
-	<script src="./js/vuetify-v2.1.7.js"></script> <!-- https://github.com/vuetifyjs/vuetify/releases -->
+	<script src="./js/vuetify-v2.1.9.js"></script> <!-- https://github.com/vuetifyjs/vuetify/releases -->
 
 	<!-- Vue Pages and Components here -->
 	<script src='./pages/bot_home.vue.js'></script>

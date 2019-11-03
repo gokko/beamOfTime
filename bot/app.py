@@ -7,7 +7,7 @@ import signal
 import socket
 import platform
 import urllib.request
-from flask import *
+from flask import Flask, request, send_from_directory
 from threading import Thread
 from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
@@ -103,7 +103,17 @@ def get_wifi():
                 ipaddresses.append({'name': aName, 'ip': ip.ip})
     ipconf['ips']= ipaddresses
     res['ipconf']= ipconf
-    return json.dumps(res)
+    return json.dumps(res, ensure_ascii=False).encode('utf8')
+
+@app.route('/wifi', methods = ['POST'])
+def send_wifi():
+    wpaJson= json.loads(request.data)
+    # remove ipconf key, as it's for UI only
+    wpaJson.pop('ipconf', '')
+    wifi = WpaSupplicantConf(wpaJson)
+    wpaFilename= wifiFolder+ '/wpa_supplicant.conf'
+    wifi.write(wpaFilename)
+    return 'OK'
 
 @app.route('/config', methods = ['GET'])
 def get_config():
@@ -116,11 +126,11 @@ def send_update():
 
 @app.route('/config', methods = ['POST'])
 def send_config():
-    conf = json.dumps(json.loads(request.data), indent=4)
+    conf = json.dumps(json.loads(request.data), indent=4, ensure_ascii=False).encode('utf8')
     tmpFile = os.path.join(clockFolder, 'config-new.json')
     confFile = os.path.join(clockFolder, 'config.json')
     # create temporary file
-    with open(tmpFile, 'w') as f:
+    with open(tmpFile, 'wb') as f:
         f.write(conf)
     # rename when done writing
     if os.path.exists(confFile):
@@ -142,6 +152,8 @@ if __name__ == '__main__':
         clock = BotClock()
         t = Thread(target=clock.run, args=())
         t.start()
+
+    app.config['JSON_AS_ASCII'] = False
     app.run(debug=False, host='0.0.0.0', port=int("80"))
     
     if isRaspi:

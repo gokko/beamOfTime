@@ -1,98 +1,83 @@
-var model = {
-    cfg: {},
-    i18n: {},
-    version: {
-      current: null,
-      new: null,
-      update_available: false,
-      update_changelog_clock: '',
-      update_changelog_web: '',
-    },
-    wifi: {},
-    ui: {
-      bottomNav: 'bot_intro',
-      snackbar: false,
-      snackbar_color: 'orange',
-      snackbar_text: '',
-    }
-};
 
 var oldConfig;
+var curLanguage;
 
-var vueApp= new Vue({
-  el: '#app',
-  vuetify: new Vuetify({
-      theme: {
-        dark: true,
-      },
-    }),
-    data() {
-      return {
-        model: model
-      }
-    },
-    watch: {
-      model: {
-        deep: true,
-        handler() {
-          // check if config has changed
-          var newConfig = JSON.stringify(this.model.cfg)
-          if (oldConfig && oldConfig != newConfig) {
-            sendUpdatedConfig(newConfig);
-          }
-        }
-      }
-    },
-    computed: {
-      page_name: function () {
-        // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
-        var t= model.ui.bottomNav.replace('bot_', '')+ '_title'
-				return this.model.i18n[t];
-      },
-    },
-});
-
-// read translation for browser language  (english will be used as fallback)
-$.getJSON("/i18n/" + navigator.language + ".json", function (data) {
-  model.i18n = data;  
-  // read configuration json from webserver and initialize UI
+// read configuration json from webserver and initialize UI
+function readConfig() {
   $.ajax({
     cache: false,
     url: "/config",
     dataType: "json",
     success: function(data) {
+      // set config
       model.cfg = data;
+      // save original config for later compare
       oldConfig= JSON.stringify(data);
+
+      // get saved langauge
+      newLanguage= model.cfg.settings.language;
+      if (!newLanguage || newLanguage== '')
+        newLanguage= navigator.language.substr(0, 2);
+  
+      // load another language if specified in settings
+      if (curLanguage!= newLanguage) {
+        readI18n(newLanguage);
+      }
     }
   });
-});
-setTimeout(() => {
-  model.ui.bottomNav= 'bot_home';
-}, 1000);
+}
 
-// get current version and check for version updates
-$.getJSON("/version/local", function (curVersion) {
-  model.version.current= curVersion;
-  $.getJSON("/version/remote", function (newVersion) {
-    model.version.new = newVersion;
+function readI18n(lang) {
+  curLanguage= lang;
 
-    if (newVersion.version > curVersion.version) {
-      model.version.update_available= true;
+ // read translation for browser language  (english will be used as fallback)
+  $.getJSON("/i18n/" + lang + ".json", function (data) {
+    model.i18n = data;
+    var isRtlLanguage= false;
+    if (model.i18n.isRtl) {
+      isRtlLanguage= true;
     }
-    else {
-      model.version.update_available= false;
-    }
+    vueApp.$vuetify.rtl = isRtlLanguage;
   });
-});
+}
 
-// get wifi configuration
-$.getJSON("/wifi", function (data) {
-  model.wifi= data
-});
-
-
-// send configuration back to webserver on each change
+function readLanguages() {
+  // read translation for browser language  (english will be used as fallback)
+   $.getJSON("/languages", function (data) {
+     model.cfg.languages = data;
+   });
+ }
+ 
+ // get current version and check for version updates
+function readVersion() {
+  $.getJSON("/version/local", function (curVersion) {
+     model.version.current= curVersion;
+     $.getJSON("/version/remote", function (newVersion) {
+       model.version.new = newVersion;
+       
+       if (newVersion.version > curVersion.version) {
+         model.version.update_available= true;
+       }
+       else {
+         model.version.update_available= false;
+       }
+     });
+   });
+ }
+   
+ // get wifi configuration
+ function readWifi() {
+   $.getJSON("/wifi", function (data) {
+     model.wifi= data
+   });
+ }
+   
+ // send configuration back to webserver on each change
 function sendUpdatedConfig(newConfig) {
+  // check if language changed and reload
+  if (model.cfg.settings.language!= curLanguage)
+    readI18n(model.cfg.settings.language);
+
   oldConfig= newConfig;
   $.ajax({
     url: '/config',
@@ -119,4 +104,70 @@ function sendUpdatedConfig(newConfig) {
     }
   });
 }
+
+
+var model = {
+    cfg: {
+      settings: {},
+    },
+    i18n: {},
+    version: {
+      current: null,
+      new: null,
+      update_available: false,
+      update_changelog_clock: '',
+      update_changelog_web: '',
+    },
+    wifi: {},
+    ui: {
+      bottomNav: 'bot_intro',
+      snackbar: false,
+      snackbar_color: 'orange',
+      snackbar_text: '',
+    }
+};
+
+var vueApp= new Vue({
+  el: '#app',
+  vuetify: new Vuetify({
+    theme: {
+      dark: true,
+    },
+  }),
+  data() {
+    return {
+      model: model
+    }
+  },
+  watch: {
+    model: {
+      deep: true,
+      handler() {
+        // check if config has changed
+        var newConfig = JSON.stringify(this.model.cfg)
+        if (oldConfig && oldConfig != newConfig) {
+          sendUpdatedConfig(newConfig);
+        }
+      }
+    }
+  },
+  computed: {
+    page_name: function () {
+      // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
+      var t= model.ui.bottomNav.replace('bot_', '')+ '_title'
+      return this.model.i18n[t];
+    },
+  },
+});
+
+readConfig();
+readI18n(navigator.language.substr(0, 2));
+readLanguages();
+readVersion();
+readWifi();
+
+// disable splash screen after 1 sec
+setTimeout(() => {
+  model.ui.bottomNav= 'bot_home';
+}, 1000);
 

@@ -1,4 +1,5 @@
 const botHomeTemplate= `<v-container mb-12>
+  <v-select width="300px" :items="cfg.languages" v-model="cfg.settings.language" :label="i18n.home_current_language_lbl + ' (language)'"></v-select>
   <v-switch color="#04BF3D" v-model="cfg.settings.enabled" inset :label="i18n.home_enabled_chk"></v-switch>
   <v-switch color="#04BF3D" v-model="cfg.settings.startAnimation" inset :label="i18n.home_start_animation_chk"></v-switch>
   <v-switch color="#04BF3D" v-model="cfg.settings.justLight" inset :label="i18n.home_use_as_lamp_chk"></v-switch>
@@ -15,11 +16,9 @@ const botHomeTemplate= `<v-container mb-12>
 var bot_home = Vue.component("bot_home", {
   template: botHomeTemplate,
   props: ["cfg", "i18n"],
-  data: function () {
-    return {
-      show_color_picker: false,
-    }
-  },
+  data: () => ({
+    show_color_picker: false,
+  }),
   $_veeValidate: {
     validator: "new"
   },

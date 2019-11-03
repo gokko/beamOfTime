@@ -273,7 +273,7 @@
 }
 
 .v-sheet {
-  border-radius: 0px;
+  border-radius: 4px;
 }
 .v-sheet--tile {
   border-radius: 0;
@@ -393,6 +393,9 @@
       -ms-user-select: none;
           user-select: none;
 }
+.v-icon.v-icon--dense {
+  font-size: 20px;
+}
 
 .v-icon--right {
   margin-left: 8px;
@@ -415,9 +418,6 @@
   height: 24px;
   width: 24px;
   fill: currentColor;
-}
-.v-icon--dense {
-  font-size: 20px;
 }
 .v-icon--dense--is-component {
   height: 20px;
@@ -4725,6 +4725,14 @@
 }
 .v-input--selection-controls__ripple .v-ripple__container {
   transform: scale(1.2);
+}
+.v-input--selection-controls.v-input--dense .v-input--selection-controls__ripple {
+  width: 28px;
+  height: 28px;
+  left: -11px;
+}
+.v-input--selection-controls.v-input--dense:not(.v-input--switch) .v-input--selection-controls__ripple {
+  top: calc(50% - 21px);
 }
 .v-input--selection-controls.v-input {
   flex: 0 1 auto;
@@ -9392,11 +9400,31 @@
 .v-input--switch .v-input--selection-controls__ripple {
   top: calc(50% - 24px);
 }
+.v-input--switch.v-input--dense .v-input--switch__thumb {
+  width: 18px;
+  height: 18px;
+}
+.v-input--switch.v-input--dense .v-input--switch__track {
+  height: 12px;
+  width: 32px;
+}
+.v-input--switch.v-input--dense.v-input--switch--inset .v-input--switch__track {
+  height: 22px;
+  width: 44px;
+  top: calc(50% - 12px);
+  left: -3px;
+}
+.v-input--switch.v-input--dense .v-input--selection-controls__ripple {
+  top: calc(50% - 22px);
+}
 .v-input--switch.v-input--is-dirty.v-input--is-disabled {
   opacity: 0.6;
 }
 .v-application--is-ltr .v-input--switch .v-input--selection-controls__ripple {
   left: -14px;
+}
+.v-application--is-ltr .v-input--switch.v-input--dense .v-input--selection-controls__ripple {
+  left: -12px;
 }
 .v-application--is-ltr .v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,
 .v-application--is-ltr .v-input--switch.v-input--is-dirty .v-input--switch__thumb {
@@ -9404,6 +9432,9 @@
 }
 .v-application--is-rtl .v-input--switch .v-input--selection-controls__ripple {
   right: -14px;
+}
+.v-application--is-rtl .v-input--switch.v-input--dense .v-input--selection-controls__ripple {
+  right: -12px;
 }
 .v-application--is-rtl .v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,
 .v-application--is-rtl .v-input--switch.v-input--is-dirty .v-input--switch__thumb {
@@ -14202,6 +14233,14 @@ html {
 }
 .v-input--selection-controls__ripple .v-ripple__container {
   transform: scale(1.2);
+}
+.v-input--selection-controls.v-input--dense .v-input--selection-controls__ripple {
+  width: 28px;
+  height: 28px;
+  left: -11px;
+}
+.v-input--selection-controls.v-input--dense:not(.v-input--switch) .v-input--selection-controls__ripple {
+  top: calc(50% - 21px);
 }
 .v-input--selection-controls.v-input {
   flex: 0 1 auto;

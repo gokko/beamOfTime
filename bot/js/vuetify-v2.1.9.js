@@ -5625,6 +5625,7 @@ var __assign = undefined && undefined.__assign || function () {
         'aria-checked': this.inputIndeterminate ? 'mixed' : this.isActive.toString()
       })), this.genRipple(this.setTextColor(this.validationState)), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_2__["default"], this.setTextColor(this.validationState, {
         props: {
+          dense: this.dense,
           dark: this.dark,
           light: this.light
         }
@@ -15377,6 +15378,8 @@ var baseMixins = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_7__["default"])(_m
       }, this.$slots.label || this.label);
     },
     genMessages: function genMessages() {
+      var _this = this;
+
       if (this.hideDetails) return null;
       var messages = this.hasHint ? [this.hint] : this.validations;
       return this.$createElement(_VMessages__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -15388,6 +15391,11 @@ var baseMixins = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_7__["default"])(_m
         },
         attrs: {
           role: this.hasMessages ? 'alert' : null
+        },
+        scopedSlots: {
+          default: function _default(props) {
+            return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_6__["getSlot"])(_this, 'message', props);
+          }
         }
       });
     },
@@ -17425,10 +17433,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_colorable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/colorable */ "./src/mixins/colorable/index.ts");
 /* harmony import */ var _mixins_themeable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/themeable */ "./src/mixins/themeable/index.ts");
 /* harmony import */ var _util_mixins__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/mixins */ "./src/util/mixins.ts");
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util/helpers */ "./src/util/helpers.ts");
 // Styles
  // Mixins
 
 
+
+ // Utilities
 
 
 /* @vue/component */
@@ -17454,13 +17465,19 @@ __webpack_require__.r(__webpack_exports__);
       }, this.value.map(this.genMessage));
     },
     genMessage: function genMessage(message, key) {
+      var slot = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["getSlot"])(this, 'default', {
+        message: message,
+        key: key
+      });
+      var escapedHTML = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["escapeHTML"])(message);
+      var innerHTML = !slot ? escapedHTML : undefined;
       return this.$createElement('div', {
         staticClass: 'v-messages__message',
         key: key,
         domProps: {
-          innerHTML: message
+          innerHTML: innerHTML
         }
-      });
+      }, slot);
     }
   },
   render: function render(h) {
@@ -19388,7 +19405,11 @@ var baseMixins = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_11__["default"])(_
       }, [this.genInput(__assign({
         name: this.computedName,
         value: this.value
-      }, this.attrs$)), this.genRipple(this.setTextColor(this.validationState)), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_2__["default"], this.setTextColor(this.validationState, {}), this.computedIcon)]);
+      }, this.attrs$)), this.genRipple(this.setTextColor(this.validationState)), this.$createElement(_VIcon__WEBPACK_IMPORTED_MODULE_2__["default"], this.setTextColor(this.validationState, {
+        props: {
+          dense: this.radioGroup && this.radioGroup.dense
+        }
+      }), this.computedIcon)]);
     },
     onFocus: function onFocus(e) {
       this.isFocused = true;
@@ -30351,7 +30372,7 @@ function () {
 
   Vuetify.install = _install__WEBPACK_IMPORTED_MODULE_0__["install"];
   Vuetify.installed = false;
-  Vuetify.version = "2.1.7";
+  Vuetify.version = "2.1.9";
   return Vuetify;
 }();
 
@@ -35376,7 +35397,7 @@ function (_super) {
 /*!*************************************!*\
   !*** ./src/services/theme/utils.ts ***!
   \*************************************/
-/*! exports provided: parse, genStyles, genVariations */
+/*! exports provided: parse, genStyles, genVariations, lighten, darken */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35384,6 +35405,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return parse; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "genStyles", function() { return genStyles; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "genVariations", function() { return genVariations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "lighten", function() { return lighten; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "darken", function() { return darken; });
 /* harmony import */ var _util_colorUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/colorUtils */ "./src/util/colorUtils.ts");
 /* harmony import */ var _util_color_transformSRGB__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/color/transformSRGB */ "./src/util/color/transformSRGB.ts");
 /* harmony import */ var _util_color_transformCIELAB__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/color/transformCIELAB */ "./src/util/color/transformCIELAB.ts");
@@ -35555,13 +35578,11 @@ function genVariations(name, value) {
 
   return values;
 }
-
 function lighten(value, amount) {
   var lab = _util_color_transformCIELAB__WEBPACK_IMPORTED_MODULE_2__["fromXYZ"](_util_color_transformSRGB__WEBPACK_IMPORTED_MODULE_1__["toXYZ"](value));
   lab[0] = lab[0] + amount * 10;
   return _util_color_transformSRGB__WEBPACK_IMPORTED_MODULE_1__["fromXYZ"](_util_color_transformCIELAB__WEBPACK_IMPORTED_MODULE_2__["toXYZ"](lab));
 }
-
 function darken(value, amount) {
   var lab = _util_color_transformCIELAB__WEBPACK_IMPORTED_MODULE_2__["fromXYZ"](_util_color_transformSRGB__WEBPACK_IMPORTED_MODULE_1__["toXYZ"](value));
   lab[0] = lab[0] - amount * 10;

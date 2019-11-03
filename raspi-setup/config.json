@@ -2,7 +2,7 @@
     "system": {
         "ledPin": 12,
         "ledCount": 120,
-        "ledStart": 0,
+        "ledStart": "0",
         "ledDirection": 1,
         "ledStart2": 60,
         "ledDirection2": -1
@@ -12,8 +12,23 @@
         "enabled": true,
         "startAnimation": false,
         "justLight": false,
-        "lightColor": "#C34117"
+        "lightColor": "#C34117",
+        "language": "en"
     },
+    "languages": [
+        {
+            "value": "en",
+            "text": "English"
+        },
+        {
+            "value": "de",
+            "text": "Deutsch"
+        },
+        {
+            "value": "fa",
+            "text": "فارسی"
+        }
+    ],
     "animations": [
         "colorDrop",
         "colorWipe",
