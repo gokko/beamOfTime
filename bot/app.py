@@ -153,16 +153,19 @@ def send_config():
     os.rename(tmpFile, confFile)
     return 'OK'
 
-@app.route('/restart', methods = ['POST'])
-def send_restart():
+@app.route('/restart/<path:path>')
+def send_restart(path):
     if not isRaspi:
         return 'OK (not restarted)'
 
-    if (request.data.lower() == 'reboot'):
+    if (path.lower() == 'reboot'):
         call(['sudo', 'reboot'])
-    else:
+        return path+ ' OK'
+    elif (path.lower() == 'restart'):
         call(['sudo', 'service', 'bot', 'restart'])
-    return request.data.lower()+ ' OK'
+        return path+ ' OK'
+
+    raise NameError('unknown command' + path)
 
 
 if __name__ == '__main__':
