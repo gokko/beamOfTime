@@ -115,6 +115,10 @@ def send_wifi():
     wifi = WpaSupplicantConf(wpaJson)
     wpaFilename= wifiFolder+ '/wpa_supplicant.conf'
     wifi.write(wpaFilename)
+    # restart wifi service
+    if isRaspi:
+        call(['sudo', 'systemctl', 'daemon-reload'])
+        call(['sudo', 'systemctl', 'restart', 'dhcpcd'])
     return 'OK'
 
 @app.route('/config', methods = ['GET'])

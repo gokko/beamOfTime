@@ -56,6 +56,8 @@
     "config_restart_msg_reboot": "Reboot: Startet das ganze System neu (ca. 2 Minuten).",
     "config_restart_btn_restart": "Neustart",
     "config_restart_btn_reboot": "Reboot",
+    "config_restart_req_sent": "Neustart Anfrage wurde verschickt",
+    "config_reboot_req_sent": "Reboot Anfrage wurde verschickt",
 
     "config_ip_title": "Rechnername & IP-Adressen",
     "config_ip_hostname": "Rechnername",
@@ -72,6 +74,7 @@
     "config_wifi_confirm_question2": "Wenn die letzte Verbindung gelöscht wird, wird automatisch eine Standardverbindung erstellt.",
     "config_wifi_btn_yes": "Ja",
     "config_wifi_btn_no": "Nein",
+    "config_wifi_saved": "WLAN Einstellungen wurden gespeichert.",
     
     "config_led_settings": "LED Einstellungen",
     "config_led_pin_lbl": "LED Pin",

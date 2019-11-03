@@ -247,7 +247,10 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'text/plain; charset=utf-8'
       });
       // ignore any response as service can't anwser due to restart
-      model.ui.snackbar_text= req+ ' request sent';
+      if (req== 'restart')
+        model.ui.snackbar_text= this.i18n.config_restart_req_sent;
+      else
+        model.ui.snackbar_text= this.i18n.config_reboot_req_sent;
       model.ui.snackbar_color= 'orange';
       model.ui.snackbar= true;
     },
@@ -259,22 +262,14 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'application/json; charset=utf-8'
       }).then((data) => {
         // success
-        model.ui.snackbar_text= 'OK';
+        model.ui.snackbar_text= this.i18n.config_wifi_saved;
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
       },
       (data) => {
-        // error
-        if (data.status == 200) {
-          model.ui.snackbar_text= 'OK';
-          model.ui.snackbar_color= 'green';
-          model.ui.snackbar= true;
-          }
-        else {
-          model.ui.snackbar_text= data.statusText;
-          model.ui.snackbar_color= 'orange';
-          model.ui.snackbar= true;
-          }
+        model.ui.snackbar_text= data.statusText;
+        model.ui.snackbar_color= 'orange';
+        model.ui.snackbar= true;
       });
     }
   }

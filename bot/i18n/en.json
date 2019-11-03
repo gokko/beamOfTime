@@ -56,6 +56,8 @@
     "config_restart_msg_reboot": "reboot: will boot the system (will take 2 minutes).",
     "config_restart_btn_restart": "restart",
     "config_restart_btn_reboot": "reboot",
+    "config_restart_req_sent": "restart request was sent",
+    "config_reboot_req_sent": "reboot request was sent",
 
     "config_ip_title": "Servername & IP-addresses",
     "config_ip_hostname": "servername",
@@ -72,7 +74,8 @@
     "config_wifi_confirm_question2": "When the last connection is deleted a default one will be created.",
     "config_wifi_btn_yes": "yes",
     "config_wifi_btn_no": "no",
-    
+    "config_wifi_saved": "Wifi settings saved.",
+
     "config_led_settings": "LED settings",
     "config_led_pin_lbl": "LED pin",
     "config_led_count_lbl": "LED count",
