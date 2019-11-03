@@ -243,9 +243,7 @@ var bot_config = Vue.component("bot_config", {
     },
     sendRestartRequest(req) {
       $.ajax({
-        url: '/restart',
-        type: 'POST',
-        data: req,
+        url: '/restart/'+ req,
         contentType: 'text/plain; charset=utf-8'
       }).then((data) => {
         // success
