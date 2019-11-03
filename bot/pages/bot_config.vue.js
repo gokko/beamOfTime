@@ -232,7 +232,10 @@ var bot_config = Vue.component("bot_config", {
         this.update_running= false;
       },
       (data) => {
-        this.update_result= data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
+        txt= data.responseText.toLowerCase()
+        if (txt.index('<h1>')>= 0)
+          txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
+        this.update_result= txt
         this.update_running= false;
       });
     },
@@ -256,7 +259,10 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          model.ui.snackbar_text= req+ ' error: '+ data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
+          txt= data.responseText.toLowerCase()
+          if (txt.index('<h1>')>= 0)
+            txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
+          model.ui.snackbar_text= req+ ' error: '+ txt
           model.ui.snackbar_color= 'orange';
           model.ui.snackbar= true;
           }
@@ -282,7 +288,10 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          model.ui.snackbar_text= 'Error: '+ data.responseText.match(/<h1>(.*)</)[1]+ ', '+ data.responseText.match(/<p>(.*)</)[1];
+          txt= data.responseText.toLowerCase()
+          if (txt.index('<h1>')>= 0)
+            txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
+          model.ui.snackbar_text= 'Error: '+ txt
           model.ui.snackbar_color= 'orange';
           model.ui.snackbar= true;
           }
