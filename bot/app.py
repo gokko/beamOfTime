@@ -155,18 +155,15 @@ def send_config():
 
 @app.route('/restart/<path:path>')
 def send_restart(path):
+    # client is not expecting any result, as service can't responde due to restart
     if not isRaspi:
         return 'OK (not restarted)'
 
     if (path.lower() == 'reboot'):
         call(['sudo', 'reboot'])
-        return path+ ' OK'
     elif (path.lower() == 'restart'):
         call(['sudo', 'service', 'bot', 'restart'])
-        return path+ ' OK'
-
-    raise NameError('unknown command' + path)
-
+    return path+ ' OK'
 
 if __name__ == '__main__':
     if isRaspi:

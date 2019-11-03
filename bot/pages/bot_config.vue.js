@@ -245,25 +245,11 @@ var bot_config = Vue.component("bot_config", {
       $.ajax({
         url: '/restart/'+ req,
         contentType: 'text/plain; charset=utf-8'
-      }).then((data) => {
-        // success
-        model.ui.snackbar_text= data;
-        model.ui.snackbar_color= 'green';
-        model.ui.snackbar= true;
-      },
-      (data) => {
-        // error
-        if (data.status == 200) {
-          model.ui.snackbar_text= data.statusText;
-          model.ui.snackbar_color= 'green';
-          model.ui.snackbar= true;
-          }
-        else {
-          model.ui.snackbar_text= data.statusText;
-          model.ui.snackbar_color= 'orange';
-          model.ui.snackbar= true;
-          }
       });
+      // ignore any response as service can't anwser due to restart
+      model.ui.snackbar_text= req+ ' request sent';
+      model.ui.snackbar_color= 'orange';
+      model.ui.snackbar= true;
     },
     sendWifiSaveRequest() {
       $.ajax({
