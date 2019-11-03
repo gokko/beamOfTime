@@ -232,7 +232,9 @@ var bot_config = Vue.component("bot_config", {
         this.update_running= false;
       },
       (data) => {
-        txt= data.responseText.toLowerCase()
+        txt= data;
+        if (data.responseText)
+          txt= data.responseText.toLowerCase();
         if (txt.index('<h1>')>= 0)
           txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
         this.update_result= txt
@@ -259,7 +261,9 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          txt= data.responseText.toLowerCase()
+          txt= data;
+          if (data.responseText)
+            txt= data.responseText.toLowerCase();
           if (txt.index('<h1>')>= 0)
             txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
           model.ui.snackbar_text= req+ ' error: '+ txt
@@ -288,7 +292,9 @@ var bot_config = Vue.component("bot_config", {
           model.ui.snackbar= true;
           }
         else {
-          txt= data.responseText.toLowerCase()
+          txt= data;
+          if (data.responseText)
+            txt= data.responseText.toLowerCase();
           if (txt.index('<h1>')>= 0)
             txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
           model.ui.snackbar_text= 'Error: '+ txt
