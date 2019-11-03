@@ -233,7 +233,7 @@ var bot_config = Vue.component("bot_config", {
       },
       (data) => {
         txt= data;
-        if (data.responseText)
+        if (!data.responseText === undefined)
           txt= data.responseText.toLowerCase();
         if (txt.index('<h1>')>= 0)
           txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
@@ -262,7 +262,7 @@ var bot_config = Vue.component("bot_config", {
           }
         else {
           txt= data;
-          if (data.responseText)
+          if (!data.responseText === undefined)
             txt= data.responseText.toLowerCase();
           if (txt.index('<h1>')>= 0)
             txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
@@ -293,7 +293,7 @@ var bot_config = Vue.component("bot_config", {
           }
         else {
           txt= data;
-          if (data.responseText)
+          if (!data.responseText === undefined)
             txt= data.responseText.toLowerCase();
           if (txt.index('<h1>')>= 0)
             txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
