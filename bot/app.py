@@ -3,6 +3,7 @@ import os
 import time
 import json
 import glob
+import atexit
 import ifaddr
 import signal
 import socket
@@ -13,19 +14,6 @@ from threading import Thread
 from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
 
-# class to watch kill events
-class GracefulKiller:
-  kill_now = False
-  def __init__(self):
-    signal.signal(signal.SIGINT, self.exit_gracefully)
-    signal.signal(signal.SIGTERM, self.exit_gracefully)
-
-  def exit_gracefully(self,signum, frame):
-    self.kill_now = True 
-    if clock:
-        clock.stop()
-
-
 # check if this script is running on a raspberry pi (Linux with arm processor)
 isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
 
@@ -35,6 +23,7 @@ if isRaspi:
     from clock.botAnimations import *
 
 app = Flask(__name__)
+clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 webFolder = rootFolder+ '/bot'
 i18nFolder = webFolder+ '/i18n/'
@@ -43,8 +32,6 @@ wifiFolder = '/etc/wpa_supplicant/'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
 if not isRaspi:
     wifiFolder= rootFolder+ '/raspi-setup'
-
-global clock
 
 @app.route('/')
 @app.route('/index')
@@ -182,8 +169,15 @@ def send_restart(path):
         call(['sudo', 'service', 'bot', 'restart'])
     return path+ ' OK'
 
+#defining function to run on shutdown
+def close_running_threads():
+    global clock
+    if clock:
+        clock.stop()
+
 if __name__ == '__main__':
-    killer = GracefulKiller()
+    #Register the function to be called on exit
+    atexit.register(close_running_threads)
 
     if isRaspi:
         clock = BotClock()
