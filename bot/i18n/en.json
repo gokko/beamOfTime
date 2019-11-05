@@ -48,7 +48,7 @@
     "config_update_btn_install": "install",
     "config_update_please_wait": "... please wait ...",
     
-    "config_backup_title": "Sicherung",
+    "config_backup_title": "backup",
 
     "config_restart_btn": "restart",
     "config_restart_title": "restart",
@@ -59,7 +59,7 @@
     "config_restart_req_sent": "restart request was sent",
     "config_reboot_req_sent": "reboot request was sent",
 
-    "config_ip_title": "Servername & IP-addresses",
+    "config_ip_title": "servername & IP-addresses",
     "config_ip_hostname": "servername",
     "config_ip_adresses": "IP-addresses",
     

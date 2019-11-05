@@ -15,10 +15,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
-<body >
+<body style="background: #424242; max-width:400px; margin-left: auto; margin-right: auto;">
 	<div id="app">
 		<v-app>
-			<v-app-bar app color='#00685d'>
+			<v-app-bar app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
 				<v-toolbar-title>{{model.i18n.app_title}} <i style="color:grey">{{page_name}}</i></v-toolbar-title>
 					<v-spacer></v-spacer>
 					<div>
@@ -36,7 +36,7 @@
 			<v-snackbar :color="model.ui.snackbar_color" v-model="model.ui.snackbar" :timeout="3000">
       			{{ model.ui.snackbar_text }}
 			</v-snackbar>
-			<v-footer app color='#00685d'>
+			<v-footer app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
 				<v-bottom-navigation v-model="model.ui.bottomNav">
 					<v-btn value="bot_home">
 						<span>{{model.i18n.home_title}}</span>

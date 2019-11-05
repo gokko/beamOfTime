@@ -59,7 +59,7 @@ sudo apt-get install python3-flask -y --assume-yes --allow-downgrades --allow-re
 
 
 # install git
-sudo apt-get install git  y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --allow-remove-essential --allow-change-held-packages 
+sudo apt-get install git -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --allow-remove-essential --allow-change-held-packages 
 
 # config git
 git config --global user.email "pi@bot.clock"
