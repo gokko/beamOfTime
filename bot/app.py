@@ -1,5 +1,6 @@
 
 import os
+import sys
 import time
 import json
 import glob
@@ -169,16 +170,16 @@ def send_restart(path):
         call(['sudo', 'service', 'bot', 'restart'])
     return path+ ' OK'
 
-#defining function to run on shutdown
-def close_running_threads():
-    global clock
+# handle exit request
+def sigterm_handler(_signo, _stack_frame):
     print("bot clock service is going to stop")
     if isRaspi:
         clock.stop()
+    sys.exit(0)
 
 if __name__ == '__main__':
-    #Register the function to be called on exit
-    atexit.register(close_running_threads)
+    # handle SIGTERM
+    signal.signal(signal.SIGTERM, sigterm_handler)
 
     if isRaspi:
         clock = BotClock()
