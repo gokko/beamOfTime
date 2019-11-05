@@ -191,13 +191,14 @@ def send_restore():
     if not os.path.isdir(bkupFolder+ '/beamOfTime') or not os.path.isfile(bkupFolder+ '/beamOfTime/bot/app.py') or not os.path.isfile(bkupFolder+ '/wpa_supplicant.conf'):
         return 'no valid backup found'
     try:
-        shutil.rmtree(rootFolder, onerror=handleFileError)
-        shutil.copytree(bkupFolder+ '/beamOfTime', rootFolder)
         os.remove(wifiFolder+ '/wpa_supplicant.conf')
         shutil.copy(bkupFolder+ '/wpa_supplicant.conf', wifiFolder)
+        shutil.rmtree(rootFolder, onerror=handleFileError)
+        shutil.copytree(bkupFolder+ '/beamOfTime', rootFolder)
     except OSError as e:
         return 'Error: %s' % e
 
+    call(['sudo', 'service', 'bot', 'restart'])
     return 'OK'
 
 @app.route('/config', methods = ['POST'])
