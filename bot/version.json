@@ -1,7 +1,12 @@
 {
-  "version": 1.0,
-  "date": "2019.11.01",
+  "version": 1.1,
+  "date": "2019.11.05",
   "release_notes": [
+    {
+      "version": 1.1,
+      "date": "2019.11.05",
+      "info": "implemented bakcup and restore"
+    },
     {
       "version": 1.0,
       "date": "2019.11.01",

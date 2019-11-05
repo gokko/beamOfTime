@@ -30,7 +30,7 @@ function readConfig() {
 function readI18n(lang) {
   curLanguage= lang;
 
- // read translation for browser language  (english will be used as fallback)
+  // read translation for browser language  (english will be used as fallback)
   $.getJSON("/i18n/" + lang + ".json", function (data) {
     model.i18n = data;
     var isRtlLanguage= false;
@@ -41,7 +41,14 @@ function readI18n(lang) {
   });
 }
 
- // get current version and check for version updates
+function readInfo() {
+    // read system information (hostname, IP-addresses and backup date)
+  $.getJSON("/info", function (data) {
+    model.info = data;
+  });
+}
+
+// get current version and check for version updates
 function readVersion() {
   $.getJSON("/version/local", function (curVersion) {
      model.version.current= curVersion;
@@ -104,6 +111,7 @@ var model = {
       settings: {},
     },
     i18n: {},
+    info: {},
     version: {
       current: null,
       new: null,
@@ -155,11 +163,12 @@ var vueApp= new Vue({
 
 readConfig();
 readI18n(navigator.language.substr(0, 2));
+readInfo();
 readVersion();
 readWifi();
 
 // disable splash screen after 1 sec
 setTimeout(() => {
   model.ui.bottomNav= 'bot_home';
-}, 1000);
+}, 2000);
 

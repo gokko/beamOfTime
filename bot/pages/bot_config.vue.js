@@ -9,6 +9,37 @@ const botConfigTemplate= `<v-container mb-12>
         {{i18n.config_info_msg_into}}<br/>
         {{i18n.config_info_msg_details}}<br/><br/>
         {{i18n.config_restart_msg}}
+        <v-list one-line>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title v-text="i18n.config_info_hostname"></v-list-item-title>
+              <v-list-item-subtitle v-text="info.hostname"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-for="(ip, idx) in info.ips" :key="idx">
+            <v-list-item-content>
+              <v-list-item-title v-text="ip.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="ip.ip"></v-list-item-subtitle>
+            </v-list-item-content>
+            </v-list-item>
+        </v-list>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-header>
+        {{i18n.config_backup_title}}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <br/>
+        {{i18n.config_backup_info}}<br/>
+        {{i18n.config_backup_info2}}<br/>
+        {{i18n.config_backup_info3}}<br/><br/>
+        <div v-if="info.backup_time == ''">{{i18n.config_backup_not_evailable}}<br/><br/></div>
+        <div v-if="info.backup_time != ''">{{i18n.config_backup_evailable}}<br/>{{this.info.backup_time}}<br/><br/></div>
+        <v-spacer></v-spacer>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{i18n.config_backup_btn_backup}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.config_backup_btn_restore}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -35,20 +66,6 @@ const botConfigTemplate= `<v-container mb-12>
     
     <v-expansion-panel>
       <v-expansion-panel-header>
-        {{i18n.config_backup_title}}
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <br/>
-        {{i18n.config_restart_msg_restart}}<br/><br/>
-        {{i18n.config_restart_msg_reboot}}<br/><br/>
-        <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{i18n.config_restart_btn_restart}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.config_restart_btn_reboot}}</v-btn>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-
-    <v-expansion-panel>
-      <v-expansion-panel-header>
         {{i18n.config_restart_title}}
       </v-expansion-panel-header>  
       <v-expansion-panel-content>
@@ -60,26 +77,6 @@ const botConfigTemplate= `<v-container mb-12>
         <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.config_restart_btn_reboot}}</v-btn>
       </v-expansion-panel-content>  
     </v-expansion-panel>  
-
-    <v-expansion-panel>
-      <v-expansion-panel-header>{{i18n.config_ip_title}}</v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-list one-line>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title v-text="i18n.config_ip_hostname"></v-list-item-title>
-              <v-list-item-subtitle v-text="wifi.ipconf.hostname"></v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item v-for="(ip, idx) in wifi.ipconf.ips" :key="idx">
-            <v-list-item-content>
-              <v-list-item-title v-text="ip.name"></v-list-item-title>
-              <v-list-item-subtitle v-text="ip.ip"></v-list-item-subtitle>
-            </v-list-item-content>
-            </v-list-item>
-        </v-list>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
 
     <v-expansion-panel>
       <v-expansion-panel-header>{{i18n.config_wifi_title}}</v-expansion-panel-header>
@@ -153,7 +150,7 @@ const botConfigTemplate= `<v-container mb-12>
       <v-card-text>{{update_result}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text :loading="update_running" @click="update_dialog = false">{{i18n.config_info_btn_ok}}</v-btn>
+        <v-btn color="green darken-1" text :loading="update_running" @click="update_dialog = false">{{i18n.config_update_btn_ok}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -175,7 +172,7 @@ const botConfigTemplate= `<v-container mb-12>
 
 var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
-  props: ["cfg", "wifi", "version", "i18n"],
+  props: ["cfg", "i18n", "wifi", "version", "info"],
   data: () => ({
     config_panel: 0,
     wifi_panel: null,

@@ -39,16 +39,25 @@
     "config_info_title": "Warnung",
     "config_info_msg_into": "Bitte mit diesen Einstellungen sehr vorsichtig umgehen.",
     "config_info_msg_details": "Änderungen an den Systemeinstellungen können dazu führen, dass die Uhr nicht mehr korrekt funktioniert.",
-    "config_info_btn_ok": "Ok",
-
+    "config_info_hostname": "Rechnername",
+    "config_info_adresses": "IP-Adressen",
+    
     "config_update_title": "Aktualisierung",
     "config_update_msg_new": "Eine aktuellere Version der Software ist verfügbar.",
     "config_update_msg_old": "Diese Version ist auf dem aktuellen Stand.",
     "config_update_change_history": "Änderungshistorie",
     "config_update_btn_install": "Installieren",
     "config_update_please_wait": "... bitte warten ...",
+    "config_update_btn_ok": "Ok",
 
-    "config_backup_title": "Sicherung",
+    "config_backup_title": "backup",
+    "config_backup_info": "A backup can be created and restored in an emergency case.",
+    "config_backup_info2": "Backup contains the current software and clock and wifi settings.",
+    "config_backup_info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
+    "config_backup_evailable": "Backup available from: ",
+    "config_backup_not_evailable": "No backup available.",
+    "config_backup_btn_backup": "Backup",
+    "config_backup_btn_restore": "Restore",
 
     "config_restart_btn": "Neustart",
     "config_restart_title": "Neustart",
@@ -58,10 +67,6 @@
     "config_restart_btn_reboot": "Reboot",
     "config_restart_req_sent": "restart request was sent",
     "config_reboot_req_sent": "reboot request was sent",
-    
-    "config_ip_title": "Rechnername & IP-Adressen",
-    "config_ip_hostname": "Rechnername",
-    "config_ip_adresses": "IP-Adressen",
     
     "config_wifi_title": "WLAN",
     "config_wifi_country": "Land",

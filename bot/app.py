@@ -4,10 +4,12 @@ import sys
 import time
 import json
 import glob
+import stat
 import atexit
 import ifaddr
 import signal
 import socket
+import shutil
 import platform
 import urllib.request
 from flask import Flask, request, jsonify, send_from_directory
@@ -26,6 +28,7 @@ if isRaspi:
 app = Flask(__name__)
 clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+bkupFolder= os.path.dirname(rootFolder)+ '/.bkup'
 webFolder = rootFolder+ '/bot'
 i18nFolder = webFolder+ '/i18n/'
 clockFolder = rootFolder+ '/bot/clock'
@@ -84,14 +87,25 @@ def send_webfonts(path):
 def send_pages(path):
     return send_from_directory(webFolder+ '/pages', path, mimetype="application/javascript")
 
-@app.route('/wifi', methods = ['GET'])
-def get_wifi():
-    wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
-    wifi = WpaSupplicantConf(wpaConf)
-    res= wifi.toJsonDict()
-    # add hostname and all ip addresses
-    ipconf= {}
-    ipconf['hostname']= socket.gethostname()
+@app.route('/info', methods = ['GET'])
+def get_info():
+    res= {}
+    # if backup exists add backup date
+    bkupTime= ''
+    file= bkupFolder+ '/info.txt'
+    if os.path.isfile(file):
+        if platform.system() == 'Windows':
+            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(os.path.getmtime(file)))
+        else:
+            stat = os.stat(file)
+        bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(stat.st_mtime))
+
+    res['backup_time']= bkupTime
+
+    # add hostname 
+    res['hostname']= socket.gethostname()
+
+    # add all ip addresses
     ipaddresses= []
     adapters = ifaddr.get_adapters()
     for adapter in adapters:
@@ -104,8 +118,14 @@ def get_wifi():
             # exclude 'internal' adapters
             if type(ip.ip) == str and aName!= 'lo' and not 'virtual' in aName and not 'loopback' in aName and not 'bluetooth' in aName:
                 ipaddresses.append({'name': aName, 'ip': ip.ip})
-    ipconf['ips']= ipaddresses
-    res['ipconf']= ipconf
+    res['ips']= ipaddresses
+    return  jsonify(res)
+
+@app.route('/wifi', methods = ['GET'])
+def get_wifi():
+    wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
+    wifi = WpaSupplicantConf(wpaConf)
+    res= wifi.toJsonDict()
     return  jsonify(res)
 
 @app.route('/wifi', methods = ['POST'])
@@ -144,6 +164,42 @@ def send_update():
     res= Popen(['git', '-C', rootFolder, 'pull', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     return res.stdout.read()
 
+def handleFileError(func, path, exc_info):
+    # Check if file access issue
+    if not os.access(path, os.W_OK):
+       # Try to change the permision of file
+       os.chmod(path, stat.S_IWUSR)
+       # call the calling function again
+       func(path)
+
+@app.route('/backup')
+def send_backup():
+    try:
+        shutil.rmtree(bkupFolder, onerror=handleFileError)
+        os.mkdir(bkupFolder)
+        shutil.copytree(rootFolder, bkupFolder+ '/beamOfTime')
+        shutil.copy(wifiFolder+ '/wpa_supplicant.conf', bkupFolder)
+        f= open(bkupFolder+ '/info.txt', 'w')
+        f.close()
+    except OSError as e:
+        return 'Error: %s' % e
+
+    return 'OK'
+
+@app.route('/restore')
+def send_restore():
+    if not os.path.isdir(bkupFolder+ '/beamOfTime') or not os.path.isfile(bkupFolder+ '/beamOfTime/bot/app.py') or not os.path.isfile(bkupFolder+ '/wpa_supplicant.conf'):
+        return 'no valid backup found'
+    try:
+        shutil.rmtree(rootFolder, onerror=handleFileError)
+        shutil.copytree(bkupFolder+ '/beamOfTime', os.path.dirname(rootFolder))
+        os.remove(wifiFolder+ '/wpa_supplicant.conf')
+        shutil.copy(bkupFolder+ '/wpa_supplicant.conf', wifiFolder)
+    except OSError as e:
+        return 'Error: %s' % e
+
+    return 'OK'
+
 @app.route('/config', methods = ['POST'])
 def send_config():
     conf = json.dumps(json.loads(request.data), indent=4, ensure_ascii=False).encode('utf8')
@@ -170,6 +226,7 @@ def send_restart(path):
         call(['sudo', 'service', 'bot', 'restart'])
     return path+ ' OK'
 
+
 # handle exit request
 def sigterm_handler(_signo, _stack_frame):
     print("bot clock service is going to stop")
@@ -178,9 +235,10 @@ def sigterm_handler(_signo, _stack_frame):
     sys.exit(0)
 
 if __name__ == '__main__':
-    # handle SIGTERM
+    # handle SIGTERM to gracefully stop clock
     signal.signal(signal.SIGTERM, sigterm_handler)
 
+    # only start clock if running on raspi
     if isRaspi:
         clock = BotClock()
         t = Thread(target=clock.run, args=())
@@ -189,6 +247,7 @@ if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
     app.run(debug=False, host='0.0.0.0', port=int("80"))
     
+    # stop clock if running on raspi
     if isRaspi:
         clock.stop()
 

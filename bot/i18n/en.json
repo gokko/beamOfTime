@@ -39,7 +39,8 @@
     "config_info_title": "warning",
     "config_info_msg_into": "Please be very careful with this settings.",
     "config_info_msg_details": "Changes here may result in a not properly working clock.",
-    "config_info_btn_ok": "ok",
+    "config_info_hostname": "servername",
+    "config_info_adresses": "IP-addresses",
     
     "config_update_title": "software update",
     "config_update_msg_new": "An updated software version is available.",
@@ -47,8 +48,16 @@
     "config_update_change_history": "change history",
     "config_update_btn_install": "install",
     "config_update_please_wait": "... please wait ...",
+    "config_update_btn_ok": "ok",
     
     "config_backup_title": "backup",
+    "config_backup_info": "A backup can be created and restored in an emergency case.",
+    "config_backup_info2": "Backup contains the current software and clock and wifi settings.",
+    "config_backup_info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
+    "config_backup_evailable": "Backup available from: ",
+    "config_backup_not_evailable": "No backup available.",
+    "config_backup_btn_backup": "Backup",
+    "config_backup_btn_restore": "Restore",
 
     "config_restart_btn": "restart",
     "config_restart_title": "restart",
@@ -59,10 +68,6 @@
     "config_restart_req_sent": "restart request was sent",
     "config_reboot_req_sent": "reboot request was sent",
 
-    "config_ip_title": "servername & IP-addresses",
-    "config_ip_hostname": "servername",
-    "config_ip_adresses": "IP-addresses",
-    
     "config_wifi_title": "wifi",
     "config_wifi_country": "country",
     "config_wifi_connections": "connections",

@@ -30,7 +30,7 @@
 				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_home>
 				<bot_themes v-if="model.ui.bottomNav=='bot_themes'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_themes>
 				<bot_timers v-if="model.ui.bottomNav=='bot_timers'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_timers>
-				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :wifi.sync="model.wifi" :version="model.version" :i18n="model.i18n"></bot_config>
+				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :i18n="model.i18n" :wifi.sync="model.wifi" :version="model.version" :info="model.info"></bot_config>
 				<v-img v-if="model.ui.bottomNav=='bot_intro'" src="./files/bot-intro.png" style="width: 320px; display: block; margin-left: auto; margin-right: auto; top:100px;" />
 			</v-container>
 			<v-snackbar :color="model.ui.snackbar_color" v-model="model.ui.snackbar" :timeout="3000">
