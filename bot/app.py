@@ -172,7 +172,7 @@ def send_restart(path):
 #defining function to run on shutdown
 def close_running_threads():
     global clock
-    if clock:
+    if isRaspi:
         clock.stop()
 
 if __name__ == '__main__':
