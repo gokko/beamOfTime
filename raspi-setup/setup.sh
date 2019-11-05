@@ -17,11 +17,12 @@ sudo apt-get autoclean
 
 # expand filesystem
 sudo raspi-config --expand-rootfs
-# enable i2c
+
+# enable i2c, seems not to be necessary
 # printf "i2c-dev\n" | sudo tee -a /etc/modules
 # printf "dtparam=i2c_arm=on\n" | sudo tee -a /boot/config.txt
 
-# enable spi
+# enable spi, seems not to be necessary
 # need to check /etc/modprobe.d/raspi-blacklist.conf to comment out #blacklist spi-bcm2708
 # printf "dtparam=spi=on\n" | sudo tee -a /boot/config.txt
 
