@@ -172,6 +172,7 @@ def send_restart(path):
 #defining function to run on shutdown
 def close_running_threads():
     global clock
+    print("bot clock service is going to stop")
     if isRaspi:
         clock.stop()
 
