@@ -6,11 +6,11 @@ cd ~pi
 printf "alias ll='ls -la'\n" >> .bashrc
 
 # update and upgrade system
-sudo apt-get update 
-sudo apt-get upgrade 
-sudo apt-get dist-upgrade 
-sudo apt-get autoremove 
-sudo apt-get autoclean
+sudo apt-get update -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
+sudo apt-get upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
+sudo apt-get dist-upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
+sudo apt-get autoremove -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
+sudo apt-get autoclean -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # disable ssh root
 # printf "PermitRootLogin no" | sudo tee -a /etc/ssh/sshd_config
@@ -27,23 +27,23 @@ sudo raspi-config --expand-rootfs
 # printf "dtparam=spi=on\n" | sudo tee -a /boot/config.txt
 
 # install gpio
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install raspi-gpio
+sudo apt-get install raspi-gpio -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # install music player mpg123 (use: mpg123 song.mp3 to play a song)
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install mpg123
+sudo apt-get install mpg123 -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # install python smbus
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python-smbus
+sudo apt-get install python-smbus -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # install i2c tools
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install i2c-tools
+sudo apt-get install i2c-tools -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # set python v3 as default
 sudo rm /usr/bin/python 
 sudo ln -s /usr/bin/python3 /usr/bin/python
 
 # install python 3 installer
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python3-pip
+sudo apt-get install python3-pip -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # install python library to get local IP address (see https://pythonhosted.org/ifaddr/)
 sudo pip3 install ifaddr
@@ -55,11 +55,11 @@ sudo pip3 install adafruit-circuitpython-neopixel
 sudo pip3 install RPI.GPIO
 
 # install python flask webserver:
-sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python3-flask
+sudo apt-get install python3-flask -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 
 # install git
-sudo apt-get --allow-downgrades --allow-remove-essential --allow-change-held-packages install git
+sudo apt-get install git  y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
 
 # config git
 git config --global user.email "pi@bot.clock"
