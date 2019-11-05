@@ -6,11 +6,11 @@ cd ~pi
 printf "alias ll='ls -la'\n" >> .bashrc
 
 # update and upgrade system
-sudo apt-get update -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
-sudo apt-get upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
-sudo apt-get dist-upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
-sudo apt-get autoremove -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
-sudo apt-get autoclean -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --with-new-pkgs --allow-remove-essential --allow-change-held-packages 
+sudo apt-get update -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --allow-remove-essential --allow-change-held-packages 
+sudo apt-get upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --allow-remove-essential --allow-change-held-packages 
+sudo apt-get dist-upgrade -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --allow-remove-essential --allow-change-held-packages 
+sudo apt-get autoremove -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --allow-remove-essential --allow-change-held-packages 
+sudo apt-get autoclean -y --assume-yes --allow-downgrades --allow-remove-essential --allow-change-held-packages --install-suggests --fix-broken --fix-missing --allow-remove-essential --allow-change-held-packages 
 
 # disable ssh root
 # printf "PermitRootLogin no" | sudo tee -a /etc/ssh/sshd_config

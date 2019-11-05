@@ -119,7 +119,6 @@ def send_wifi():
     if isRaspi:
         call(['sudo', 'systemctl', 'daemon-reload'])
         call(['sudo', 'systemctl', 'restart', 'dhcpcd'])
-        # sudo wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
     return 'OK'
 
 @app.route('/config', methods = ['GET'])
