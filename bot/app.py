@@ -192,7 +192,7 @@ def send_restore():
         return 'no valid backup found'
     try:
         shutil.rmtree(rootFolder, onerror=handleFileError)
-        shutil.copytree(bkupFolder+ '/beamOfTime', os.path.dirname(rootFolder))
+        shutil.copytree(bkupFolder+ '/beamOfTime', rootFolder)
         os.remove(wifiFolder+ '/wpa_supplicant.conf')
         shutil.copy(bkupFolder+ '/wpa_supplicant.conf', wifiFolder)
     except OSError as e:
