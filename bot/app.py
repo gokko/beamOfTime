@@ -13,6 +13,19 @@ from threading import Thread
 from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
 
+# class to watch kill events
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True 
+    if clock:
+        clock.stop()
+
+
 # check if this script is running on a raspberry pi (Linux with arm processor)
 isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
 
@@ -170,6 +183,8 @@ def send_restart(path):
     return path+ ' OK'
 
 if __name__ == '__main__':
+    killer = GracefulKiller()
+
     if isRaspi:
         clock = BotClock()
         t = Thread(target=clock.run, args=())
