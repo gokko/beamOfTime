@@ -26,23 +26,23 @@ sudo raspi-config --expand-rootfs
 # printf "dtparam=spi=on\n" | sudo tee -a /boot/config.txt
 
 # install gpio
-sudo apt-get -y --force-yes install raspi-gpio
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install raspi-gpio
 
 # install music player mpg123 (use: mpg123 song.mp3 to play a song)
-sudo apt-get -y --force-yes install mpg123
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install mpg123
 
 # install python smbus
-sudo apt-get -y --force-yes install python-smbus
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python-smbus
 
 # install i2c tools
-sudo apt-get -y --force-yes install i2c-tools
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install i2c-tools
 
 # set python v3 as default
 sudo rm /usr/bin/python 
 sudo ln -s /usr/bin/python3 /usr/bin/python
 
 # install python 3 installer
-sudo apt-get -y --force-yes install python3-pip
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python3-pip
 
 # install python library to get local IP address (see https://pythonhosted.org/ifaddr/)
 sudo pip3 install ifaddr
@@ -54,11 +54,11 @@ sudo pip3 install adafruit-circuitpython-neopixel
 sudo pip3 install RPI.GPIO
 
 # install python flask webserver:
-sudo apt-get -y --force-yes install python3-flask
+sudo apt-get -y --allow-downgrades --allow-remove-essential --allow-change-held-packages install python3-flask
 
 
 # install git
-sudo apt-get --force-yes install git
+sudo apt-get --allow-downgrades --allow-remove-essential --allow-change-held-packages install git
 
 # config git
 git config --global user.email "pi@bot.clock"
