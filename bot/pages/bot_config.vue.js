@@ -9,6 +9,12 @@ const botConfigTemplate= `<v-container mb-12>
         {{i18n.config_info_msg_into}}<br/>
         {{i18n.config_info_msg_details}}<br/><br/>
         {{i18n.config_restart_msg}}
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-header>{{i18n.config_info_hostname}} & {{i18n.config_info_adresses}}</v-expansion-panel-header>
+      <v-expansion-panel-content>
         <v-list one-line>
           <v-list-item>
             <v-list-item-content>
@@ -38,8 +44,8 @@ const botConfigTemplate= `<v-container mb-12>
         <div v-if="info.backup_time == ''">{{i18n.config_backup_not_evailable}}<br/><br/></div>
         <div v-if="info.backup_time != ''">{{i18n.config_backup_evailable}}<br/>{{this.info.backup_time}}<br/><br/></div>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{i18n.config_backup_btn_backup}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.config_backup_btn_restore}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog(i18n.config_backup_title, i18n.config_backup_confirm, sendBackupRequest)">{{i18n.config_backup_btn_backup}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog(i18n.config_restore_title, i18n.config_restore_confirm, sendRestoreRequest)">{{i18n.config_backup_btn_restore}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -55,7 +61,7 @@ const botConfigTemplate= `<v-container mb-12>
         <div v-if="!version.update_available">{{i18n.config_update_msg_old}}</div>
         <div v-if="version.update_available">
           <div>{{i18n.config_update_msg_new}}<br/></div>
-          <div><br/><b>{{i18n.config_update_change_history}} ({{'v'+ version.current.version}} => {{'v'+ version.new.version}}):</b><br/></div>
+          <div><br/><b>{{i18n.config_update_change_history}} ({{'v'+ version.current.version}} ⮚ {{'v'+ version.new.version}}):</b><br/></div>
           <div v-if="note.version > version.current.version" v-for="note in version.new.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
           <br/>
         </div>
@@ -143,30 +149,30 @@ const botConfigTemplate= `<v-container mb-12>
     </v-expansion-panel>
 
   </v-expansion-panels>
-    
-  <v-dialog v-model="update_dialog" persistent scrollable max-width="350">
+
+  <v-dialog v-model="info_dlg" persistent scrollable max-width="350">
     <v-card outlined>
-      <v-card-title class="headline">{{i18n.config_update_title}}</v-card-title>
-      <v-card-text>{{update_result}}</v-card-text>
+      <v-card-title class="headline">{{info_dlg_title}}</v-card-title>
+      <v-card-text>{{info_dlg_text}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text :loading="update_running" @click="update_dialog = false">{{i18n.config_update_btn_ok}}</v-btn>
+        <v-btn color="green darken-1" text :loading="info_dlg_bg_activity" @click="info_dlg = false">{{i18n.config_btn_ok}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog v-model="wifi_confirm_dialog" max-width="350">
-      <v-card>
-        <v-card-title class="headline">{{i18n.config_wifi_confirm_title}}</v-card-title>
-        <v-card-text>{{i18n.config_wifi_confirm_question}}</v-card-text>
-        <v-card-text v-if="wifi.networks.length== 1">{{i18n.config_wifi_confirm_question2}}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="wifi_confirm_dialog = false">{{i18n.config_wifi_btn_no}}</v-btn>
-          <v-btn color="orange darken-1" text @click="removeWifiConfirm()">{{i18n.config_wifi_btn_yes}}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <v-dialog v-model="confirm_dialog" persistent scrollable max-width="350">
+    <v-card outlined>
+      <v-card-title class="headline">{{confirm_dialog_title}}</v-card-title>
+      <v-card-text>{{confirm_dialog_text}}</v-card-text>
+      <v-card-text>{{confirm_dialog_text2}}</v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="orange darken-1" text @click="confirm_dialog_action()">{{i18n.config_btn_ok}}</v-btn>
+        <v-btn color="green darken-1" text @click="confirm_dialog= false">{{i18n.config_btn_cancel}}</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
 </v-container>`
 
@@ -178,12 +184,17 @@ var bot_config = Vue.component("bot_config", {
     wifi_panel: null,
     showPwd: false,
     wifi_type_items: ['WPA-PSK'],
-    wifi_confirm_dialog: false,
     wifi_confirm_idx: null,
     form_valid: true,
-    update_dialog: false,
-    update_running: false,
-    update_result: '',
+    info_dlg: false,
+    info_dlg_bg_activity: false,
+    info_dlg_title: '',
+    info_dlg_text: '',
+    confirm_dialog: false,
+    confirm_dialog_title: '',
+    confirm_dialog_text: '',
+    confirm_dialog_text2: '',
+    confirm_dialog_action: null,
     pwd_rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 8 || 'Min 8 characters',
@@ -194,6 +205,13 @@ var bot_config = Vue.component("bot_config", {
     ]
   }),
   methods: {
+    showConfirmDialog(title, text, action) {
+      this.confirm_dialog_title= title;
+      this.confirm_dialog_text= text;
+      this.confirm_dialog_text2= '';
+      this.confirm_dialog_action= action;
+      this.confirm_dialog= true;
+    },
     addWifi() {
       con= {
         scan_ssid: 1,
@@ -206,27 +224,33 @@ var bot_config = Vue.component("bot_config", {
     },
     removeWifi(idx) {
       this.wifi_confirm_idx= idx;
-      this.wifi_confirm_dialog= true;
+      this.confirm_dialog_title= this.i18n.config_wifi_confirm_title;
+      this.confirm_dialog_text= this.i18n.config_wifi_confirm_question;
+      this.confirm_dialog_text2= '';
+      if (this.wifi.networks.length== 1)
+        this.confirm_dialog_text2= this.i18n.config_wifi_confirm_question2;
+      this.confirm_dialog_action= this.removeWifiConfirm;
+      this.confirm_dialog= true;
     },
     removeWifiConfirm() {
+      this.confirm_dialog= false;
       this.wifi.networks.splice(this.wifi_confirm_idx, 1);
       this.wifi_panel= null;
-      this.wifi_confirm_dialog= false;
       if (this.wifi.networks.length== 0) {
         this.addWifi();
       }
     },
     sendUpdateRequest() {
-      this.update_result= this.i18n.config_update_please_wait;
-      this.update_dialog= true;
-      this.update_running= true;
+      this.info_dlg_title= this.i18n.config_update_title;
+      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg= true;
+      this.info_dlg_bg_activity= true;
       $.ajax({
         cache: false,
-        url: "/update",
-        dataType: 'text'
+        url: "/update"
       }).then((data) => {
-        this.update_result= data;
-        this.update_running= false;
+        this.info_dlg_text= data+ ' '+ this.i18n.config_update_msg_done;
+        setTimeout(function(){ window.location.reload(true); }, 3000);
       },
       (data) => {
         txt= data;
@@ -234,8 +258,48 @@ var bot_config = Vue.component("bot_config", {
           txt= data.responseText.toLowerCase();
         if (txt.index('<h1>')>= 0)
           txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
-        this.update_result= txt
-        this.update_running= false;
+        this.info_dlg_text= txt
+        this.info_dlg_bg_activity= false;
+      });
+    },
+    sendBackupRequest() {
+      this.confirm_dialog= false;
+      this.info_dlg_title= this.i18n.config_backup_title;
+      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg= true;
+      this.info_dlg_bg_activity= true;
+      $.ajax({
+        cache: false,
+        url: '/backup'
+      }).then((data) => {
+        // success
+        // refresh backup date + time
+        readInfo();
+        this.info_dlg_text= this.i18n.config_backup_done;
+        this.info_dlg_bg_activity= false;
+      },
+      (data) => {
+        this.info_dlg_text= data.statusText;
+        this.info_dlg_bg_activity= false;
+      });
+    },
+    sendRestoreRequest() {
+      this.confirm_dialog= false;
+      this.info_dlg_title= this.i18n.config_restore_title;
+      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg= true;
+      this.info_dlg_bg_activity= true;
+      $.ajax({
+        cache: false,
+        url: '/restore'
+      }).then((data) => {
+        // success
+        this.info_dlg_text= this.i18n.config_restore_done;
+        setTimeout(function(){ window.location.reload(true); }, 3000);
+      },
+      (data) => {
+        this.info_dlg_text= data.statusText;
+        this.info_dlg_bg_activity= false;
       });
     },
     sendRestartRequest(req) {
@@ -244,12 +308,17 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'text/plain; charset=utf-8'
       });
       // ignore any response as service can't anwser due to restart
-      if (req== 'restart')
-        model.ui.snackbar_text= this.i18n.config_restart_req_sent;
-      else
-        model.ui.snackbar_text= this.i18n.config_reboot_req_sent;
-      model.ui.snackbar_color= 'orange';
-      model.ui.snackbar= true;
+      this.info_dlg= true;
+      this.info_dlg_bg_activity= true;
+      if (req== 'restart') {
+        this.info_dlg_title= this.i18n.config_restart_btn_restart;
+        this.info_dlg_text= this.i18n.config_restart_req_sent;
+      }
+      else {
+        this.info_dlg_title= this.i18n.config_reboot_btn_restart;
+        this.info_dlg_text= this.i18n.config_reboot_req_sent;
+      }
+      setTimeout(function(){ window.location.reload(true); }, 3000);
     },
     sendWifiSaveRequest() {
       $.ajax({

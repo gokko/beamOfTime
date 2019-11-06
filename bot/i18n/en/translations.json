@@ -1,0 +1,116 @@
+{
+  "config": {
+    "backup": {
+      "btn_backup": "Backup",
+      "btn_restore": "Restore",
+      "confirm": "Are you sure you want to create a new backup, the previous backup will be replaced?",
+      "done": "Backup was saved successfully.",
+      "evailable": "Backup available from: ",
+      "info": "A backup can be created and restored in an emergency case.",
+      "info2": "Backup contains the current software and clock and wifi settings.",
+      "info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
+      "not_evailable": "No backup available.",
+      "title": "backup"
+    },
+    "info": {
+      "adresses": "IP-addresses",
+      "hostname": "servername",
+      "msg_details": "Changes here may result in a not properly working clock.",
+      "msg_into": "Please be very careful with this settings.",
+      "title": "warning"
+    },
+    "led": {
+      "count_lbl": "LED count",
+      "pin_lbl": "LED pin",
+      "ring1_dir_lbl": "inner LEDs direction",
+      "ring1_start_lbl": "inner LEDs direction",
+      "ring2_dir_lbl": "outer LEDs direction",
+      "ring2_start_lbl": "outer LEDs direction",
+      "settings": "LED settings"
+    },
+    "main": {
+      "btn_cancel": "Cancel",
+      "btn_ok": "Ok",
+      "please_wait": "... please wait ..."
+    },
+    "reboot": {
+      "req_sent": "reboot request was sent"
+    },
+    "restart": {
+      "btn_reboot": "reboot",
+      "btn_restart": "restart",
+      "msg": "A restart is required to activate the changes on this page.",
+      "msg_reboot": "reboot: will boot the system (will take 2 minutes).",
+      "msg_restart": "restart: will only restart the clock and the configuration service.",
+      "req_sent": "restart request was sent",
+      "title": "restart"
+    },
+    "restore": {
+      "confirm": "Are you sure you want to restore the latest backup? The current software incl. settings and Wifi configuration will be replaced.",
+      "title": "restore"
+    },
+    "title": "settings",
+    "update": {
+      "btn_install": "install",
+      "change_history": "change history",
+      "msg_new": "An updated software version is available.",
+      "msg_old": "Your software version is up to date.",
+      "title": "software update"
+    },
+    "wifi": {
+      "btn_no": "no",
+      "btn_yes": "yes",
+      "confirm_question": "Are you sure you want to delete this connection?",
+      "confirm_question2": "When the last connection is deleted a default one will be created.",
+      "confirm_title": "delete wifi?",
+      "connections": "connections",
+      "country": "country",
+      "password": "password",
+      "saved": "Wifi settings saved.",
+      "ssid": "SSID",
+      "title": "wifi",
+      "type": "type"
+    }
+  },
+  "home": {
+    "choose_theme_lbl": "choose theme",
+    "current_language_lbl": "Language",
+    "current_theme_lbl": "current theme",
+    "enabled_chk": "enabled",
+    "lamp_color_lbl": "color when used as lamp",
+    "start_animation_chk": "animation on start",
+    "title": "home",
+    "use_as_lamp_chk": "use as lamp (no time)"
+  },
+  "main": {
+    "app_title": "beam of time",
+    "intro_title": "intro",
+    "isRtl": "false",
+    "language_name": "English",
+    "msg_config_save_error": "error saving configuration:",
+    "msg_config_saved": "configuration saved"
+  },
+  "themes": {
+    "bg2_color_lbl": "background 2nd color",
+    "bg_color_lbl": "background main color",
+    "change_lbl": "change theme",
+    "create_new_lbl": "create new theme",
+    "delete_msg": "Do you really want to delete the selected theme?",
+    "hr_color_lbl": "hours hand color",
+    "min_color_lbl": "minutes hand color",
+    "name_lbl": "name",
+    "sec_color_lbl": "seconds hand color",
+    "title": "themes"
+  },
+  "timers": {
+    "action_lbl": "action",
+    "delete_msg": "Do you really want to delete the selected timer?",
+    "desc_lbl": "description",
+    "name_lbl": "name",
+    "param_lbl": "action parameter",
+    "param_select_lbl": "select parameter",
+    "select_lbl": "select timer",
+    "time_lbl": "time",
+    "title": "timers"
+  }
+}

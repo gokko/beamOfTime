@@ -66,14 +66,20 @@ def get_version(path):
 def send_css(path):
     return send_from_directory(webFolder+ '/css', path, mimetype="text/css")
 
-@app.route('/i18n/<path:path>')
-def send_i18n(path):
-    # check if translation for requested language exists
-    if (os.path.isfile(i18nFolder+  path)):
-        return send_from_directory(i18nFolder, path, mimetype="application/json")
-    # if not, return English
-    else:
-        return send_from_directory(i18nFolder, 'en-US.json', mimetype="application/json")
+@app.route('/i18n')
+def send_i18n():
+    # combine all languages into one file
+    res= {}
+    for subdir, dirs, files in os.walk(i18nFolder):
+        for dir in dirs:
+            file= i18nFolder+ '/'+ dir+ '/translations.json'
+            if not os.path.isfile(file):
+                continue
+            with open(file, 'rb') as f:
+                js = json.load(f)
+                res[dir]= {'translation': js}
+
+    return jsonify(res)
 
 @app.route('/files/<path:path>')
 def send_files(path):
@@ -98,7 +104,7 @@ def get_info():
             bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(os.path.getmtime(file)))
         else:
             stat = os.stat(file)
-        bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(stat.st_mtime))
+            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(stat.st_mtime))
 
     res['backup_time']= bkupTime
 
@@ -123,7 +129,9 @@ def get_info():
 
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
-    wpaConf= open(wifiFolder+ '/wpa_supplicant.conf', 'r').read()
+    f= open(wifiFolder+ '/wpa_supplicant.conf', 'r')
+    wpaConf= f.read()
+    f.close()
     wifi = WpaSupplicantConf(wpaConf)
     res= wifi.toJsonDict()
     return  jsonify(res)
@@ -174,6 +182,9 @@ def handleFileError(func, path, exc_info):
 
 @app.route('/backup')
 def send_backup():
+    # skip backup if not running on raspi
+    if not isRaspi:
+        return 'OK (backup skipped)'
     try:
         shutil.rmtree(bkupFolder, onerror=handleFileError)
         os.mkdir(bkupFolder)
@@ -188,6 +199,9 @@ def send_backup():
 
 @app.route('/restore')
 def send_restore():
+    # skip restore if not running on raspi
+    if not isRaspi:
+        return 'OK (restore skipped)'
     if not os.path.isdir(bkupFolder+ '/beamOfTime') or not os.path.isfile(bkupFolder+ '/beamOfTime/bot/app.py') or not os.path.isfile(bkupFolder+ '/wpa_supplicant.conf'):
         return 'no valid backup found'
     try:
@@ -217,10 +231,11 @@ def send_config():
 
 @app.route('/restart/<path:path>')
 def send_restart(path):
-    # client is not expecting any result, as service can't responde due to restart
+    # skip restart if not running on raspi
     if not isRaspi:
-        return 'OK (not restarted)'
+        return 'OK (restart skipped)'
 
+    # client is not expecting any result, as service can't responde due to restart
     if (path.lower() == 'reboot'):
         call(['sudo', 'reboot'])
     elif (path.lower() == 'restart'):

@@ -19,7 +19,7 @@
 	<div id="app">
 		<v-app>
 			<v-app-bar app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
-				<v-toolbar-title>{{model.i18n.app_title}} <i style="color:grey">{{page_name}}</i></v-toolbar-title>
+				<v-toolbar-title>{{$t('main.app_title')}} <i style="color:grey">{{page_name}}</i></v-toolbar-title>
 					<v-spacer></v-spacer>
 					<div>
 						<v-img src="./files/bot-logo-small.png" />
@@ -27,10 +27,10 @@
 				</v-container>
 			</v-app-bar>
 			<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" mt-10 mb-12>
-				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_home>
-				<bot_themes v-if="model.ui.bottomNav=='bot_themes'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_themes>
-				<bot_timers v-if="model.ui.bottomNav=='bot_timers'" :cfg.sync="model.cfg" :i18n="model.i18n"></bot_timers>
-				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :i18n="model.i18n" :wifi.sync="model.wifi" :version="model.version" :info="model.info"></bot_config>
+				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg"></bot_home>
+				<bot_themes v-if="model.ui.bottomNav=='bot_themes'" :cfg.sync="model.cfg"></bot_themes>
+				<bot_timers v-if="model.ui.bottomNav=='bot_timers'" :cfg.sync="model.cfg"></bot_timers>
+				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :wifi.sync="model.wifi" :version="model.version" :info="model.info"></bot_config>
 				<v-img v-if="model.ui.bottomNav=='bot_intro'" src="./files/bot-intro.png" style="width: 320px; display: block; margin-left: auto; margin-right: auto; top:100px;" />
 			</v-container>
 			<v-snackbar :color="model.ui.snackbar_color" v-model="model.ui.snackbar" :timeout="3000">
@@ -39,22 +39,22 @@
 			<v-footer app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
 				<v-bottom-navigation v-model="model.ui.bottomNav">
 					<v-btn value="bot_home">
-						<span>{{model.i18n.home_title}}</span>
+						<span>{{$t('home.title')}}</span>
 						<v-icon>mdi-home</v-icon>
 					</v-btn>
 
 					<v-btn value="bot_themes">
-						<span>{{model.i18n.themes_title}}</span>
+						<span>{{$t('themes.title')}}</span>
 						<v-icon>mdi-format-paint</v-icon>
 					</v-btn>
 
 					<v-btn value="bot_timers">
-						<span>{{model.i18n.timers_title}}</span>
+						<span>{{$t('timers.title')}}</span>
 						<v-icon>mdi-timetable</v-icon>
 					</v-btn>
 
 					<v-btn value="bot_config">
-						<span>{{model.i18n.config_title}}</span>
+						<span>{{$t('config.title')}}</span>
 						<v-badge>
 							<template v-if="model.version.update_available" v-slot:badge><v-icon>mdi-check</v-icon></template>
 							<v-icon>mdi-settings</v-icon>
@@ -72,6 +72,8 @@
 	<script src="./js/jquery-v3.4.1.js"></script> <!-- https://github.com/jquery/jquery/releases -->
 	<script src="./js/vue-v2.6.10.js"></script> <!-- https://github.com/vuejs/vue/releases -->
 	<script src="./js/vuetify-v2.1.9.js"></script> <!-- https://github.com/vuetifyjs/vuetify/releases -->
+	<script src="./js/i18next-v8.0.0.js"></script> <!-- https://unpkg.com/browse/i18next@8.0.0/ -->
+	<script src="./js/vue-i18next-v0.15.1.js"></script> <!-- https://unpkg.com/browse/@panter/vue-i18next@0.15.1/dist/ -->
 
 	<!-- Vue Pages and Components here -->
 	<script src='./pages/bot_home.vue.js'></script>

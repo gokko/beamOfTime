@@ -1,0 +1,115 @@
+{
+  "config": {
+    "backup": {
+      "btn_backup": "Backup",
+      "btn_restore": "Restore",
+      "confirm": "Are you sure you want to create a new backup, the previous backup will be replaced?",
+      "evailable": "Backup available from: ",
+      "info": "A backup can be created and restored in an emergency case.",
+      "info2": "Backup contains the current software and clock and wifi settings.",
+      "info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
+      "not_evailable": "No backup available.",
+      "title": "backup"
+    },
+    "info": {
+      "adresses": "IP-Adressen",
+      "hostname": "Rechnername",
+      "msg_details": "Änderungen an den Systemeinstellungen können dazu führen, dass die Uhr nicht mehr korrekt funktioniert.",
+      "msg_into": "Bitte mit diesen Einstellungen sehr vorsichtig umgehen.",
+      "title": "Warnung"
+    },
+    "led": {
+      "count_lbl": "LED Anzahl",
+      "pin_lbl": "LED Pin",
+      "ring1_dir_lbl": "Richtung innere LEDs",
+      "ring1_start_lbl": "Start innere LEDs",
+      "ring2_dir_lbl": "Richtung äußere LEDs",
+      "ring2_start_lbl": "Start äußere LEDs",
+      "settings": "LED Einstellungen"
+    },
+    "main": {
+      "btn_cancel": "Cancel",
+      "btn_ok": "Ok",
+      "please_wait": "... bitte warten ..."
+    },
+    "reboot": {
+      "req_sent": "reboot request was sent"
+    },
+    "restart": {
+      "btn_reboot": "Reboot",
+      "btn_restart": "Neustart",
+      "msg": "Es ist ein Neustart notwendig um die Änderungen auf dieser Seite zu aktivieren.",
+      "msg_reboot": "Reboot: Startet das ganze System neu (ca. 2 Minuten).",
+      "msg_restart": "Neustart: Startet nur die Uhr- und Konfigurations- Dienste neu.",
+      "req_sent": "restart request was sent",
+      "title": "Neustart"
+    },
+    "restore": {
+      "confirm": "Are you sure you want to restore the latest backup? The current software incl. settings and Wifi configuration will be replaced.",
+      "title": "restore"
+    },
+    "title": "System",
+    "update": {
+      "btn_install": "Installieren",
+      "change_history": "Änderungshistorie",
+      "msg_new": "Eine aktuellere Version der Software ist verfügbar.",
+      "msg_old": "Diese Version ist auf dem aktuellen Stand.",
+      "title": "Aktualisierung"
+    },
+    "wifi": {
+      "btn_no": "Nein",
+      "btn_yes": "Ja",
+      "confirm_question": "Soll diese Verbindung wirklich gelöscht werden?",
+      "confirm_question2": "Wenn die letzte Verbindung gelöscht wird, wird automatisch eine Standardverbindung erstellt.",
+      "confirm_title": "WLAN löschen?",
+      "connections": "Verbindungen",
+      "country": "Land",
+      "password": "Passwort",
+      "saved": "Wifi settings saved.",
+      "ssid": "Netzwerkname",
+      "title": "WLAN",
+      "type": "Typ"
+    }
+  },
+  "home": {
+    "choose_theme_lbl": "موضوع را انتخاب کنید",
+    "current_language_lbl": "زبان",
+    "current_theme_lbl": "موضوع فعلی",
+    "enabled_chk": "فعال شده",
+    "lamp_color_lbl": "رنگ روشن",
+    "start_animation_chk": "شروع انیمیشن",
+    "title": "شروع",
+    "use_as_lamp_chk": "فقط نور (نه زمان)"
+  },
+  "main": {
+    "app_title": "پرتوی زمان",
+    "intro_title": "Intro",
+    "isRtl": "true",
+    "language_name": "فارسی",
+    "msg_config_save_error": "Fehler beim Speichern der Konfiguration:",
+    "msg_config_saved": "Konfiguration gespeichert"
+  },
+  "themes": {
+    "bg2_color_lbl": "2te Hintergrundfarbe",
+    "bg_color_lbl": "Hintergrundfarbe",
+    "change_lbl": "Motiv bearbeiten",
+    "create_new_lbl": "Motiv neu erstellen",
+    "delete_msg": "Soll das gewählte Motiv wirklich gelöscht werden?",
+    "hr_color_lbl": "Stundenzeiger Farbe",
+    "min_color_lbl": "Minutenzeiger Farbe",
+    "name_lbl": "Name",
+    "sec_color_lbl": "Sekundenzeiger Farbe",
+    "title": "Motive"
+  },
+  "timers": {
+    "action_lbl": "Aktion",
+    "delete_msg": "Soll der gewählte Zeitschalter wirklich gelöscht werden?",
+    "desc_lbl": "Beschreibung",
+    "name_lbl": "Name",
+    "param_lbl": "Aktionsparameter",
+    "param_select_lbl": "Parameter wählen",
+    "select_lbl": "Zeitschalter wählen",
+    "time_lbl": "Zeit",
+    "title": "Timer"
+  }
+}

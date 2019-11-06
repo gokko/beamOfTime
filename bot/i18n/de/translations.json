@@ -1,0 +1,118 @@
+{
+  "config": {
+    "backup": {
+      "btn_backup": "Sichern",
+      "btn_restore": "Wiederherstellen",
+      "confirm": "Soll die aktuelle Version gesichert werden? Dabei wird die vorherige Sicherung überschrieben.",
+      "done": "Sicherung wurde erfolgreich erstellt.",
+      "evailable": "Sicherung ist vorhanden vom:",
+      "info": "Eine Sicherung kann erstellt und im Fehlerfall wiederhergestellt werden.",
+      "info2": "Enthalten ist die aktuelle Software sowie Uhr- und WLAN- Einstellungen.",
+      "info3": "Eine Wiederherstellung kann entweder von hier aus gestartet werden oder durch das Erstellen einer leeren Datei mit dem Namen bot.restore auf der SD- Karte.",
+      "not_evailable": "Es ist keine Sicherung vorhanden.",
+      "title": "Sicherung"
+    },
+    "info": {
+      "adresses": "IP-Adressen",
+      "hostname": "Rechnername",
+      "msg_details": "Änderungen an den Systemeinstellungen können dazu führen, dass die Uhr nicht mehr korrekt funktioniert.",
+      "msg_into": "Bitte mit diesen Einstellungen sehr vorsichtig umgehen.",
+      "title": "Warnung"
+    },
+    "led": {
+      "count_lbl": "LED Anzahl",
+      "pin_lbl": "LED Pin",
+      "ring1_dir_lbl": "Richtung innere LEDs",
+      "ring1_start_lbl": "Start innere LEDs",
+      "ring2_dir_lbl": "Richtung äußere LEDs",
+      "ring2_start_lbl": "Start äußere LEDs",
+      "settings": "LED Einstellungen"
+    },
+    "main": {
+      "btn_cancel": "Abbrechen",
+      "btn_ok": "Ok",
+      "please_wait": "... bitte warten ..."
+    },
+    "reboot": {
+      "req_sent": "Reboot Anfrage wurde verschickt, Applikation wird neu gestartet. Bitte warten."
+    },
+    "restart": {
+      "btn_reboot": "Reboot",
+      "btn_restart": "Neustart",
+      "msg": "Es ist ein Neustart notwendig um die Änderungen auf dieser Seite zu aktivieren.",
+      "msg_reboot": "Reboot: Startet das ganze System neu (ca. 2 Minuten).",
+      "msg_restart": "Neustart: Startet nur die Uhr- und Konfigurations- Dienste neu.",
+      "req_sent": "Neustart Anfrage wurde verschickt, Applikation wird neu gestartet. Bitte warten.",
+      "title": "Neustart"
+    },
+    "restore": {
+      "confirm": "Soll die letzte Sicherung wiederhergestellt werden? Dabei wird die aktuelle Software inkl. Einstellungen und WLAN Konfiguration ersetzt.",
+      "done": "Wiederherstellung erfolgreich, Applikation wird neu gestartet. Bitte warten.",
+      "title": "Wiederherstellung"
+    },
+    "title": "System",
+    "update": {
+      "btn_install": "Installieren",
+      "change_history": "Änderungshistorie",
+      "msg_done": "Die Applikation wird nach dem update neu gestartet.",
+      "msg_new": "Eine aktuellere Version der Software ist verfügbar.",
+      "msg_old": "Diese Version ist auf dem aktuellen Stand.",
+      "title": "Aktualisierung"
+    },
+    "wifi": {
+      "btn_no": "Nein",
+      "btn_yes": "Ja",
+      "confirm_question": "Soll diese Verbindung wirklich gelöscht werden?",
+      "confirm_question2": "Wenn die letzte Verbindung gelöscht wird, wird automatisch eine Standardverbindung erstellt.",
+      "confirm_title": "WLAN löschen?",
+      "connections": "Verbindungen",
+      "country": "Land",
+      "password": "Passwort",
+      "saved": "WLAN Einstellungen wurden gespeichert.",
+      "ssid": "Netzwerkname",
+      "title": "WLAN",
+      "type": "Typ"
+    }
+  },
+  "home": {
+    "choose_theme_lbl": "Motiv wählen",
+    "current_language_lbl": "Sprache",
+    "current_theme_lbl": "Aktuelles Motiv",
+    "enabled_chk": "Eingeschaltet",
+    "lamp_color_lbl": "Lampenfarbe",
+    "start_animation_chk": "Startanimation",
+    "title": "Start",
+    "use_as_lamp_chk": "Nur Lampe (ohne Zeit)"
+  },
+  "main": {
+    "app_title": "beam of time",
+    "intro_title": "Intro",
+    "isRtl": "false",
+    "language_name": "Deutsch",
+    "msg_config_save_error": "Fehler beim Speichern der Konfiguration:",
+    "msg_config_saved": "Konfiguration gespeichert"
+  },
+  "themes": {
+    "bg2_color_lbl": "2te Hintergrundfarbe",
+    "bg_color_lbl": "Hintergrundfarbe",
+    "change_lbl": "Motiv bearbeiten",
+    "create_new_lbl": "Motiv neu erstellen",
+    "delete_msg": "Soll das gewählte Motiv wirklich gelöscht werden?",
+    "hr_color_lbl": "Stundenzeiger Farbe",
+    "min_color_lbl": "Minutenzeiger Farbe",
+    "name_lbl": "Name",
+    "sec_color_lbl": "Sekundenzeiger Farbe",
+    "title": "Motive"
+  },
+  "timers": {
+    "action_lbl": "Aktion",
+    "delete_msg": "Soll der gewählte Zeitschalter wirklich gelöscht werden?",
+    "desc_lbl": "Beschreibung",
+    "name_lbl": "Name",
+    "param_lbl": "Aktionsparameter",
+    "param_select_lbl": "Parameter wählen",
+    "select_lbl": "Zeitschalter wählen",
+    "time_lbl": "Zeit",
+    "title": "Timer"
+  }
+}
