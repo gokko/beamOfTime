@@ -3,22 +3,22 @@ const botConfigTemplate= `<v-container mb-12>
   <v-expansion-panels v-model="config_panel" focusable>
 
     <v-expansion-panel>
-      <v-expansion-panel-header>{{i18n.config_info_title}}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{$t('config.info.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <br/>
-        {{i18n.config_info_msg_into}}<br/>
-        {{i18n.config_info_msg_details}}<br/><br/>
-        {{i18n.config_restart_msg}}
+        {{$t('config.info.msg_into')}}<br/>
+        {{$t('config.info.msg_details')}}<br/><br/>
+        {{$t('config.restart.msg')}}
       </v-expansion-panel-content>
     </v-expansion-panel>
 
     <v-expansion-panel>
-      <v-expansion-panel-header>{{i18n.config_info_hostname}} & {{i18n.config_info_adresses}}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{$t('config.info.hostname')}} & {{$t('config.info.adresses')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list one-line>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title v-text="i18n.config_info_hostname"></v-list-item-title>
+              <v-list-item-title v-text="$t('config.info.hostname')"></v-list-item-title>
               <v-list-item-subtitle v-text="info.hostname"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -34,18 +34,18 @@ const botConfigTemplate= `<v-container mb-12>
 
     <v-expansion-panel>
       <v-expansion-panel-header>
-        {{i18n.config_backup_title}}
+        {{$t('config.backup.title')}}
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <br/>
-        {{i18n.config_backup_info}}<br/>
-        {{i18n.config_backup_info2}}<br/>
-        {{i18n.config_backup_info3}}<br/><br/>
-        <div v-if="info.backup_time == ''">{{i18n.config_backup_not_evailable}}<br/><br/></div>
-        <div v-if="info.backup_time != ''">{{i18n.config_backup_evailable}}<br/>{{this.info.backup_time}}<br/><br/></div>
+        {{$t('config.backup.info')}}<br/>
+        {{$t('config.backup.info2')}}<br/>
+        {{$t('config.backup.info3')}}<br/><br/>
+        <div v-if="info.backup_time == ''">{{$t('config.backup.not_evailable')}}<br/><br/></div>
+        <div v-if="info.backup_time != ''">{{$t('config.backup.evailable')}}<br/>{{this.info.backup_time}}<br/><br/></div>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog(i18n.config_backup_title, i18n.config_backup_confirm, sendBackupRequest)">{{i18n.config_backup_btn_backup}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog(i18n.config_restore_title, i18n.config_restore_confirm, sendRestoreRequest)">{{i18n.config_backup_btn_restore}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.backup.title'), $t('config.backup.confirm'), sendBackupRequest)">{{$t('config.backup.btn_backup')}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.restore.title'), $t('config.restore.confirm'), sendRestoreRequest)">{{$t('config.backup.btn_restore')}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -53,58 +53,58 @@ const botConfigTemplate= `<v-container mb-12>
       <v-expansion-panel-header>
         <v-badge>
           <template v-if="version.update_available" v-slot:badge><v-icon>mdi-check</v-icon></template>
-            <span>{{i18n.config_update_title}}</span>
+            <span>{{$t('config.update.title')}}</span>
           </v-badge>
         </v-expansion-panel-header>
       <v-expansion-panel-content>
         <br/>
-        <div v-if="!version.update_available">{{i18n.config_update_msg_old}}</div>
+        <div v-if="!version.update_available">{{$t('config.update.msg_old')}}</div>
         <div v-if="version.update_available">
-          <div>{{i18n.config_update_msg_new}}<br/></div>
-          <div><br/><b>{{i18n.config_update_change_history}} ({{'v'+ version.current.version}} ⮚ {{'v'+ version.new.version}}):</b><br/></div>
+          <div>{{$t('config.update.msg_new')}}<br/></div>
+          <div><br/><b>{{$t('config.update.change_history')}} ({{'v'+ version.current.version}} ⮚ {{'v'+ version.new.version}}):</b><br/></div>
           <div v-if="note.version > version.current.version" v-for="note in version.new.release_notes"><i>v{{note.version}} ({{note.date}})</i><br/>{{note.info}}<br/></div>
           <br/>
         </div>
         <v-spacer></v-spacer>
-        <v-btn outlined v-if="version.update_available" color="orange darken-1" @click="sendUpdateRequest">{{i18n.config_update_btn_install}}</v-btn>
+        <v-btn outlined v-if="version.update_available" color="orange darken-1" @click="sendUpdateRequest">{{$t('config.update.btn_install')}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>  
     
     <v-expansion-panel>
       <v-expansion-panel-header>
-        {{i18n.config_restart_title}}
+        {{$t('config.restart.title')}}
       </v-expansion-panel-header>  
       <v-expansion-panel-content>
         <br/>
-        {{i18n.config_restart_msg_restart}}<br/><br/>
-        {{i18n.config_restart_msg_reboot}}<br/><br/>
+        {{$t('config.restart.msg_restart')}}<br/><br/>
+        {{$t('config.restart.msg_reboot')}}<br/><br/>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{i18n.config_restart_btn_restart}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{i18n.config_restart_btn_reboot}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{$t('config.restart.btn_reboot')}}</v-btn>
       </v-expansion-panel-content>  
     </v-expansion-panel>  
 
     <v-expansion-panel>
-      <v-expansion-panel-header>{{i18n.config_wifi_title}}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{$t('config.wifi.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form>
-          <v-text-field type="text" v-model="wifi.country" counter="2" :label="i18n.config_wifi_country" required></v-text-field>
+          <v-text-field type="text" v-model="wifi.country" counter="2" :label="$t('config.wifi.country')" required></v-text-field>
 
-          <v-col cols="12">{{i18n.config_wifi_connections}}</v-col>
+          <v-col cols="12">{{$t('config.wifi.connections')}}</v-col>
           <v-expansion-panels v-model="wifi_panel" focusable>
             <v-expansion-panel v-for="(network, index) in wifi.networks" :key="index" class="grey darken-1">
               <v-expansion-panel-header>{{network.ssid}}</v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-text-field type="text" counter v-model="network.ssid" :label="i18n.config_wifi_ssid" :rules="[pwd_rules.required]"></v-text-field>
+                <v-text-field type="text" counter v-model="network.ssid" :label="$t('config.wifi.ssid')" :rules="[pwd_rules.required]"></v-text-field>
                     <v-text-field v-model="network.psk" counter
                       :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
                       :rules="[pwd_rules.required, pwd_rules.min]"
                       :type="showPwd ? 'text' : 'password'"
                       name="wifi_pwd"
-                      :label="i18n.config_wifi_password"
+                      :label="$t('config.wifi.password')"
                       @click:append="showPwd = !showPwd">
                     </v-text-field>
-                  <v-select :items="wifi_type_items" v-model="network.key_mgmt" :label="i18n.config_wifi_type"></v-select>
+                  <v-select :items="wifi_type_items" v-model="network.key_mgmt" :label="$t('config.wifi.type')"></v-select>
                   <v-btn outlined color="orange darken-1" @click="removeWifi(index)"><v-icon>mdi-delete</v-icon></v-btn>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -119,31 +119,31 @@ const botConfigTemplate= `<v-container mb-12>
     </v-expansion-panel>
 
     <v-expansion-panel>
-      <v-expansion-panel-header>{{i18n.config_led_settings}}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{$t('config.led.settings')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form ref="form" v-model="form_valid" lazy-validation>
-          <v-col cols="12">{{i18n.config_led_pin_lbl}}</v-col>
+          <v-col cols="12">{{$t('config.led.pin_lbl')}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledPin" mandatory>
             <v-btn outlined :value="12" color="green">12</v-btn>
             <v-btn outlined :value="18" color="green">18</v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{i18n.config_led_count_lbl}}</v-col>
+          <v-col cols="12">{{$t('config.led.count_lbl')}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledCount" mandatory>
             <v-btn outlined :value="60" color="green">60</v-btn>
             <v-btn outlined :value="120" color="green">120</v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{i18n.config_led_ring1_dir_lbl}}</v-col>
+          <v-col cols="12">{{$t('config.led.ring1_dir_lbl')}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledDirection" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-text-field type="number" v-model="cfg.system.ledStart" :rules="ledStartRule" :label="i18n.config_led_ring1_start_lbl" required></v-text-field>
-          <v-col cols="12">{{i18n.config_led_ring2_dir_lbl}}</v-col>
+          <v-text-field type="number" v-model="cfg.system.ledStart" :rules="ledStartRule" :label="$t('config.led.ring1_start_lbl')" required></v-text-field>
+          <v-col cols="12">{{$t('config.led.ring2_dir_lbl')}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-text-field type="number" v-model="cfg.system.ledStart2" :rules="ledStartRule" :label="i18n.config_led_ring2_start_lbl" required></v-text-field>
+          <v-text-field type="number" v-model="cfg.system.ledStart2" :rules="ledStartRule" :label="$t('config.led.ring2_start_lbl')" required></v-text-field>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -156,7 +156,7 @@ const botConfigTemplate= `<v-container mb-12>
       <v-card-text>{{info_dlg_text}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text :loading="info_dlg_bg_activity" @click="info_dlg = false">{{i18n.config_btn_ok}}</v-btn>
+        <v-btn color="green darken-1" text :loading="info_dlg_bg_activity" @click="info_dlg = false">{{$t('config.main.btn_ok')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -168,8 +168,8 @@ const botConfigTemplate= `<v-container mb-12>
       <v-card-text>{{confirm_dialog_text2}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="orange darken-1" text @click="confirm_dialog_action()">{{i18n.config_btn_ok}}</v-btn>
-        <v-btn color="green darken-1" text @click="confirm_dialog= false">{{i18n.config_btn_cancel}}</v-btn>
+        <v-btn color="orange darken-1" text @click="confirm_dialog_action()">{{$t('config.main.btn_ok')}}</v-btn>
+        <v-btn color="green darken-1" text @click="confirm_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -224,11 +224,11 @@ var bot_config = Vue.component("bot_config", {
     },
     removeWifi(idx) {
       this.wifi_confirm_idx= idx;
-      this.confirm_dialog_title= this.i18n.config_wifi_confirm_title;
-      this.confirm_dialog_text= this.i18n.config_wifi_confirm_question;
+      this.confirm_dialog_title= this.$i18n.t('config.wifi.confirm_title');
+      this.confirm_dialog_text= this.$i18n.t('config.wifi.confirm_question');
       this.confirm_dialog_text2= '';
       if (this.wifi.networks.length== 1)
-        this.confirm_dialog_text2= this.i18n.config_wifi_confirm_question2;
+        this.confirm_dialog_text2= this.$i18n.t('config.wifi.confirm_question2');
       this.confirm_dialog_action= this.removeWifiConfirm;
       this.confirm_dialog= true;
     },
@@ -241,15 +241,15 @@ var bot_config = Vue.component("bot_config", {
       }
     },
     sendUpdateRequest() {
-      this.info_dlg_title= this.i18n.config_update_title;
-      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg_title= this.$i18n.t('config.update.title');
+      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
         cache: false,
         url: "/update"
       }).then((data) => {
-        this.info_dlg_text= data+ ' '+ this.i18n.config_update_msg_done;
+        this.info_dlg_text= data+ ' '+ this.$i18n.t('config.update.msg_done');
         setTimeout(function(){ window.location.reload(true); }, 3000);
       },
       (data) => {
@@ -264,8 +264,8 @@ var bot_config = Vue.component("bot_config", {
     },
     sendBackupRequest() {
       this.confirm_dialog= false;
-      this.info_dlg_title= this.i18n.config_backup_title;
-      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg_title= this.$i18n.t('config.backup.title');
+      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
@@ -275,7 +275,7 @@ var bot_config = Vue.component("bot_config", {
         // success
         // refresh backup date + time
         readInfo();
-        this.info_dlg_text= this.i18n.config_backup_done;
+        this.info_dlg_text= this.$i18n.t('config.backup.done');
         this.info_dlg_bg_activity= false;
       },
       (data) => {
@@ -285,8 +285,8 @@ var bot_config = Vue.component("bot_config", {
     },
     sendRestoreRequest() {
       this.confirm_dialog= false;
-      this.info_dlg_title= this.i18n.config_restore_title;
-      this.info_dlg_text= this.i18n.config_please_wait;
+      this.info_dlg_title= this.$i18n.t('config.restore.title');
+      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
@@ -294,7 +294,7 @@ var bot_config = Vue.component("bot_config", {
         url: '/restore'
       }).then((data) => {
         // success
-        this.info_dlg_text= this.i18n.config_restore_done;
+        this.info_dlg_text= this.$i18n.t('config.restore.done');
         setTimeout(function(){ window.location.reload(true); }, 3000);
       },
       (data) => {
@@ -311,12 +311,12 @@ var bot_config = Vue.component("bot_config", {
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       if (req== 'restart') {
-        this.info_dlg_title= this.i18n.config_restart_btn_restart;
-        this.info_dlg_text= this.i18n.config_restart_req_sent;
+        this.info_dlg_title= this.$i18n.t('config.restart.btn_restart');
+        this.info_dlg_text= this.$i18n.t('config.restart.req_sent');
       }
       else {
-        this.info_dlg_title= this.i18n.config_reboot_btn_restart;
-        this.info_dlg_text= this.i18n.config_reboot_req_sent;
+        this.info_dlg_title= this.$i18n.t('config.reboot.btn_restart');
+        this.info_dlg_text= this.$i18n.t('config.reboot.req_sent');
       }
       setTimeout(function(){ window.location.reload(true); }, 3000);
     },
@@ -328,7 +328,7 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'application/json; charset=utf-8'
       }).then((data) => {
         // success
-        model.ui.snackbar_text= this.i18n.config_wifi_saved;
+        model.ui.snackbar_text= this.$i18n.t('config.wifi.saved');
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
       },

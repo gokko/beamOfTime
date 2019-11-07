@@ -1,14 +1,19 @@
 
 var oldConfig;
-var curLanguage;
+
+function changeLanguage(lang) {
+  if (app) {
+    app.$i18n.i18next.changeLanguage(lang);
+    app.$vuetify.rtl= (app.$t('main.isRtl') == 'true');
+  }
+ }
 
 // read configuration json from webserver and initialize UI
 function readConfig() {
   $.ajax({
     cache: false,
     url: "/config",
-    dataType: "json",
-    success: function(data) {
+    dataType: "json"}).then(function(data) {
       // set config
       model.cfg = data;
       // save original config for later compare
@@ -20,27 +25,23 @@ function readConfig() {
         newLanguage= navigator.language.substr(0, 2);
   
       // load another language if specified in settings
-      if (curLanguage!= newLanguage) {
-        vueApp._i18n.i18next.changeLanguage(newLanguage);
-      }
-    }
-  });
+      changeLanguage(newLanguage);
+    });
 }
 
 function readInfo() {
     // read system information (hostname, IP-addresses and backup date)
-  $.getJSON("/info", function (data) {
+  $.getJSON("/info").then(function (data) {
     model.info = data;
   });
 }
 
 // get current version and check for version updates
 function readVersion() {
-  $.getJSON("/version/local", function (curVersion) {
+  $.getJSON("/version/local").then(function(curVersion) {
      model.version.current= curVersion;
-     $.getJSON("/version/remote", function (newVersion) {
+     $.getJSON("/version/remote").then(function(newVersion) {
        model.version.new = newVersion;
-       
        if (newVersion.version > curVersion.version) {
          model.version.update_available= true;
        }
@@ -53,16 +54,15 @@ function readVersion() {
    
  // get wifi configuration
  function readWifi() {
-   $.getJSON("/wifi", function (data) {
+   $.getJSON("/wifi").then(function(data) {
      model.wifi= data
    });
  }
-   
+
  // send configuration back to webserver on each change
 function sendUpdatedConfig(newConfig) {
   // check if language changed and switch
-  if (model.cfg.settings.language!= curLanguage)
-    vueApp._i18n.i18next.changeLanguage(newLanguage);
+  changeLanguage(model.cfg.settings.language)
 
   oldConfig= newConfig;
   $.ajax({
@@ -72,20 +72,20 @@ function sendUpdatedConfig(newConfig) {
     data: newConfig,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json'
-  }).then((data) => {
-    // "success", "none", "error"
-    model.ui.snackbar_text= vueApp_i18n.t('main.msg_config_saved');
+  }).then(function(data) {
+    // success
+    model.ui.snackbar_text= app.$t('main.msg_config_saved');
     model.ui.snackbar_color= 'green';
     model.ui.snackbar= true;
   },
-  (data) => {
-    if (data.status == 200) {
-      model.ui.snackbar_text= vueApp_i18n.t('main.msg_config_saved');
+  function(data) {
+    if (data.status== 200) {
+      model.ui.snackbar_text= app.$t('main.msg_config_saved');
       model.ui.snackbar_color= 'green';
-      model.ui.snackbar= true;
+      model.ui.snackbar= true;  
     }
     else {
-      model.ui.snackbar_text= vueApp_i18n.t('main.msg_config_save_error') + data.status;
+      model.ui.snackbar_text= app.$t('main.msg_config_save_error') + data.status;
       model.ui.snackbar_color= 'orange';
       model.ui.snackbar= true;
     }
@@ -115,28 +115,25 @@ var model = {
     }
 };
 
-var vueApp= null;
+var app= null;
 var i18n= null;
 function readI18n(lang) {
-  curLanguage= lang;
+  if (model) {
+    lang= model.lang;
+  }
 
   // read translation for browser language  (english will be used as fallback)
   $.getJSON("/i18n", function (data) {
-    model.i18n = data;
-    var isRtlLanguage= false;
-    if (model.i18n.isRtl) {
-      isRtlLanguage= true;
-    }
 
     Vue.use(VueI18next);
     i18next.init({
-      lng: 'en',
+      lng: lang,
       fallbackLng: "en",
       resources: data
     });
     i18n = new VueI18next(i18next);
 
-    vueApp= new Vue({
+    app= new Vue({
       el: '#app',
       i18n: i18n,
       vuetify: new Vuetify({
@@ -164,13 +161,13 @@ function readI18n(lang) {
       computed: {
         page_name: function () {
           // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
-          var t= model.ui.bottomNav.replace('bot_', '')+ '_title'
-          return this.model.i18n[t];
+          var t= model.ui.bottomNav.replace('bot_', '')+ '.title'
+          return this.$i18n.t(t);
         },
       },
     });
-
-    vueApp.$vuetify.rtl = isRtlLanguage;
+    
+    changeLanguage(lang);
 });
 }
 

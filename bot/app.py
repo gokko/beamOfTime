@@ -30,7 +30,7 @@ clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 bkupFolder= os.path.dirname(rootFolder)+ '/.bkup'
 webFolder = rootFolder+ '/bot'
-i18nFolder = webFolder+ '/i18n/'
+i18nFolder = webFolder+ '/locales/'
 clockFolder = rootFolder+ '/bot/clock'
 wifiFolder = '/etc/wpa_supplicant/'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
@@ -66,13 +66,19 @@ def get_version(path):
 def send_css(path):
     return send_from_directory(webFolder+ '/css', path, mimetype="text/css")
 
+@app.route('/i18n/<path:path>')
+def send_i18n2(path):
+    file= i18nFolder+ '/'+ path+ '/translation.json'
+    # if given language is not found return english
+    return send_file(file)
+
 @app.route('/i18n')
 def send_i18n():
     # combine all languages into one file
     res= {}
     for subdir, dirs, files in os.walk(i18nFolder):
         for dir in dirs:
-            file= i18nFolder+ '/'+ dir+ '/translations.json'
+            file= i18nFolder+ '/'+ dir+ '/translation.json'
             if not os.path.isfile(file):
                 continue
             with open(file, 'rb') as f:
@@ -156,15 +162,21 @@ def get_config():
     with open(clockFolder+ '/config.json', 'rb') as f:
         res = json.load(f)
     languages= []
-    for file in glob.glob(i18nFolder + '*.json'):
-        langCode = os.path.basename(os.path.splitext(file)[0])
-        langName= ''
-        with open(file, 'rb') as f:
-            langContent = json.load(f)
-            langName= langContent['language_name']
-        languages.append({"value": langCode, "text": langName})
-    res['languages']= languages
+    for subdir, dirs, files in os.walk(i18nFolder):
+        for dir in dirs:
+            langCode = dir
+            langName= ''
+            file= i18nFolder+ '/'+ dir+ '/translation.json'
+            if not os.path.isfile(file):
+                continue
+            with open(file, 'rb') as f:
+                js = json.load(f)
+                if js and js['main']:
+                    langName= js['main']['language_name']
 
+            languages.append({"value": langCode, "text": langName})
+
+    res['languages']= languages
     return jsonify(res)
 
 @app.route('/update')

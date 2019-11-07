@@ -1,0 +1,18 @@
+{
+  "home": {
+    "choose_theme_lbl": "موضوع را انتخاب کنید",
+    "current_language_lbl": "زبان",
+    "current_theme_lbl": "موضوع فعلی",
+    "enabled_chk": "فعال شده",
+    "lamp_color_lbl": "رنگ روشن",
+    "start_animation_chk": "شروع انیمیشن",
+    "title": "شروع",
+    "use_as_lamp_chk": "فقط نور (نه زمان)"
+  },
+  "main": {
+    "app_title": "پرتوی زمان",
+    "intro_title": "مقدمه",
+    "isRtl": "true",
+    "language_name": "فارسی"
+  }
+}

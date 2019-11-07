@@ -1,15 +1,13 @@
 const botThemesTemplate= `<v-container ma-12>
-  <v-btn small>{{i18n.themes_title}}</v-btn>
+  <v-btn small>{{$t('themes.title')}}</v-btn>
 </v-container>`
 
 var bot_themes = Vue.component("bot_themes", {
   template: botThemesTemplate,
-  props: ["cfg", "i18n"],
+  props: ["cfg"],
   $_veeValidate: {
     validator: "new"
   },
   methods: {
-    GetDelays() {
-    }
   }
 });
