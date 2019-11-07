@@ -4,65 +4,48 @@ var oldConfig;
 function changeLanguage(lang) {
   if (app) {
     app.$i18n.i18next.changeLanguage(lang);
-    app.$vuetify.rtl= (app.$t('main.isRtl') == 'true');
+    dir= model.cfg.languages.find((e) => { if (e.value== lang) return e }).dir
+    app.$vuetify.rtl= (dir == 'rtl');
   }
  }
 
 // read configuration json from webserver and initialize UI
-function readConfig() {
-  $.ajax({
-    cache: false,
-    url: "/config",
-    dataType: "json"}).then(function(data) {
-      // set config
-      model.cfg = data;
-      // save original config for later compare
-      oldConfig= JSON.stringify(data);
+async function readConfig() {
+  model.cfg= await $.ajax({cache: false, url: "/config", dataType: "json"});
 
-      // get saved langauge
-      newLanguage= model.cfg.settings.language;
-      if (!newLanguage || newLanguage== '')
-        newLanguage= navigator.language.substr(0, 2);
-  
-      // load another language if specified in settings
-      changeLanguage(newLanguage);
-    });
+  // save original config for later compare
+  oldConfig= JSON.stringify(model.cfg);
+
+  // get langauge from saved settings or from browser
+  newLanguage= model.cfg.settings.language;
+  if (!newLanguage || newLanguage== '')
+    newLanguage= navigator.language.substr(0, 2);
+
+  // switch language
+  changeLanguage(newLanguage);
 }
 
-function readInfo() {
-    // read system information (hostname, IP-addresses and backup date)
-  $.getJSON("/info").then(function (data) {
-    model.info = data;
-  });
+async function readInfo() {
+  model.info= await $.getJSON("/info");
 }
 
 // get current version and check for version updates
-function readVersion() {
-  $.getJSON("/version/local").then(function(curVersion) {
-     model.version.current= curVersion;
-     $.getJSON("/version/remote").then(function(newVersion) {
-       model.version.new = newVersion;
-       if (newVersion.version > curVersion.version) {
-         model.version.update_available= true;
-       }
-       else {
-         model.version.update_available= false;
-       }
-     });
-   });
+async function readVersion() {
+  model.version.current= await $.getJSON("/version/local");
+  model.version.new= await $.getJSON("/version/remote");
+
+  model.version.update_available= (model.version.new > model.version.current);
  }
    
  // get wifi configuration
- function readWifi() {
-   $.getJSON("/wifi").then(function(data) {
-     model.wifi= data
-   });
+ async function readWifi() {
+  model.wifi= await $.getJSON("/wifi");
  }
 
  // send configuration back to webserver on each change
 function sendUpdatedConfig(newConfig) {
   // check if language changed and switch
-  changeLanguage(model.cfg.settings.language)
+  changeLanguage(model.cfg.settings.language);
 
   oldConfig= newConfig;
   $.ajax({
@@ -72,13 +55,13 @@ function sendUpdatedConfig(newConfig) {
     data: newConfig,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json'
-  }).then(function(data) {
+  }).then((data) => {
     // success
     model.ui.snackbar_text= app.$t('main.msg_config_saved');
     model.ui.snackbar_color= 'green';
     model.ui.snackbar= true;
   },
-  function(data) {
+  (data) => {
     if (data.status== 200) {
       model.ui.snackbar_text= app.$t('main.msg_config_saved');
       model.ui.snackbar_color= 'green';
@@ -94,7 +77,7 @@ function sendUpdatedConfig(newConfig) {
 
 
 var model = {
-    lang: 'en',
+    lang: navigator.language.substr(0, 2),
     cfg: {
       settings: {},
     },
@@ -102,9 +85,7 @@ var model = {
     version: {
       current: null,
       new: null,
-      update_available: false,
-      update_changelog_clock: '',
-      update_changelog_web: '',
+      update_available: false
     },
     wifi: {},
     ui: {
@@ -115,64 +96,54 @@ var model = {
     }
 };
 
-var app= null;
-var i18n= null;
-function readI18n(lang) {
-  if (model) {
-    lang= model.lang;
+
+Vue.use(VueI18next);
+i18next.use(i18nextXHRBackend).init({
+  lng: model.lang,
+  fallbackLng: "en",
+  backend: {
+    // load from i18next-gitbook repo
+    loadPath: '/i18n/{{lng}}'
   }
-
-  // read translation for browser language  (english will be used as fallback)
-  $.getJSON("/i18n", function (data) {
-
-    Vue.use(VueI18next);
-    i18next.init({
-      lng: lang,
-      fallbackLng: "en",
-      resources: data
-    });
-    i18n = new VueI18next(i18next);
-
-    app= new Vue({
-      el: '#app',
-      i18n: i18n,
-      vuetify: new Vuetify({
-        theme: {
-          dark: true,
-        },
-      }),
-      data() {
-        return {
-          model: model
-        }
-      },
-      watch: {
-        model: {
-          deep: true,
-          handler() {
-            // check if config has changed
-            var newConfig = JSON.stringify(this.model.cfg)
-            if (oldConfig && oldConfig != newConfig) {
-              sendUpdatedConfig(newConfig);
-            }
-          }
-        }
-      },
-      computed: {
-        page_name: function () {
-          // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
-          var t= model.ui.bottomNav.replace('bot_', '')+ '.title'
-          return this.$i18n.t(t);
-        },
-      },
-    });
-    
-    changeLanguage(lang);
 });
-}
+const i18n= new VueI18next(i18next);
+
+const app= new Vue({
+  el: '#app',
+  i18n: i18n,
+  vuetify: new Vuetify({
+    theme: {
+      dark: true,
+    },
+  }),
+  data() {
+    return {
+      model: model
+    }
+  },
+  watch: {
+    model: {
+      deep: true,
+      handler() {
+        // check if config has changed
+        var newConfig = JSON.stringify(this.model.cfg)
+        if (oldConfig && oldConfig != newConfig) {
+          sendUpdatedConfig(newConfig);
+        }
+      }
+    }
+  },
+  computed: {
+    page_name: function () {
+      // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
+      var t= model.ui.bottomNav.replace('bot_', '')+ '.title'
+      return this.$i18n.t(t);
+    },
+  },
+});
 
 $.ajaxSetup({ cache: false });
-readI18n(navigator.language.substr(0, 2));
+
 readConfig();
 readInfo();
 readVersion();

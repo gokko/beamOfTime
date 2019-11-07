@@ -85,7 +85,7 @@
   "main": {
     "app_title": "beam of time",
     "intro_title": "intro",
-    "isRtl": "false",
+    "language_dir": "ltr",
     "language_name": "English",
     "msg_config_save_error": "error saving configuration:",
     "msg_config_saved": "configuration saved"

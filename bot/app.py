@@ -12,7 +12,7 @@ import socket
 import shutil
 import platform
 import urllib.request
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from threading import Thread
 from subprocess import call, Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
@@ -67,25 +67,10 @@ def send_css(path):
     return send_from_directory(webFolder+ '/css', path, mimetype="text/css")
 
 @app.route('/i18n/<path:path>')
-def send_i18n2(path):
+def send_i18n(path):
     file= i18nFolder+ '/'+ path+ '/translation.json'
     # if given language is not found return english
     return send_file(file)
-
-@app.route('/i18n')
-def send_i18n():
-    # combine all languages into one file
-    res= {}
-    for subdir, dirs, files in os.walk(i18nFolder):
-        for dir in dirs:
-            file= i18nFolder+ '/'+ dir+ '/translation.json'
-            if not os.path.isfile(file):
-                continue
-            with open(file, 'rb') as f:
-                js = json.load(f)
-                res[dir]= {'translation': js}
-
-    return jsonify(res)
 
 @app.route('/files/<path:path>')
 def send_files(path):
@@ -105,7 +90,7 @@ def get_info():
     # if backup exists add backup date
     bkupTime= ''
     file= bkupFolder+ '/info.txt'
-    if os.path.isfile(file):
+    if os.path.isfile(file) and os.path.isfile(bkupFolder+ '/wpa_supplicant.conf') and os.path.isfile(bkupFolder+ '/beamOfTime/bot/app.py'):
         if platform.system() == 'Windows':
             bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(os.path.getmtime(file)))
         else:
@@ -166,6 +151,7 @@ def get_config():
         for dir in dirs:
             langCode = dir
             langName= ''
+            langDir= 'ltr'
             file= i18nFolder+ '/'+ dir+ '/translation.json'
             if not os.path.isfile(file):
                 continue
@@ -173,8 +159,9 @@ def get_config():
                 js = json.load(f)
                 if js and js['main']:
                     langName= js['main']['language_name']
+                    langDir= js['main']['language_dir']
 
-            languages.append({"value": langCode, "text": langName})
+            languages.append({"value": langCode, "text": langName, "dir": langDir})
 
     res['languages']= languages
     return jsonify(res)

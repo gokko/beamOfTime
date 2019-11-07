@@ -83,7 +83,7 @@
   "main": {
     "app_title": "луч времени",
     "intro_title": "введение",
-    "isRtl": "false",
+    "language_dir": "ltr",
     "language_name": "русский",
     "msg_config_save_error": "error saving configuration:",
     "msg_config_saved": "configuration saved"
