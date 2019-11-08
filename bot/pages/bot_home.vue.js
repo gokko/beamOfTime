@@ -2,10 +2,10 @@ const botHomeTemplate= `<v-container mb-12>
   <v-select width="300px" :items="cfg.languages" v-model="cfg.settings.language" :label="$t('home.current_language_lbl') + ' (language)'"></v-select>
   <v-col cols="12">{{$t('home.function.title')}}</v-col>
   <v-btn-toggle v-model="cfg.settings.mode" mandatory>
-    <v-btn outlined :value="off" text color="green">{{$t('home.function.off')}}</v-btn>
-    <v-btn outlined :value="clock" text color="green">{{$t('home.function.clock')}}</v-btn>
-    <v-btn outlined :value="lamp" text color="green">{{$t('home.function.lamp')}}</v-btn>
-    <v-btn outlined :value="animation" text color="green">{{$t('home.function.animation')}}</v-btn>
+    <v-btn outlined :value="'off'" text color="green">{{$t('home.function.off')}}</v-btn>
+    <v-btn outlined :value="'clock'" text color="green">{{$t('home.function.clock')}}</v-btn>
+    <v-btn outlined :value="'lamp'" text color="green">{{$t('home.function.lamp')}}</v-btn>
+    <v-btn outlined :value="'animation'" text color="green">{{$t('home.function.animation')}}</v-btn>
   </v-btn-toggle>
   <v-container mb-8 pl-0 v-if="cfg.settings.mode== 1" >
     <v-select width="300px" :items="theme_names" v-model="cfg.settings.currentTheme" :label="$t('home.current_theme_lbl')"></v-select>

@@ -31,12 +31,9 @@ async function readInfo() {
 
 // get current version and check for version updates
 async function readVersion() {
-  model.version.current= await $.getJSON("/version/local");
-  model.version.new= await $.getJSON("/version/remote");
-
-  model.version.update_available= (model.version.new > model.version.current);
+  model.version= await $.getJSON("/version");
  }
-   
+
  // get wifi configuration
  async function readWifi() {
   model.wifi= await $.getJSON("/wifi");
@@ -82,11 +79,7 @@ var model = {
       settings: {},
     },
     info: {},
-    version: {
-      current: null,
-      new: null,
-      update_available: false
-    },
+    version: {},
     wifi: {},
     ui: {
       bottomNav: 'bot_intro',

@@ -51,16 +51,25 @@ def send_js(path):
 def send_favicon():
     return send_from_directory(webFolder+ '/files', 'favicon.ico', mimetype="image/x-icon")
 
-@app.route('/version/<path:path>')
-def get_version(path):
-    data= ''
-    if path == 'local':
-        data= send_from_directory(webFolder, 'version.json', mimetype="application/json")
-    if path == 'remote':
-        u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
-        with urllib.request.urlopen(u) as url:
-            data = url.read().decode()
-    return data
+@app.route('/version')
+def get_version():
+    localJs= {}
+    with open(webFolder+ '/version.json', 'r') as f:
+        localJs= json.loads(f.read())
+
+    remoteJs= {}
+    u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
+    with urllib.request.urlopen(u) as url:
+        remoteJs = json.loads(url.read().decode())
+    res= {}
+    res['current']= localJs
+    res['new']= remoteJs
+    updateAvailable= False
+    if (remoteJs['version']> localJs['version']):
+        updateAvailable= True
+    res['update_available']= updateAvailable
+
+    return jsonify(res)
 
 @app.route('/css/<path:path>')
 def send_css(path):
@@ -120,9 +129,9 @@ def get_info():
 
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
-    f= open(wifiFolder+ '/wpa_supplicant.conf', 'r')
-    wpaConf= f.read()
-    f.close()
+    wpaConf= ''
+    with open(wifiFolder+ '/wpa_supplicant.conf', 'r') as f:
+        wpaConf= f.read()
     wifi = WpaSupplicantConf(wpaConf)
     res= wifi.toJsonDict()
     return  jsonify(res)
