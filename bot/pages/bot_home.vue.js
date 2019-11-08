@@ -7,10 +7,10 @@ const botHomeTemplate= `<v-container mb-12>
     <v-btn outlined :value="'lamp'" text color="green">{{$t('home.function.lamp')}}</v-btn>
     <v-btn outlined :value="'animation'" text color="green">{{$t('home.function.animation')}}</v-btn>
   </v-btn-toggle>
-  <v-container mb-8 pl-0 v-if="cfg.settings.mode== 1" >
+  <v-container mb-8 pl-0 v-if="cfg.settings.mode== 'clock'" >
     <v-select width="300px" :items="theme_names" v-model="cfg.settings.currentTheme" :label="$t('home.current_theme_lbl')"></v-select>
   </v-container>
-  <v-container mb-8 pl-0 v-if="cfg.settings.mode== 2" >
+  <v-container mb-8 pl-0 v-if="cfg.settings.mode== 'lamp'" >
     <v-btn width="20" min-width="20" style="width:50px;" :color="cfg.settings.lightColor" @click="show_color_picker= !show_color_picker" />
     <v-label>{{$t('home.lamp_color_lbl')}}</v-label>
     <v-container class="d-flex justify-center" v-if="show_color_picker">
