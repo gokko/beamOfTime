@@ -91,6 +91,10 @@ const botConfigTemplate= `<v-container mb-12>
           <v-text-field type="text" v-model="wifi.country" counter="2" :label="$t('config.wifi.country')" required></v-text-field>
 
           <v-col cols="12">{{$t('config.wifi.connections')}}</v-col>
+          <v-btn outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
+          <v-btn outlined color="green darken-1" @click="sendWifiSaveRequest()"><v-icon>mdi-content-save</v-icon></v-btn>
+          <v-spacer></v-spacer>
+          <br/>
           <v-expansion-panels v-model="wifi_panel" focusable>
             <v-expansion-panel v-for="(network, index) in wifi.networks" :key="index" class="grey darken-1">
               <v-expansion-panel-header>{{network.ssid}}</v-expansion-panel-header>
@@ -109,11 +113,6 @@ const botConfigTemplate= `<v-container mb-12>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-
-          <br/>
-          <v-spacer></v-spacer>
-          <v-btn outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
-          <v-btn outlined color="green darken-1" @click="sendWifiSaveRequest()"><v-icon>mdi-content-save</v-icon></v-btn>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>

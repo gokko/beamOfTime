@@ -1,34 +1,49 @@
 {
-  "version": 1.2,
+  "version": 0.6,
   "date": "2019.11.08",
   "release_notes": [
     {
-      "version": 1.2,
-      "date": "2019.11.08",
-      "info": "switch to i18next and new UI on home"
-    },
-    {
-      "version": 1.1,
+      "version": 0.6,
       "date": "2019.11.05",
-      "info": "implemented backup and restore"
+      "info": "timer settings added"
     },
     {
-      "version": 1.0,
+      "version": 0.55,
+      "date": "2019.11.03",
+      "info": "WIFI config added"
+    },
+    {
+      "version": 0.54,
       "date": "2019.11.01",
-      "info": "initial version"
+      "info": "backup and restore added"
     },
     {
-      "version": 0.9,
+      "version": 0.53,
+      "date": "2019.11.28",
+      "info": "version check and update added"
+    },
+    {
+      "version": 0.52,
+      "date": "2019.10.25",
+      "info": "main config done"
+    },
+    {
+      "version": 0.5,
+      "date": "2019.10.20",
+      "info": "first version of system config"
+    },
+    {
+      "version": 0.4,
+      "date": "2019.10.10",
+      "info": "vuetify homepage"
+    },
+    {
+      "version": 0.3,
       "date": "2019.10.01",
-      "info": "beta version"
+      "info": "switched to vuetify UI controls"
     },
     {
-      "version": 0.8,
-      "date": "2019.06.12",
-      "info": "alpha version"
-    },
-    {
-      "version": 0.7,
+      "version": 0.1,
       "date": "2019.04.20",
       "info": "pre-alpha version"
     }

@@ -104,7 +104,6 @@
     "desc_lbl": "description",
     "name_lbl": "name",
     "param_lbl": "action parameter",
-    "param_select_lbl": "select parameter",
     "select_lbl": "select timer",
     "time_lbl": "time",
     "title": "таймеры"

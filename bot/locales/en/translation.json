@@ -112,8 +112,12 @@
     "delete_msg": "Do you really want to delete the selected timer?",
     "desc_lbl": "description",
     "name_lbl": "name",
+    "param_animation_lbl": "animation",
     "param_lbl": "action parameter",
-    "param_select_lbl": "select parameter",
+    "param_sound_lbl": "sound",
+    "param_theme_lbl": "theme",
+    "remove_confirm_msg": "Are you sure to delete the current timer?",
+    "remove_confirm_title": "Remove timer?",
     "select_lbl": "select timer",
     "time_lbl": "time",
     "title": "timers"

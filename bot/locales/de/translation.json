@@ -114,8 +114,12 @@
     "delete_msg": "Soll der gewählte Zeitschalter wirklich gelöscht werden?",
     "desc_lbl": "Beschreibung",
     "name_lbl": "Name",
+    "param_animation_lbl": "Animation",
     "param_lbl": "Aktionsparameter",
-    "param_select_lbl": "Parameter wählen",
+    "param_sound_lbl": "Ton",
+    "param_theme_lbl": "Motiv",
+    "remove_confirm_msg": "Soll dieser Timer wirklich gelöscht werden?",
+    "remove_confirm_title": "Timer löschen?",
     "select_lbl": "Zeitschalter wählen",
     "time_lbl": "Zeit",
     "title": "Timer"
