@@ -164,9 +164,9 @@ class BotClock(object):
                     # read changed config file
                     self.cfg = self.getConfigFromFile()
                     # get global settings
-                    self.enabled = self.cfg["settings"]["enabled"]
+                    self.enabled = self.cfg["settings"]["mode"]> 0
+                    justLight = self.cfg["settings"]["mode"]== 2
                     startAnimation = self.cfg["settings"]["startAnimation"]
-                    justLight = self.cfg["settings"]["justLight"]
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
 

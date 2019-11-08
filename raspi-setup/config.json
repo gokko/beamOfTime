@@ -1,34 +1,4 @@
 {
-    "system": {
-        "ledPin": 12,
-        "ledCount": 120,
-        "ledStart": 0,
-        "ledDirection": 1,
-        "ledStart2": 60,
-        "ledDirection2": -1
-    },
-    "settings": {
-        "currentTheme": "green",
-        "enabled": true,
-        "startAnimation": false,
-        "justLight": false,
-        "lightColor": "#C34117",
-        "language": "en"
-    },
-    "languages": [
-        {
-            "value": "en",
-            "text": "English"
-        },
-        {
-            "value": "de",
-            "text": "Deutsch"
-        },
-        {
-            "value": "fa",
-            "text": "فارسی"
-        }
-    ],
     "animations": [
         "colorDrop",
         "colorWipe",
@@ -36,215 +6,230 @@
         "rainbow",
         "nothing"
     ],
-    "timers": [
-        {
-            "name": "full minute animation",
-            "time": "* 7-22 * * *",
-            "desc": "animation every full minute, from 7:00 to 22:59",
-            "action": "animation",
-            "params": "colorDrop"
-        },
-        {
-            "name": "full hour animation",
-            "time": "0 7-22 * * *",
-            "desc": "animation every full hour, from 7:00 to 22.59",
-            "action": "animation",
-            "params": "colorWipeQuarter"
-        },
-        {
-            "name": "night theme",
-            "time": "0 23 * * *",
-            "desc": "switch to night theme every day at 23:00",
-            "action": "theme",
-            "params": "night_red"
-        },
-        {
-            "name": "morning theme",
-            "time": "0 7 * * *",
-            "desc": "switch to day theme every day at 7:00",
-            "action": "theme",
-            "params": "blue"
-        },
-        {
-            "name": "afternoon theme",
-            "desc": "switch theme every day at 12:00",
-            "time": "0 12 * * *",
-            "action": "theme",
-            "params": "orange"
-        },
-        {
-            "name": "evening theme",
-            "desc": "switch theme at 18:00 every day",
-            "time": "0 18 * * *",
-            "action": "theme",
-            "params": "red"
-        }
-    ],
+    "settings": {
+        "currentTheme": "green",
+        "language": "de",
+        "lightColor": "#C34117",
+        "mode": 1,
+        "startAnimation": false
+    },
+    "system": {
+        "ledCount": 120,
+        "ledDirection": 1,
+        "ledDirection2": -1,
+        "ledPin": 12,
+        "ledStart": "0",
+        "ledStart2": 60
+    },
     "themes": [
         {
-            "name": "default",
             "color": {
                 "bg": "#010101",
                 "bg2": "#030303",
-                "sec": "#E0E0E0",
+                "hr": "#353535",
                 "min": "#909090",
-                "hr": "#353535"
+                "sec": "#E0E0E0"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "default"
         },
         {
-            "name": "pc",
             "color": {
                 "bg": "#011111",
                 "bg2": "#555555",
-                "sec": "#FF0F44",
+                "hr": "#8C31BF",
                 "min": "#188418",
-                "hr": "#8C31BF"
+                "sec": "#FF0F44"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "pc"
         },
         {
-            "name": "red",
             "color": {
                 "bg": "#010000",
                 "bg2": "#040000",
-                "sec": "#A62600",
+                "hr": "#410000",
                 "min": "#8A0400",
-                "hr": "#410000"
+                "sec": "#A62600"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "red"
         },
         {
-            "name": "orange",
             "color": {
                 "bg": "#010100",
                 "bg2": "#020200",
-                "sec": "#BF6500",
+                "hr": "#2C1100",
                 "min": "#5E2B00",
-                "hr": "#2C1100"
+                "sec": "#BF6500"
             },
             "gradient": {
-                "sec": false,
+                "hr": true,
                 "min": true,
-                "hr": true
-            }
+                "sec": false
+            },
+            "name": "orange"
         },
         {
-            "name": "green",
             "color": {
                 "bg": "#000100",
                 "bg2": "#010400",
-                "sec": "#45810F",
+                "hr": "#001E00",
                 "min": "#375F00",
-                "hr": "#001E00"
+                "sec": "#45810F"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "green"
         },
         {
-            "name": "blue",
             "color": {
                 "bg": "#000001",
                 "bg2": "#000003",
-                "sec": "#0E0E8B",
+                "hr": "#000038",
                 "min": "#05053E",
-                "hr": "#000038"
+                "sec": "#0E0E8B"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "blue"
         },
         {
-            "name": "night_green",
             "color": {
                 "bg": "#000000",
                 "bg2": "#020401",
-                "sec": "#000000",
+                "hr": "#000700",
                 "min": "#0C1500",
-                "hr": "#000700"
+                "sec": "#000000"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "night_green"
         },
         {
-            "name": "pink",
             "color": {
                 "bg": "#000000",
                 "bg2": "#030103",
-                "sec": "#800044",
+                "hr": "#600026",
                 "min": "#C20076",
-                "hr": "#600026"
+                "sec": "#800044"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "pink"
         },
         {
-            "name": "night_blue",
             "color": {
                 "bg": "#000000",
                 "bg2": "#000001",
-                "sec": "#000000",
+                "hr": "#00000B",
                 "min": "#000033",
-                "hr": "#00000B"
+                "sec": "#000000"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "night_blue"
         },
         {
-            "name": "night_red",
             "color": {
                 "bg": "#000000",
                 "bg2": "#010000",
-                "sec": "#000000",
+                "hr": "#040000",
                 "min": "#0C0000",
-                "hr": "#040000"
+                "sec": "#000000"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "night_red"
         },
         {
-            "name": "new",
             "color": {
                 "bg": "#010200",
                 "bg2": "#050600",
-                "sec": "#F07000",
+                "hr": "#902000",
                 "min": "#A04000",
-                "hr": "#902000"
+                "sec": "#F07000"
             },
             "gradient": {
-                "sec": false,
+                "hr": false,
                 "min": false,
-                "hr": false
-            }
+                "sec": false
+            },
+            "name": "new"
+        }
+    ],
+    "timers": [
+        {
+            "action": "animation",
+            "desc": "animation every full minute, from 7:00 to 22:59",
+            "name": "full minute animation",
+            "params": "colorDrop",
+            "time": "* 7-22 * * *"
+        },
+        {
+            "action": "animation",
+            "desc": "animation every full hour, from 7:00 to 22.59",
+            "name": "full hour animation",
+            "params": "colorWipeQuarter",
+            "time": "0 7-22 * * *"
+        },
+        {
+            "action": "theme",
+            "desc": "switch to night theme every day at 23:00",
+            "name": "night theme",
+            "params": "night_red",
+            "time": "0 23 * * *"
+        },
+        {
+            "action": "theme",
+            "desc": "switch to day theme every day at 7:00",
+            "name": "morning theme",
+            "params": "blue",
+            "time": "0 7 * * *"
+        },
+        {
+            "action": "theme",
+            "desc": "switch theme every day at 12:00",
+            "name": "afternoon theme",
+            "params": "orange",
+            "time": "0 12 * * *"
+        },
+        {
+            "action": "theme",
+            "desc": "switch theme at 18:00 every day",
+            "name": "evening theme",
+            "params": "red",
+            "time": "0 18 * * *"
         }
     ]
 }

@@ -78,11 +78,16 @@
     "choose_theme_lbl": "Motiv wählen",
     "current_language_lbl": "Sprache",
     "current_theme_lbl": "Aktuelles Motiv",
-    "enabled_chk": "Eingeschaltet",
+    "function": {
+      "animation": "Animation",
+      "clock": "Uhr",
+      "lamp": "Lampe",
+      "off": "Aus",
+      "title": "Funktion"
+    },
     "lamp_color_lbl": "Lampenfarbe",
     "start_animation_chk": "Startanimation",
-    "title": "Start",
-    "use_as_lamp_chk": "Nur Lampe (ohne Zeit)"
+    "title": "Start"
   },
   "main": {
     "app_title": "beam of time",

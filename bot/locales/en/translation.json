@@ -76,11 +76,16 @@
     "choose_theme_lbl": "choose theme",
     "current_language_lbl": "Language",
     "current_theme_lbl": "current theme",
-    "enabled_chk": "enabled",
+    "function": {
+      "animation": "animation",
+      "clock": "clock",
+      "lamp": "lamp",
+      "off": "Off",
+      "title": "function"
+    },
     "lamp_color_lbl": "color when used as lamp",
     "start_animation_chk": "animation on start",
-    "title": "home",
-    "use_as_lamp_chk": "use as lamp (no time)"
+    "title": "home"
   },
   "main": {
     "app_title": "beam of time",

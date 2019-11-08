@@ -74,11 +74,9 @@
     "choose_theme_lbl": "выбрать дизайн",
     "current_language_lbl": "язык",
     "current_theme_lbl": "текущий дизайн",
-    "enabled_chk": "включен",
     "lamp_color_lbl": "цвет лампы",
     "start_animation_chk": "анимация на старте",
-    "title": "главная",
-    "use_as_lamp_chk": "только лампа (без времени)"
+    "title": "главная"
   },
   "main": {
     "app_title": "луч времени",

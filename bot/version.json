@@ -1,11 +1,16 @@
 {
-  "version": 1.1,
-  "date": "2019.11.05",
+  "version": 1.2,
+  "date": "2019.11.08",
   "release_notes": [
+    {
+      "version": 1.2,
+      "date": "2019.11.08",
+      "info": "switch to i18next and new UI on home"
+    },
     {
       "version": 1.1,
       "date": "2019.11.05",
-      "info": "implemented bakcup and restore"
+      "info": "implemented backup and restore"
     },
     {
       "version": 1.0,

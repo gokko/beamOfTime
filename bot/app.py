@@ -216,13 +216,16 @@ def send_restore():
 
 @app.route('/config', methods = ['POST'])
 def send_config():
-    conf = json.dumps(json.loads(request.data), indent=4, ensure_ascii=False).encode('utf8')
+    confJs= json.loads(request.data)
+    # remove the langauges part from config, it will be recreated on request based on the locales folder content
+    confJs.pop('languages', '')
+    conf = json.dumps(confJs, indent=4, ensure_ascii=False).encode('utf8')
     tmpFile = os.path.join(clockFolder, 'config-new.json')
     confFile = os.path.join(clockFolder, 'config.json')
     # create temporary file
     with open(tmpFile, 'wb') as f:
         f.write(conf)
-    # rename when done writing
+    # delete old file and rename new when done writing
     if os.path.exists(confFile):
         os.remove(confFile)
     os.rename(tmpFile, confFile)
