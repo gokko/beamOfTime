@@ -1,4 +1,4 @@
-const botHomeTemplate= `<v-container mb-12>
+const botHomeTemplate= `<v-container mt-4 mb-12>
   <v-select width="300px" :items="cfg.languages" v-model="cfg.settings.language" :label="$t('home.current_language_lbl') + ' (language)'"></v-select>
   <v-col cols="12">{{$t('home.function.title')}}</v-col>
   <v-btn-toggle v-model="cfg.settings.mode" mandatory>

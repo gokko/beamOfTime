@@ -1,4 +1,4 @@
-const botTimersTemplate= `<v-container>
+const botTimersTemplate= `<v-container mt-4 mb-12>
   <v-btn outlined color="blue darken-1" @click="addTimer()"><v-icon>mdi-plus-one</v-icon></v-btn>
   <v-spacer></v-spacer>
   <br/>
@@ -17,7 +17,6 @@ const botTimersTemplate= `<v-container>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
-  <br/><br/><br/>
 
   <v-dialog v-model="confirm_dialog" persistent scrollable max-width="350">
     <v-card outlined>

@@ -1,4 +1,4 @@
-const botThemesTemplate= `<v-container ma-12>
+const botThemesTemplate= `<v-container mt-4 mb-12>
   <v-btn small>{{$t('themes.title')}}</v-btn>
 </v-container>`
 

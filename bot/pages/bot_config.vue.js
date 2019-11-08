@@ -1,4 +1,4 @@
-const botConfigTemplate= `<v-container mb-12>
+const botConfigTemplate= `<v-container mt-4 mb-12>
     
   <v-expansion-panels v-model="config_panel" focusable>
 
