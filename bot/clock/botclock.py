@@ -189,7 +189,7 @@ class BotClock(object):
                     self.colorWipe((255, 0, 0), 30)  # Green wipe
                     self.colorWipe((0, 255, 0), 20)  # Green wipe
                     self.colorWipe((0, 0, 255), 10)  # Green wipe
-                    self.rainbowCycle(10, 1)
+                    #self.rainbowCycle(10, 1)
                     self.theaterChase((0, 0, 255))  # Blue theater chase
                     self.colorWipe((0, 255, 0), 40, 4)  # red extra wipe
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
@@ -234,7 +234,7 @@ class BotClock(object):
                                     self.animations[tmr['params']]()
                                 except Exception as ex:
                                     print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                            # apply new theme if given timer is less than 1 sec. back
+                            # apply new theme
                             elif (crontab.previous(self.tNow, default_utc=False) > -1 and tmr['action'] == "theme"):
                                 if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
                                     self.cfg["settings"]["currentTheme"] = tmr['params']
@@ -242,6 +242,12 @@ class BotClock(object):
                                     self.refreshColorsForCurrentTheme()
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
+                            # play audio file
+                            elif (crontab.previous(self.tNow, default_utc=False) > -1 and tmr['action'] == "audio"):
+                                try:
+                                    res= subprocess.Popen(['mpg123', tmr['params']], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                except Exception as ex:
+                                    print("audio '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
                     # always reset background first
                     self.setBgColors(self.colBg, self.colBg2)
