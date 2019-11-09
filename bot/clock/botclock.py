@@ -231,13 +231,13 @@ class BotClock(object):
                             # run given animation if given timer is less than 1 sec. back
                             if (crontab.previous(self.tNow, default_utc=False) <= -1):
                                 continue
-                            if tmr['action'] == "animation"):
+                            if tmr['action'] == "animation":
                                 try:
                                     self.animations[tmr['params']]()
                                 except Exception as ex:
                                     print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             # apply new theme
-                            elif tmr['action'] == "theme"):
+                            elif tmr['action'] == "theme":
                                 if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
                                     self.cfg["settings"]["currentTheme"] = tmr['params']
                                     self.currentTheme = self.getCurrentTheme()
@@ -245,7 +245,7 @@ class BotClock(object):
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
                             # play audio file
-                            elif tmr['action'] == "audio"):
+                            elif tmr['action'] == "audio":
                                 try:
                                     file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
