@@ -245,13 +245,13 @@ class BotClock(object):
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
                             # play audio file
-                            elif tmr['action'] == "audio":
+                            elif tmr['action'] == "sound":
                                 try:
                                     file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                     print(file+ ' '+ res)
                                 except Exception as ex:
-                                    print("audio '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                                    print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
                     # always reset background first
                     self.setBgColors(self.colBg, self.colBg2)
