@@ -249,7 +249,6 @@ class BotClock(object):
                                 try:
                                     file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-                                    print(file+ ' '+ res)
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         

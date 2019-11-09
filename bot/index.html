@@ -19,12 +19,17 @@
 	<div id="app">
 		<v-app>
 			<v-app-bar app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
-				<v-toolbar-title>{{$t('main.app_title')}} <i style="color:grey">{{page_name}}</i></v-toolbar-title>
-					<v-spacer></v-spacer>
-					<div>
-						<v-img src="./files/bot-logo-small.png" />
-					</div>
-				</v-container>
+				<v-toolbar-title>{{$t('main.app_title')}} 
+					<i v-if="model.ui.bottomNav== 'bot_intro'" style="color:grey">{{$t('intro.title')}}</i>
+					<i v-if="model.ui.bottomNav== 'bot_home'" style="color:grey">{{$t('home.title')}}</i>
+					<i v-if="model.ui.bottomNav== 'bot_themes'" style="color:grey">{{$t('themes.title')}}</i>
+					<i v-if="model.ui.bottomNav== 'bot_timers'" style="color:grey">{{$t('timers.title')}}</i>
+					<i v-if="model.ui.bottomNav== 'bot_config'" style="color:grey">{{$t('config.title')}}</i>
+				</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<div>
+					<v-img src="./files/bot-logo-small.png" />
+				</div>
 			</v-app-bar>
 			<v-container style="max-width: 400px; display: block; margin-left: auto; margin-right: auto;" mt-10 mb-12>
 				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg"></bot_home>

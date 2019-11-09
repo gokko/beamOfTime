@@ -58,7 +58,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         </v-expansion-panel-header>
       <v-expansion-panel-content>
         <br/>
-        <div v-if="!version.update_available">{{$t('config.update.msg_old')}}</div>
+        <div v-if="!version.update_available">{{$t('config.update.msg_old')+ ' v'+ version.current.version}}</div>
         <div v-if="version.update_available">
           <div>{{$t('config.update.msg_new')}}<br/></div>
           <div><br/><b>{{$t('config.update.change_history')}} ({{'v'+ version.current.version}} ⮚ {{'v'+ version.new.version}}):</b><br/></div>

@@ -106,9 +106,14 @@
     "create_new_lbl": "Motiv neu erstellen",
     "delete_msg": "Soll das gewählte Motiv wirklich gelöscht werden?",
     "hr_color_lbl": "Stundenzeiger Farbe",
+    "hr_gradient_lbl": "Stunden Farbverlauf",
     "min_color_lbl": "Minutenzeiger Farbe",
+    "min_gradient_lbl": "Minuten Farbverlauf",
     "name_lbl": "Name",
+    "remove_confirm_msg": "Soll dieses Motiv wirklich gelöscht werden?",
+    "remove_confirm_title": "Motiv löschen?",
     "sec_color_lbl": "Sekundenzeiger Farbe",
+    "sec_gradient_lbl": "Sekunden Farbverlauf",
     "title": "Motive"
   },
   "timers": {

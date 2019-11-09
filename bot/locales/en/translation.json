@@ -104,9 +104,14 @@
     "create_new_lbl": "create new theme",
     "delete_msg": "Do you really want to delete the selected theme?",
     "hr_color_lbl": "hours hand color",
+    "hr_gradient_lbl": "Hours gradient",
     "min_color_lbl": "minutes hand color",
+    "min_gradient_lbl": "Minutes gradient",
     "name_lbl": "name",
+    "remove_confirm_msg": "Are you sure to delete the current theme?",
+    "remove_confirm_title": "Remove theme?",
     "sec_color_lbl": "seconds hand color",
+    "sec_gradient_lbl": "Seconds gradient",
     "title": "themes"
   },
   "timers": {
