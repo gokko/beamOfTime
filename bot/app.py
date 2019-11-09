@@ -41,7 +41,11 @@ if not isRaspi:
 @app.route('/index')
 @app.route('/index.html')
 def index():
-    return send_from_directory(webFolder, 'index.html')
+    res= ''
+    with open(webFolder+ '/index.html', 'r') as f:
+        res= f.read()
+    res= res.replace('[random]', time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    return res
     
 @app.route('/js/<path:path>')
 def send_js(path):
