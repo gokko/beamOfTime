@@ -124,11 +124,13 @@ var bot_themes = Vue.component("bot_themes", {
       };
       this.cfg.themes.push(theme);
       this.theme_panel= this.cfg.themes.length- 1;
+      this.cfg.settings.currentTheme= theme.name;
     },
     removeTheme() {
       this.confirm_dialog= false;
       this.cfg.themes.splice(this.theme_confirm_idx, 1);
-      this.theme_panel= null;
+      this.theme_panel= 0;
+      this.cfg.settings.currentTheme= this.cfg.themes[this.theme_panel].name;
     }
   }
 });
