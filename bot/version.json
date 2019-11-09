@@ -1,7 +1,12 @@
 {
-  "version": 0.6,
-  "date": "2019.11.08",
+  "version": 0.7,
+  "date": "2019.11.09",
   "release_notes": [
+    {
+      "version": 0.7,
+      "date": "2019.11.08",
+      "info": "themes configuration added"
+    },
     {
       "version": 0.6,
       "date": "2019.11.05",
