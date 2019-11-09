@@ -78,9 +78,11 @@
     "start_animation_chk": "анимация на старте",
     "title": "главная"
   },
+  "intro": {
+    "title": "введение"
+  },
   "main": {
     "app_title": "луч времени",
-    "intro_title": "введение",
     "language_dir": "ltr",
     "language_name": "русский",
     "msg_config_save_error": "error saving configuration:",

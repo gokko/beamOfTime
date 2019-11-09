@@ -7,9 +7,11 @@
     "start_animation_chk": "شروع انیمیشن",
     "title": "شروع"
   },
+  "intro": {
+    "title": "مقدمه"
+  },
   "main": {
     "app_title": "پرتوی زمان",
-    "intro_title": "مقدمه",
     "language_dir": "rtl",
     "language_name": "فارسی"
   }

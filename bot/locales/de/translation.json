@@ -89,9 +89,11 @@
     "start_animation_chk": "Startanimation",
     "title": "Start"
   },
+  "intro": {
+    "title": "Intro"
+  },
   "main": {
     "app_title": "beam of time",
-    "intro_title": "Intro",
     "language_dir": "ltr",
     "language_name": "Deutsch",
     "msg_config_save_error": "Fehler beim Speichern der Konfiguration:",

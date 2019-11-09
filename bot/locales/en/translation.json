@@ -87,9 +87,11 @@
     "start_animation_chk": "animation on start",
     "title": "home"
   },
+  "intro": {
+    "title": "intro"
+  },
   "main": {
     "app_title": "beam of time",
-    "intro_title": "intro",
     "language_dir": "ltr",
     "language_name": "English",
     "msg_config_save_error": "error saving configuration:",

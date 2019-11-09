@@ -245,7 +245,7 @@ class BotClock(object):
                             # play audio file
                             elif (crontab.previous(self.tNow, default_utc=False) > -1 and tmr['action'] == "audio"):
                                 try:
-                                    res= subprocess.Popen(['mpg123', tmr['params']], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                    res= subprocess.Popen(['mpg123', '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("audio '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         

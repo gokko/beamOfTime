@@ -129,8 +129,12 @@ const app= new Vue({
   computed: {
     page_name: function () {
       // find page name in i18n: e.g. for page 'bot_home' i18n key is 'home_title'
-      var t= model.ui.bottomNav.replace('bot_', '')+ '.title'
-      return this.$i18n.t(t);
+      var key= model.ui.bottomNav.replace('bot_', '')+ '.title'
+      var val= this.$i18n.t(key);
+      if (val == 'intro.title') {
+        val= 'Intro'
+      }
+      return val;
     },
   },
 });
