@@ -1,7 +1,11 @@
 {
-  "version": 0.7,
-  "date": "2019.11.09",
+  "version": 0.71,
   "release_notes": [
+    {
+      "version": 0.71,
+      "date": "2019.11.10",
+      "info": "fix theme rename"
+    },
     {
       "version": 0.7,
       "date": "2019.11.08",

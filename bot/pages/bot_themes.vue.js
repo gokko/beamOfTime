@@ -2,7 +2,7 @@ const botThemesTemplate= `<v-container mt-4 mb-12>
   <v-btn outlined color="blue darken-1" @click="addTheme()"><v-icon>mdi-plus-one</v-icon></v-btn>
   <v-spacer></v-spacer>
   <br/>
-  <v-expansion-panels v-model="theme_panel" focusable>
+  <v-expansion-panels v-model="ui.themeIndex" mandatory focusable>
     <v-expansion-panel v-for="(theme, index) in cfg.themes" :key="index" class="grey darken-1">
       <v-expansion-panel-header>{{theme.name}}</v-expansion-panel-header>
       <v-expansion-panel-content>
@@ -66,24 +66,10 @@ const botThemesTemplate= `<v-container mt-4 mb-12>
 
 </v-container>`
 
-function current_theme_idx() {
-  if (!model.cfg.themes)
-    return 0;
-  let idx= 0;
-  for(i= 0; i < model.cfg.themes.length; i++) {
-    if (model.cfg.settings.currentTheme== model.cfg.themes[i].name) {
-      idx= i;
-      break;
-    }
-  }
-  return idx;
-}
-
 var bot_themes = Vue.component("bot_themes", {
   template: botThemesTemplate,
-  props: ["cfg"],
+  props: ["cfg", "ui"],
   data: () => ({
-    theme_panel: current_theme_idx(),
     theme_confirm_idx: 0,
     confirm_dialog: false,
     show_bgcolor_picker: false,
@@ -96,12 +82,6 @@ var bot_themes = Vue.component("bot_themes", {
     }
   }),
   watch: {
-    theme_panel: {
-      handler() {
-        // set selected theme as current one
-        this.cfg.settings.currentTheme= this.cfg.themes[this.theme_panel].name;
-      }
-    }
   },
   computed: {
   },
@@ -123,14 +103,12 @@ var bot_themes = Vue.component("bot_themes", {
         }
       };
       this.cfg.themes.push(theme);
-      this.theme_panel= this.cfg.themes.length- 1;
-      this.cfg.settings.currentTheme= theme.name;
+      this.ui.themeIndex= this.cfg.themes.length- 1;
     },
     removeTheme() {
       this.confirm_dialog= false;
       this.cfg.themes.splice(this.theme_confirm_idx, 1);
-      this.theme_panel= 0;
-      this.cfg.settings.currentTheme= this.cfg.themes[this.theme_panel].name;
+      this.ui.themeIndex= 0;
     }
   }
 });

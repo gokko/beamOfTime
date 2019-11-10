@@ -44,7 +44,7 @@ def index():
     res= ''
     with open(webFolder+ '/index.html', 'r') as f:
         res= f.read()
-    res= res.replace('[random]', time.strftime("%Y%m%d%H%M%S", time.gmtime()))
+    res= res.replace('[random]', time.strftime("%Y%m%d", time.gmtime())) # %H%M%S
     return res
     
 @app.route('/js/<path:path>')

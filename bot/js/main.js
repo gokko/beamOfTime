@@ -9,22 +9,6 @@ function changeLanguage(lang) {
   }
  }
 
-// read configuration json from webserver and initialize UI
-async function readConfig() {
-  model.cfg= await $.ajax({cache: false, url: "/config", dataType: "json"});
-
-  // save original config for later compare
-  oldConfig= JSON.stringify(model.cfg);
-
-  // get langauge from saved settings or from browser
-  newLanguage= model.cfg.settings.language;
-  if (!newLanguage || newLanguage== '')
-    newLanguage= navigator.language.substr(0, 2);
-
-  // switch language
-  changeLanguage(newLanguage);
-}
-
 async function readInfo() {
   model.info= await $.getJSON("/info");
 }
@@ -38,6 +22,29 @@ async function readVersion() {
  async function readWifi() {
   model.wifi= await $.getJSON("/wifi");
  }
+
+// read configuration json from webserver and initialize UI
+async function readConfig() {
+  model.cfg= await $.ajax({cache: false, url: "/config", dataType: "json"});
+
+  // save original config for later compare
+  oldConfig= JSON.stringify(model.cfg);
+
+  // set theme index (to be able to track name changes)
+  model.cfg.themes.forEach((theme, idx) => {
+    if (model.cfg.settings.currentTheme== theme.name) {
+      model.ui.themeIndex= idx
+    }
+  });
+  
+  // get langauge from saved settings or from browser
+  newLanguage= model.cfg.settings.language;
+  if (!newLanguage || newLanguage== '')
+    newLanguage= navigator.language.substr(0, 2);
+
+  // switch language
+  changeLanguage(newLanguage);
+}
 
  // send configuration back to webserver on each change
 function sendUpdatedConfig(newConfig) {
@@ -83,6 +90,7 @@ var model = {
     wifi: {},
     ui: {
       bottomNav: 'bot_intro',
+      themeIndex: 0,
       snackbar: false,
       snackbar_color: 'orange',
       snackbar_text: '',
@@ -118,8 +126,12 @@ const app= new Vue({
     model: {
       deep: true,
       handler() {
+        // set the selected theme name
+        if (this.model.ui.themeIndex && this.model.cfg.settings.currentTheme!= this.model.cfg.themes[this.model.ui.themeIndex].name) {
+          this.model.cfg.settings.currentTheme= this.model.cfg.themes[this.model.ui.themeIndex].name;
+        }
         // check if config has changed
-        var newConfig = JSON.stringify(this.model.cfg)
+        var newConfig = JSON.stringify(this.model.cfg);
         if (oldConfig && oldConfig != newConfig) {
           sendUpdatedConfig(newConfig);
         }

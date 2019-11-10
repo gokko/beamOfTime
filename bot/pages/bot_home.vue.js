@@ -8,7 +8,7 @@ const botHomeTemplate= `<v-container mt-4 mb-12>
     <v-btn outlined disabled :value="'animation'" text color="green">{{$t('home.function.animation')}}</v-btn>
   </v-btn-toggle>
   <v-container mb-8 pl-0 v-if="cfg.settings.mode== 'clock'" >
-    <v-select width="300px" :items="theme_names" v-model="cfg.settings.currentTheme" :label="$t('home.current_theme_lbl')"></v-select>
+    <v-select width="300px" :items="theme_names" v-model="ui.themeIndex" :label="$t('home.current_theme_lbl')"></v-select>
   </v-container>
   <v-container mb-8 pl-0 v-if="cfg.settings.mode== 'lamp'" >
     <v-btn small width="20" min-width="20" style="width:50px;" :color="cfg.settings.lightColor" @click="show_color_picker= !show_color_picker" />
@@ -22,7 +22,7 @@ const botHomeTemplate= `<v-container mt-4 mb-12>
 
 var bot_home = Vue.component("bot_home", {
   template: botHomeTemplate,
-  props: ["cfg"],
+  props: ["cfg", "ui"],
   data: () => ({
     show_color_picker: false,
   }),
@@ -33,8 +33,8 @@ var bot_home = Vue.component("bot_home", {
     theme_names: function () {
       let themes = []
       if (this.cfg.themes!= null) {
-        this.cfg.themes.forEach(theme => {
-          themes.push(theme.name);
+        this.cfg.themes.forEach((theme, idx) => {
+          themes.push({'value': idx, 'text': theme.name});
         });
       }
       return themes.sort();
