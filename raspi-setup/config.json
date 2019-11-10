@@ -7,10 +7,10 @@
         "nothing"
     ],
     "settings": {
-        "currentTheme": "green",
+        "currentTheme": "orange",
         "language": "de",
         "lightColor": "#C34117",
-        "mode": 1,
+        "mode": "clock",
         "startAnimation": false
     },
     "system": {
@@ -18,7 +18,7 @@
         "ledDirection": 1,
         "ledDirection2": -1,
         "ledPin": 12,
-        "ledStart": "0",
+        "ledStart": 0,
         "ledStart2": 60
     },
     "themes": [
@@ -191,7 +191,7 @@
     "timers": [
         {
             "action": "animation",
-            "desc": "animation every full minute, from 7:00 to 22:59",
+            "desc": "animation each minute, from 7:00 to 22:59",
             "name": "full minute animation",
             "params": "colorDrop",
             "time": "* 7-22 * * *"
@@ -207,7 +207,7 @@
             "action": "theme",
             "desc": "switch to night theme every day at 23:00",
             "name": "night theme",
-            "params": "night_red",
+            "params": "night_green",
             "time": "0 23 * * *"
         },
         {
@@ -230,6 +230,13 @@
             "name": "evening theme",
             "params": "red",
             "time": "0 18 * * *"
+        },
+        {
+            "action": "sound",
+            "desc": "sound every minute from 7-22",
+            "name": "cuckoo sound every minute",
+            "params": "cuckoo.mp3",
+            "time": "* 7-22 * * *"
         }
     ]
 }
