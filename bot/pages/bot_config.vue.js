@@ -136,13 +136,17 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-text-field type="number" v-model="cfg.system.ledStart" :rules="ledStartRule" :label="$t('config.led.ring1_start_lbl')" required></v-text-field>
+          <v-col cols="12">{{$t('config.led.ring1_start_lbl')}}</v-col>
+          <br/>
+          <v-slider v-model="cfg.system.ledStart" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
           <v-col cols="12">{{$t('config.led.ring2_dir_lbl')}}</v-col>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-text-field type="number" v-model="cfg.system.ledStart2" :rules="ledStartRule" :label="$t('config.led.ring2_start_lbl')" required></v-text-field>
+          <v-col cols="12">{{$t('config.led.ring2_start_lbl')}}</v-col>
+          <br/>
+          <v-slider v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
