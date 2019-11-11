@@ -73,7 +73,8 @@ class BotClock(object):
         # initialize time and status variables
         self.sec = self.min = self.hr  = 0
         self.secNew = self.minNew = self.hrNew = 0
-        self.running = self.enabled = False
+        self.running = False
+        self.disabled = True
         self.thread_running= True
         
         # initialize colors
@@ -139,7 +140,8 @@ class BotClock(object):
         
         # initialize time variables
         self.sec = self.min = self.hr  = -1
-        self.running = self.enabled = False
+        self.running = False
+        self.disabled = True
 
         # initialize config file change time
         cfgFileChangeTime = 0
@@ -167,7 +169,7 @@ class BotClock(object):
                     settings= self.cfg.get("settings", {})
 
                     # get global settings
-                    self.enabled = not settings.get("mode")== 'off'
+                    self.disabled = settings.get("mode")== 'off'
                     justLight = settings.get("mode")== 'lamp'
                     justAnimation = settings.get("mode")== 'animation'
                     startAnimation = settings.get("startAnimation")
@@ -183,15 +185,16 @@ class BotClock(object):
                         print("error setting volume")
 
                     # reset background as current theme may have changed (but only if enabled)
-                    if (self.enabled and not justLight and not justAnimation and (not startAnimation or self.running)):
+                    if (not self.disabled and (not startAnimation or self.running)):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 50, 8)
 
-                # if not enabled, do nothing
-                if (not self.enabled):
+                # if disabled, stop if was running before or do nothing
+                if (self.disabled):
                     # show stop animation and stop if still running
                     if (self.running):
                         self.running = False
-                        self.colorWipe((0,0,0), 10)
+                        black= (0,0,0)
+                        self.colorWipeSpecial(black, black, 50, 8)
                     # pause 1sec and skip all the rest
                     time.sleep(1)
                     continue
@@ -206,8 +209,8 @@ class BotClock(object):
                     self.colorWipe((0, 255, 0), 40, 4)  # red extra wipe
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
                     self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
-                    # set background to prepare for clock
-                    if (self.enabled and not justLight and not justAnimation):
+                    # set background to prepare for clock if not disabled
+                    if (not self.disabled):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
@@ -291,9 +294,11 @@ class BotClock(object):
                         # for minutes set only outer ring
                         self.colorSet(self.minCol, self.minNew+ self.LED_START2)
                     if (self.secCol != (0, 0, 0)):
-                        # for seconds set both inner and outer ring
+                        # set seconds on inner ring
                         self.colorSet(self.secCol, self.secNew)
-                        self.colorSet(self.secCol, self.secNew+ self.LED_START2)
+                        # if more than 60 LED, set seconds on outer ring
+                        if self.LED_COUNT> 60:
+                            self.colorSet(self.secCol, self.secNew+ self.LED_START2)
 
                     self.sec = self.secNew
                     self.min = self.minNew
