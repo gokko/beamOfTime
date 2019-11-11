@@ -11,22 +11,45 @@ class BotClock(BotClock):
         self.animations["colorDrop"] = self.animationColorDrop
         self.animations["colorWipe"] = self.animationColorWipe
         self.animations["colorWipeQuarter"] = self.animationColorWipeQuarter
+        self.animations["theaterChase"] = self.animationTheaterChase
         self.animations["rainbow"] = self.animationRainbow
         # keep random and nothing at the end to allow random to pick only valid ones (count- 2)
         self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
+
+    def animationColorDrop(self):
+        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        self.colorDrop(randomColor1, randomColor2, 20)
+
+    def animationColorWipe(self):
+        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        self.colorWipe(randomColor1, 20)
+        self.colorWipe(randomColor2, 20)
+
+    def animationColorWipeQuarter(self):
+        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        self.colorWipeSpecial(randomColor1, randomColor1, 20, 4)
+        self.colorWipeSpecial(randomColor2, randomColor2, 20, 4)
+
+    def animationTheaterChase(self):
+        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        self.theaterChase(randomColor1)
+        self.theaterChase(randomColor2)
+
+    def animationRainbow(self):
+        self.rainbow(10, 1)
 
     def animationRandom(self):
         animationNames= list(self.animations.keys())
         anim= self.animations[animationNames[random.randrange(0, len(animationNames)- 2)]]
         anim()
 
-    def animationColorWipe(self):
-        self.colorWipe(self.secCol, 20)
-        self.colorWipe(self.colBg, 20)
-
-    def animationRainbow(self):
-        self.rainbow(10, 1)
+    def animationNothing(self):
+        return
 
     # Define functions which animate LEDs in various ways.
     def colorWipe(self, color, wait_ms=50, group=1):
@@ -38,13 +61,6 @@ class BotClock(BotClock):
                 #self.strip[self.ledForPixel(i + j * groups)]= color
             self.strip.show()
             time.sleep(wait_ms/1000.0)
-
-    def animationNothing(self):
-        return
-
-    def animationColorWipeQuarter(self):
-        self.colorWipeSpecial(self.secCol, self.secCol, 20, 4)
-        self.colorWipeSpecial(self.colBg, self.colBg, 20, 4)
 
     # Define functions which animate LEDs in various ways.
     def setBgColors(self, color, color2):
@@ -115,9 +131,6 @@ class BotClock(BotClock):
                 time.sleep(wait_ms/1000.0)
                 for i in range(0, self.strip.n, 3):
                     self.strip[self.ledForPixel(i+q)]= 0
-
-    def animationColorDrop(self):
-        self.colorDrop(self.secCol, self.colBg, 20)
 
     # Define functions which animate LEDs in various ways.
     def colorDrop(self, color, color2, wait_ms=50):
