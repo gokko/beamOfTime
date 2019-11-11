@@ -10,11 +10,15 @@ class BotClock(BotClock):
         self.animations["colorDrop"] = self.animationColorDrop
         self.animations["colorWipe"] = self.animationColorWipe
         self.animations["colorWipeQuarter"] = self.animationColorWipeQuarter
-        self.animations["rainbow"] = self.animationColorWipeQuarter
+        self.animations["rainbow"] = self.animationRainbow
         self.animations["nothing"] = self.animationNothing
 
     def animationColorWipe(self):
         self.colorWipe(self.secCol, 20)
+        self.colorWipe(self.colBg, 20)
+
+    def animationRainbow(self):
+        self.rainbow(10, 1)
 
     # Define functions which animate LEDs in various ways.
     def colorWipe(self, color, wait_ms=50, group=1):
@@ -32,6 +36,7 @@ class BotClock(BotClock):
 
     def animationColorWipeQuarter(self):
         self.colorWipeSpecial(self.secCol, self.secCol, 20, 4)
+        self.colorWipeSpecial(self.colBg, self.colBg, 20, 4)
 
     # Define functions which animate LEDs in various ways.
     def setBgColors(self, color, color2):
