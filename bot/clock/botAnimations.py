@@ -1,4 +1,5 @@
 import time
+import random
 from datetime import datetime
 from clock.botclock import BotClock, ColorHelper
 import neopixel
@@ -11,7 +12,13 @@ class BotClock(BotClock):
         self.animations["colorWipe"] = self.animationColorWipe
         self.animations["colorWipeQuarter"] = self.animationColorWipeQuarter
         self.animations["rainbow"] = self.animationRainbow
+        self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
+
+    def animationRandom(self):
+        animations= ["colorDrop", "colorWipe", "colorWipeQuarter", "rainbow"]
+        anim= animations[random.randrange(0, animations.count)]
+        anim(self)
 
     def animationColorWipe(self):
         self.colorWipe(self.secCol, 20)
