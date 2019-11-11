@@ -16,8 +16,8 @@ class BotClock(BotClock):
         self.animations["nothing"] = self.animationNothing
 
     def animationRandom(self):
-        animations= ["colorDrop", "colorWipe", "colorWipeQuarter", "rainbow"]
-        anim= animations[random.randrange(0, animations.count)]
+        animationNames= ["colorDrop", "colorWipe", "colorWipeQuarter", "rainbow"]
+        anim= self.animations[animationNames[random.randrange(0, animations.count)]]
         anim(self)
 
     def animationColorWipe(self):
