@@ -1,6 +1,11 @@
 {
-  "version": 0.72,
+  "version": 0.73,
   "release_notes": [
+    {
+      "version": 0.73,
+      "date": "2019.11.11",
+      "info": "added sound settings"
+    },
     {
       "version": 0.72,
       "date": "2019.11.10",
