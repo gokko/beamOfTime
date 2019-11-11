@@ -46,30 +46,21 @@ class BotClock(object):
     def __init__(self):
         # LED strip configuration:
         
-        # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
-        # NeoPixels must be connected to D10, D12, D18 or D21 to work.
-        self.LED_PIN        = board.D12      # PIN on raspi where LED strip is connected
-        self.LED_COUNT      = 120     # Number of LED pixels.
-        self.LED_START      = 0       # inner (1st) ring, which LED is the starting point (12 o'clock)
-        self.LED_START2     = 60      # outer (2nd) ring, which LED is the starting point (12 o'clock)
-        self.LED_DIRECTION  = 1       # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.LED_DIRECTION2 = -1      # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.SOUND_AVAILABLE= False   # speaker is available for playing sounds or not
-
         # initialize configuration file
         self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + '/config.json'
-        self.cfg = ""
-
         self.cfg = self.getConfigFromFile()
         # get system settings from config
-        self.LED_PIN = board.D18 if self.cfg["system"]["ledPin"] == 18 else board.D12
-        self.LED_COUNT = self.cfg["system"]["ledCount"]
-        self.LED_START = self.cfg["system"]["ledStart"]
-        self.LED_START2 = self.cfg["system"]["ledStart2"]
-        self.LED_DIRECTION = self.cfg["system"]["ledDirection"]
-        self.LED_DIRECTION2 = self.cfg["system"]["ledDirection2"]
-        self.SOUND_AVAILABLE = self.cfg["system"].get("soundAvailable", False)
-        self.SOUND_VOLUME = self.cfg["system"].get("soundVolume", 100)
+        config= self.cfg.get("system", {})
+
+        # NeoPixels must be connected to baord.D10, board.D12, board.D18 or board.D21 to work.
+        self.LED_PIN = board.D18 if config.get("ledPin", 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
+        self.LED_COUNT = config.get("ledCount", 120)            # Number of LED pixels.
+        self.LED_START = config.get("ledStart", 0)              # inner (1st) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION = config.get("ledDirection", 1)      # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.LED_START2 = config.get("ledStart2", 60)           # outer (2nd) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION2 = config.get("ledDirection2", -1)   # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.SOUND_AVAILABLE = config.get("soundAvailable", False)  # speaker is available for playing sounds or not
+        self.SOUND_VOLUME = config.get("soundVolume", 100)      # speaker volume
         try:
             if self.SOUND_AVAILABLE:
                 subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
@@ -117,18 +108,19 @@ class BotClock(object):
         self.strip[self.ledForPixel(pixel)]= color
 
     def getConfigFromFile(self):
+        cfg= {}
         try:
             with open(self.cfgFileName, 'r') as f:
                 cfg = json.load(f)
         except:
-            # retry after 100ms in case of exception (maybe file was just written by botweb)
+            # retry after 100ms in case of exception (maybe file was just written)
             time.sleep(100)
             with open(self.cfgFileName, 'r') as f:
                 cfg = json.load(f)
         return cfg
 
     def getCurrentTheme(self):
-        themeName = self.cfg["settings"]["currentTheme"]
+        themeName = self.cfg["settings"].get("currentTheme")
         theme = [x for x in self.cfg["themes"] if x["name"] == themeName]
         if (not theme):
             theme = [x for x in self.cfg["themes"] if x["name"] == "default"]
@@ -171,15 +163,18 @@ class BotClock(object):
                     cfgFileChangeTime = cfgFileChangeTimeNew
                     # read changed config file
                     self.cfg = self.getConfigFromFile()
+                    config= self.cfg.get("system", {})
+                    settings= self.cfg.get("settings", {})
+
                     # get global settings
-                    self.enabled = not self.cfg["settings"].get("mode")== 'off'
-                    justLight = self.cfg["settings"].get("mode")== 'lamp'
-                    startAnimation = self.cfg["settings"].get("startAnimation")
+                    self.enabled = not settings.get("mode")== 'off'
+                    justLight = settings.get("mode")== 'lamp'
+                    startAnimation = settings.get("startAnimation")
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
 
-                    self.SOUND_AVAILABLE = self.cfg["system"].get("soundAvailable", False)
-                    self.SOUND_VOLUME = self.cfg["system"].get("soundVolume", 100)
+                    self.SOUND_AVAILABLE = config.get("soundAvailable", False)
+                    self.SOUND_VOLUME = config.get("soundVolume", 100)
                     try:
                         if self.SOUND_AVAILABLE:
                             subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
@@ -220,7 +215,7 @@ class BotClock(object):
                 # use clock as light, if just light is enabled, no further actions required
                 if (justLight):
                     # todo: use specific color from config
-                    self.colorWipe(ColorHelper.getColorFromRgb(self.cfg["settings"]["lightColor"]), 30, 4)
+                    self.colorWipe(ColorHelper.getColorFromRgb(settings.get("lightColor")), 30, 4)
                     # pause and skip all the rest
                     time.sleep(1)
                     continue
@@ -252,7 +247,7 @@ class BotClock(object):
                             # apply new theme
                             elif tmr['action'] == "theme":
                                 if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
-                                    self.cfg["settings"]["currentTheme"] = tmr['params']
+                                    settings["currentTheme"] = tmr['params']
                                     self.currentTheme = self.getCurrentTheme()
                                     self.refreshColorsForCurrentTheme()
                                 else:
