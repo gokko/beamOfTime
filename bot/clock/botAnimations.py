@@ -12,12 +12,13 @@ class BotClock(BotClock):
         self.animations["colorWipe"] = self.animationColorWipe
         self.animations["colorWipeQuarter"] = self.animationColorWipeQuarter
         self.animations["rainbow"] = self.animationRainbow
+        # keep random and nothing at the end to allow random to pick only valid ones (count- 2)
         self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
 
     def animationRandom(self):
-        animationNames= ["colorDrop", "colorWipe", "colorWipeQuarter", "rainbow"]
-        anim= self.animations[animationNames[random.randrange(0, animationsNames.count)]]
+        animationNames= list(self.animations.keys())
+        anim= self.animations[animationNames[random.randrange(0, animationsNames.count- 2)]]
         anim(self)
 
     def animationColorWipe(self):
