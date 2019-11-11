@@ -198,7 +198,8 @@ def send_backup():
     if not isRaspi:
         return 'OK (backup skipped)'
     try:
-        shutil.rmtree(bkupFolder, onerror=handleFileError)
+        if os.path.isdir(bkupFolder):
+            shutil.rmtree(bkupFolder, onerror=handleFileError)
         os.mkdir(bkupFolder)
         shutil.copytree(rootFolder, bkupFolder+ '/beamOfTime')
         shutil.copy(wifiFolder+ '/wpa_supplicant.conf', bkupFolder)
