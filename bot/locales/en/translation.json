@@ -78,7 +78,9 @@
     }
   },
   "home": {
+    "animation_color_lbl": "color for animation",
     "choose_theme_lbl": "choose theme",
+    "current_animation_lbl": "current animation",
     "current_language_lbl": "Language",
     "current_theme_lbl": "current theme",
     "function": {

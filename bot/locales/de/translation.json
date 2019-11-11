@@ -80,7 +80,9 @@
     }
   },
   "home": {
+    "animation_color_lbl": "Animationsfarbe",
     "choose_theme_lbl": "Motiv wählen",
+    "current_animation_lbl": "Aktuelle Animation",
     "current_language_lbl": "Sprache",
     "current_theme_lbl": "Aktuelles Motiv",
     "function": {

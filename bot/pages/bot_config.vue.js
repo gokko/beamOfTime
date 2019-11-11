@@ -90,7 +90,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         <v-form>
           <v-text-field type="text" v-model="wifi.country" counter="2" :label="$t('config.wifi.country')" required></v-text-field>
 
-          <v-col cols="12">{{$t('config.wifi.connections')}}</v-col>
+          <v-subheader>{{$t('config.wifi.connections')}}</v-subheader>
           <v-btn outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
           <v-btn outlined color="green darken-1" @click="sendWifiSaveRequest()"><v-icon>mdi-content-save</v-icon></v-btn>
           <v-spacer></v-spacer>
@@ -123,9 +123,16 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         <v-form ref="form" v-model="form_valid" lazy-validation>
           <v-switch color="#04BF3D" v-model="cfg.system.soundAvailable" inset :label="$t('config.sound.available')"></v-switch>
           <div v-if="cfg.system.soundAvailable">
-            <v-col cols="12">{{$t('config.sound.volume')}}</v-col>
+            <v-subheader>{{$t('config.sound.volume')}}</v-subheader>
             <br/>
-            <v-slider v-model="cfg.system.soundVolume" color="green" min="0" max="100" thumb-label="always"></v-slider>
+            <v-slider v-model="cfg.system.soundVolume" color="green" min="0" max="100" thumb-label="always">
+              <template v-slot:prepend>
+                <v-icon color="green" @click="cfg.system.soundVolume--">mdi-minus</v-icon>
+              </template>
+              <template v-slot:append>
+                <v-icon color="green" @click="cfg.system.soundVolume++">mdi-plus</v-icon>
+              </template>
+            </v-slider>
           </div>
         </v-form>
       </v-expansion-panel-content>
@@ -135,30 +142,30 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       <v-expansion-panel-header>{{$t('config.led.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form ref="form" v-model="form_valid" lazy-validation>
-          <v-col cols="12">{{$t('config.led.pin_lbl')}}</v-col>
+        <v-subheader>{{$t('config.led.pin_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledPin" mandatory>
             <v-btn outlined :value="12" color="green">12</v-btn>
             <v-btn outlined :value="18" color="green">18</v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{$t('config.led.count_lbl')}}</v-col>
+          <v-subheader>{{$t('config.led.count_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledCount" mandatory>
             <v-btn outlined :value="60" color="green">60</v-btn>
             <v-btn outlined :value="120" color="green">120</v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{$t('config.led.ring1_dir_lbl')}}</v-col>
+          <v-subheader>{{$t('config.led.ring1_dir_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledDirection" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{$t('config.led.ring1_start_lbl')}}</v-col>
+          <v-subheader>{{$t('config.led.ring1_start_lbl')}}</v-subheader>
           <br/>
           <v-slider v-model="cfg.system.ledStart" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
-          <v-col cols="12">{{$t('config.led.ring2_dir_lbl')}}</v-col>
+          <v-subheader>{{$t('config.led.ring2_dir_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
             <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
-          <v-col cols="12">{{$t('config.led.ring2_start_lbl')}}</v-col>
+          <v-subheader>{{$t('config.led.ring2_start_lbl')}}</v-subheader>
           <br/>
           <v-slider v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
         </v-form>

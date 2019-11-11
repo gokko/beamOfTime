@@ -1,6 +1,11 @@
 {
-  "version": 0.73,
+  "version": 0.74,
   "release_notes": [
+    {
+      "version": 0.74,
+      "date": "2019.11.11",
+      "info": "added animation main function"
+    },
     {
       "version": 0.73,
       "date": "2019.11.11",

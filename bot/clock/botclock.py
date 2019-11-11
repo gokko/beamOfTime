@@ -169,6 +169,7 @@ class BotClock(object):
                     # get global settings
                     self.enabled = not settings.get("mode")== 'off'
                     justLight = settings.get("mode")== 'lamp'
+                    justAnimation = settings.get("mode")== 'animation'
                     startAnimation = settings.get("startAnimation")
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
@@ -182,7 +183,7 @@ class BotClock(object):
                         print("error setting volume")
 
                     # reset background as current theme may have changed (but only if enabled)
-                    if (self.enabled and not justLight and (not startAnimation or self.running)):
+                    if (self.enabled and not justLight and not justAnimation and (not startAnimation or self.running)):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 50, 8)
 
                 # if not enabled, do nothing
@@ -206,7 +207,7 @@ class BotClock(object):
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
                     self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
                     # set background to prepare for clock
-                    if (self.enabled and not justLight):
+                    if (self.enabled and not justLight and not justAnimation):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
@@ -214,10 +215,16 @@ class BotClock(object):
 
                 # use clock as light, if just light is enabled, no further actions required
                 if (justLight):
-                    # todo: use specific color from config
                     self.colorWipe(ColorHelper.getColorFromRgb(settings.get("lightColor")), 30, 4)
                     # pause and skip all the rest
                     time.sleep(1)
+                    continue
+
+                # use clock to play an animation only, no further actions required
+                if (justAnimation):
+                    self.animations[settings.get('currentAnimation')]()
+                    # pause and skip all the rest
+                    time.sleep(0.1)
                     continue
 
                 # else do all the clock magic
