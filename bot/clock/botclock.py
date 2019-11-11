@@ -54,6 +54,7 @@ class BotClock(object):
         self.LED_START2     = 60      # outer (2nd) ring, which LED is the starting point (12 o'clock)
         self.LED_DIRECTION  = 1       # 1 for clockwise, -1 for anticlockwise direction of LEDs
         self.LED_DIRECTION2 = -1      # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.SOUND_AVAILABLE= False   # speaker is available for playing sounds or not
 
         # initialize configuration file
         self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + '/config.json'
@@ -67,6 +68,12 @@ class BotClock(object):
         self.LED_START2 = self.cfg["system"]["ledStart2"]
         self.LED_DIRECTION = self.cfg["system"]["ledDirection"]
         self.LED_DIRECTION2 = self.cfg["system"]["ledDirection2"]
+        self.SOUND_AVAILABLE = self.cfg["system"]["soundAvailable"]
+        self.SOUND_VOLUME = self.cfg["system"]["soundVolume"]
+        try:
+            subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+        except:
+            print("error setting volume")
 
         # get current theme from config
         self.currentTheme = self.getCurrentTheme()
@@ -170,6 +177,12 @@ class BotClock(object):
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
 
+                    self.SOUND_VOLUME = self.cfg["system"]["soundVolume"]
+                    try:
+                        subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+                    except:
+                        print("error setting volume")
+
                     # reset background as current theme may have changed (but only if enabled)
                     if (self.enabled and not justLight and (not startAnimation or self.running)):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 50, 8)
@@ -213,9 +226,6 @@ class BotClock(object):
                 if (self.sec != self.secNew):
                     # every full minute check for timers in config matching current time
                     if (self.secNew == 0):
-                        # play audio
-                        #subprocess.Popen(['mpg123', '/home/pi/botclock/sounds/cuckoo.mp3'])
-                        
                         # check all timers and run the active ones for the current second
 
                         # timers format: [seconds, optional2] [minutes] [hours] [day of month] [month] [day of week] [year, optional1]
@@ -244,8 +254,8 @@ class BotClock(object):
                                     self.refreshColorsForCurrentTheme()
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
-                            # play audio file
-                            elif tmr['action'] == "sound":
+                            # play audio file if sound module available
+                            elif tmr['action'] == "sound" and self.SOUND_AVAILABLE:
                                 try:
                                     file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)

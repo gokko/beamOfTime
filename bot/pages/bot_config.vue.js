@@ -118,7 +118,19 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
     </v-expansion-panel>
 
     <v-expansion-panel>
-      <v-expansion-panel-header>{{$t('config.led.settings')}}</v-expansion-panel-header>
+      <v-expansion-panel-header>{{$t('config.sound.title')}}</v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-form ref="form" v-model="form_valid" lazy-validation>
+          <v-switch color="#04BF3D" v-model="cfg.system.soundAvailable" inset :label="$t('config.sound.available')"></v-switch>
+          <v-col cols="12">{{$t('config.sound.volume')}}</v-col>
+          <br/>
+          <v-slider v-model="cfg.system.soundVolume" color="green" min="0" max="100" thumb-label="always"></v-slider>
+        </v-form>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-header>{{$t('config.led.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form ref="form" v-model="form_valid" lazy-validation>
           <v-col cols="12">{{$t('config.led.pin_lbl')}}</v-col>

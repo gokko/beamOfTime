@@ -26,7 +26,7 @@
       "ring1_start_lbl": "Start innere LEDs",
       "ring2_dir_lbl": "Richtung äußere LEDs",
       "ring2_start_lbl": "Start äußere LEDs",
-      "settings": "LED Einstellungen"
+      "title": "LED Einstellungen"
     },
     "main": {
       "btn_cancel": "Abbrechen",
@@ -49,6 +49,11 @@
       "confirm": "Soll die letzte Sicherung wiederhergestellt werden? Dabei wird die aktuelle Software inkl. Einstellungen und WLAN Konfiguration ersetzt.",
       "done": "Wiederherstellung erfolgreich, Applikation wird neu gestartet. Bitte warten.",
       "title": "Wiederherstellung"
+    },
+    "sound": {
+      "available": "Ton verfügbar",
+      "title": "Ton Einstellungen",
+      "volume": "Lautstärke"
     },
     "title": "System",
     "update": {

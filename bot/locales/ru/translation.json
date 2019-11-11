@@ -25,7 +25,7 @@
       "ring1_start_lbl": "inner LEDs direction",
       "ring2_dir_lbl": "outer LEDs direction",
       "ring2_start_lbl": "outer LEDs direction",
-      "settings": "LED settings"
+      "title": "LED settings"
     },
     "main": {
       "btn_ok": "Ok",
