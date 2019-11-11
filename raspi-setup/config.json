@@ -19,7 +19,9 @@
         "ledDirection2": -1,
         "ledPin": 12,
         "ledStart": 0,
-        "ledStart2": 60
+        "ledStart2": 60,
+        "soundAvailable": true,
+        "soundVolume": 100
     },
     "themes": [
         {

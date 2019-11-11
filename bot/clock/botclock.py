@@ -68,10 +68,11 @@ class BotClock(object):
         self.LED_START2 = self.cfg["system"]["ledStart2"]
         self.LED_DIRECTION = self.cfg["system"]["ledDirection"]
         self.LED_DIRECTION2 = self.cfg["system"]["ledDirection2"]
-        self.SOUND_AVAILABLE = self.cfg["system"]["soundAvailable"]
-        self.SOUND_VOLUME = self.cfg["system"]["soundVolume"]
+        self.SOUND_AVAILABLE = self.cfg["system"].get("soundAvailable", False)
+        self.SOUND_VOLUME = self.cfg["system"].get("soundVolume", 100)
         try:
-            subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+            if self.SOUND_AVAILABLE:
+                subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
         except:
             print("error setting volume")
 
@@ -171,15 +172,17 @@ class BotClock(object):
                     # read changed config file
                     self.cfg = self.getConfigFromFile()
                     # get global settings
-                    self.enabled = not self.cfg["settings"]["mode"]== 'off'
-                    justLight = self.cfg["settings"]["mode"]== 'lamp'
-                    startAnimation = self.cfg["settings"]["startAnimation"]
+                    self.enabled = not self.cfg["settings"].get("mode")== 'off'
+                    justLight = self.cfg["settings"].get("mode")== 'lamp'
+                    startAnimation = self.cfg["settings"].get("startAnimation")
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
 
-                    self.SOUND_VOLUME = self.cfg["system"]["soundVolume"]
+                    self.SOUND_AVAILABLE = self.cfg["system"].get("soundAvailable", False)
+                    self.SOUND_VOLUME = self.cfg["system"].get("soundVolume", 100)
                     try:
-                        subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+                        if self.SOUND_AVAILABLE:
+                            subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
                     except:
                         print("error setting volume")
 
