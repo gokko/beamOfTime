@@ -131,6 +131,22 @@ def get_info():
     res['ips']= ipaddresses
     return  jsonify(res)
 
+@app.route('/sayIp')
+def say_ip():
+    ipText= ''
+    adapters = ifaddr.get_adapters()
+    for adapter in adapters:
+        aName= adapter.nice_name.lower()
+        if aName== 'lo' or 'virtual' in aName or 'loopback' in aName or 'bluetooth' in aName:
+            continue
+        for ip in adapter.ips:
+            if not type(ip.ip) == str:
+                continue
+            for i in range(0, len(ip.ip)):
+                ipText+= ip.ip[i]+ ' '
+    if isRaspi:
+        os.popen('espeak "current i p address is: '+  ipText+ '"')
+
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
     wpaConf= ''
