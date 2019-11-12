@@ -44,8 +44,8 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         <div v-if="info.backup_time == ''">{{$t('config.backup.not_evailable')}}<br/><br/></div>
         <div v-if="info.backup_time != ''">{{$t('config.backup.evailable')}}<br/>{{this.info.backup_time}}<br/><br/></div>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.backup.title'), $t('config.backup.confirm'), sendBackupRequest)">{{$t('config.backup.btn_backup')}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.restore.title'), $t('config.restore.confirm'), sendRestoreRequest)">{{$t('config.backup.btn_restore')}}</v-btn>
+        <v-btn :disabled="is_disabled" outlined color="orange darken-1" @click="showConfirmDialog($t('config.backup.title'), $t('config.backup.confirm'), sendBackupRequest)">{{$t('config.backup.btn_backup')}}</v-btn>
+        <v-btn :disabled="is_disabled" outlined color="orange darken-1" @click="showConfirmDialog($t('config.restore.title'), $t('config.restore.confirm'), sendRestoreRequest)">{{$t('config.backup.btn_restore')}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -66,7 +66,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
           <br/>
         </div>
         <v-spacer></v-spacer>
-        <v-btn outlined v-if="version.update_available" color="orange darken-1" @click="sendUpdateRequest">{{$t('config.update.btn_install')}}</v-btn>
+        <v-btn :disabled="is_disabled" outlined v-if="version.update_available" color="orange darken-1" @click="sendUpdateRequest">{{$t('config.update.btn_install')}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>  
     
@@ -79,8 +79,8 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         {{$t('config.restart.msg_restart')}}<br/><br/>
         {{$t('config.restart.msg_reboot')}}<br/><br/>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{$t('config.restart.btn_reboot')}}</v-btn>
+        <v-btn :disabled="is_disabled" outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
+        <v-btn :disabled="is_disabled" outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{$t('config.restart.btn_reboot')}}</v-btn>
       </v-expansion-panel-content>  
     </v-expansion-panel>  
 
@@ -88,15 +88,15 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       <v-expansion-panel-header>{{$t('config.wifi.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form>
-          <v-text-field type="text" v-model="wifi.country" counter="2" :label="$t('config.wifi.country')" required></v-text-field>
+          <v-text-field :disabled="is_disabled" type="text" v-model="wifi.country" counter="2" :label="$t('config.wifi.country')" required></v-text-field>
 
           <v-subheader>{{$t('config.wifi.connections')}}</v-subheader>
-          <v-btn outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
-          <v-btn outlined color="green darken-1" @click="sendWifiSaveRequest()"><v-icon>mdi-content-save</v-icon></v-btn>
+          <v-btn :disabled="is_disabled" outlined color="blue darken-1" @click="addWifi()"><v-icon>mdi-plus-one</v-icon></v-btn>
+          <v-btn :disabled="is_disabled" outlined color="green darken-1" @click="sendWifiSaveRequest()"><v-icon>mdi-content-save</v-icon></v-btn>
           <v-spacer></v-spacer>
           <br/>
           <v-expansion-panels v-model="wifi_panel" focusable>
-            <v-expansion-panel v-for="(network, index) in wifi.networks" :key="index" class="grey darken-1">
+            <v-expansion-panel :disabled="is_disabled" v-for="(network, index) in wifi.networks" :key="index" class="grey darken-1">
               <v-expansion-panel-header>{{network.ssid}}</v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-text-field type="text" counter v-model="network.ssid" :label="$t('config.wifi.ssid')" :rules="[pwd_rules.required]"></v-text-field>
@@ -144,30 +144,30 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         <v-form ref="form" v-model="form_valid" lazy-validation>
         <v-subheader>{{$t('config.led.pin_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledPin" mandatory>
-            <v-btn outlined :value="12" color="green">12</v-btn>
-            <v-btn outlined :value="18" color="green">18</v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="12" color="green">12</v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="18" color="green">18</v-btn>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.count_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledCount" mandatory>
-            <v-btn outlined :value="60" color="green">60</v-btn>
-            <v-btn outlined :value="120" color="green">120</v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="60" color="green">60</v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="120" color="green">120</v-btn>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.ring1_dir_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledDirection" mandatory>
-            <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
-            <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.ring1_start_lbl')}}</v-subheader>
           <br/>
-          <v-slider v-model="cfg.system.ledStart" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
+          <v-slider :disabled="is_disabled" v-model="cfg.system.ledStart" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
           <v-subheader>{{$t('config.led.ring2_dir_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
-            <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
-            <v-btn outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
+            <v-btn :disabled="is_disabled" outlined :value="-1" color="green"><v-icon>mdi-rotate-left</v-icon></v-btn>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.ring2_start_lbl')}}</v-subheader>
           <br/>
-          <v-slider v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
+          <v-slider :disabled="is_disabled" v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -204,6 +204,7 @@ var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
   props: ["cfg", "i18n", "wifi", "version", "info"],
   data: () => ({
+    is_disabled: (new Date()).getTime() > (new Date('2019-11-13 10:00:00')).getTime() && (new Date()).getTime() < new Date('2019-11-13 14:00:00'),
     config_panel: 0,
     wifi_panel: null,
     showPwd: false,

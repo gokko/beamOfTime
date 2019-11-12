@@ -11,6 +11,7 @@ import os
 import signal
 import time
 import json
+import ifaddr
 import subprocess
 
 from crontab import CronTab
@@ -142,6 +143,7 @@ class BotClock(object):
         self.sec = self.min = self.hr  = -1
         self.running = False
         self.disabled = True
+        self.justBooted= True
 
         # initialize config file change time
         cfgFileChangeTime = 0
@@ -234,6 +236,23 @@ class BotClock(object):
                 if (self.sec != self.secNew):
                     # every full minute check for timers in config matching current time
                     if (self.secNew == 0):
+                        # check if clock was booted recently and tell IP address if sound module is available
+                        uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
+                        if self.justBooted and uptime > 100 and uptime < 130:
+                            self.justBooted= False
+                            ipText= ''
+                            adapters = ifaddr.get_adapters()
+                            for adapter in adapters:
+                                aName= adapter.nice_name.lower()
+                                if aName== 'lo' or 'virtual' in aName or 'loopback' in aName or 'bluetooth' in aName:
+                                    continue
+                                for ip in adapter.ips:
+                                    if not type(ip.ip) == str:
+                                        continue
+                                    for i in range(0, len(ip.ip)):
+                                        ipText+= ip.ip[i]+ ' '
+                            os.popen('espeak "'+  ipText+ '"')
+
                         # check all timers and run the active ones for the current second
 
                         # timers format: [seconds, optional2] [minutes] [hours] [day of month] [month] [day of week] [year, optional1]
