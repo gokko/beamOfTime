@@ -145,7 +145,7 @@ def say_ip():
     for i in range(0, len(ipText)):
         ipToSay+= ipText[i]+ ' '
     if isRaspi:
-        os.popen('espeak "my i p address is: '+  ipToSay+ '"')
+        os.popen('espeak -s 30 -g 30 "my i p address is: '+  ipToSay+ '"')
     return ipText
 
 @app.route('/wifi', methods = ['GET'])
