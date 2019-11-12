@@ -13,16 +13,14 @@ import time
 import json
 import ifaddr
 import subprocess
+import board
+import neopixel
+import argparse
 
 from crontab import CronTab
 from datetime import datetime
 from subprocess import call
 from math import *
-
-import board
-import neopixel
-import argparse
-
 
 # class with some helpful functions to deal with Color
 class ColorHelper(object):
@@ -237,7 +235,11 @@ class BotClock(object):
                     # every full minute check for timers in config matching current time
                     if (self.secNew == 0):
                         # check if clock was booted recently and tell IP address if sound module is available
-                        uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
+                        uptime= 0
+                        print("just booted: "+ str(self.justBooted))
+                        if self.justBooted:
+                            uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
+                            print("uptime: "+ str(uptime))
                         if self.justBooted and uptime > 65 and uptime < 70:
                             self.justBooted= False
                             ipText= ''
@@ -251,6 +253,7 @@ class BotClock(object):
                                         continue
                                     for i in range(0, len(ip.ip)):
                                         ipText+= ip.ip[i]+ ' '
+                            print("ip: "+ str(ipText))
                             os.popen('espeak "current i p address is: '+  ipText+ '"')
 
                         # check all timers and run the active ones for the current second
