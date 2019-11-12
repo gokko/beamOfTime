@@ -143,7 +143,7 @@ def say_ip():
             if type(ip.ip) == str:
                 ipText= ip.ip
     for i in range(0, len(ipText)):
-        ipToSay= ipText[i]+ ' '
+        ipToSay+= ipText[i]+ ' '
     if isRaspi:
         os.popen('espeak "current i p address is: '+  ipToSay+ '"')
     return ipText
