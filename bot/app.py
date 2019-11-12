@@ -133,19 +133,20 @@ def get_info():
 
 @app.route('/sayIp')
 def say_ip():
-    ipText= ''
+    ipText= ipToSay= ''
     adapters = ifaddr.get_adapters()
     for adapter in adapters:
         aName= adapter.nice_name.lower()
         if aName== 'lo' or 'virtual' in aName or 'loopback' in aName or 'bluetooth' in aName:
             continue
         for ip in adapter.ips:
-            if not type(ip.ip) == str:
-                continue
-            for i in range(0, len(ip.ip)):
-                ipText+= ip.ip[i]+ ' '
+            if type(ip.ip) == str:
+                ipText= ip.ip
+    for i in range(0, len(ipText)):
+        ipToSay= ipText[i]+ ' '
     if isRaspi:
-        os.popen('espeak "current i p address is: '+  ipText+ '"')
+        os.popen('espeak "current i p address is: '+  ipToSay+ '"')
+    return ipText
 
 @app.route('/wifi', methods = ['GET'])
 def get_wifi():
