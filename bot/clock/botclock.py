@@ -251,7 +251,7 @@ class BotClock(object):
                                         continue
                                     for i in range(0, len(ip.ip)):
                                         ipText+= ip.ip[i]+ ' '
-                            os.popen('espeak "'+  ipText+ '"')
+                            os.popen('espeak "current i p address is: '+  ipText+ '"')
 
                         # check all timers and run the active ones for the current second
 
