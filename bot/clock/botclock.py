@@ -238,7 +238,7 @@ class BotClock(object):
                     if (self.secNew == 0):
                         # check if clock was booted recently and tell IP address if sound module is available
                         uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
-                        if self.justBooted and uptime > 100 and uptime < 130:
+                        if self.justBooted and uptime > 65 and uptime < 70:
                             self.justBooted= False
                             ipText= ''
                             adapters = ifaddr.get_adapters()
