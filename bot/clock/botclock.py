@@ -236,11 +236,11 @@ class BotClock(object):
                     if (self.secNew == 0):
                         # check if clock was booted recently and tell IP address if sound module is available
                         uptime= 0
-                        print("just booted: "+ str(self.justBooted))
                         if self.justBooted:
                             uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
-                            print("uptime: "+ str(uptime))
-                        if self.justBooted and uptime > 65 and uptime < 70:
+                        if uptime > 100:
+                            self.justBooted= False
+                        if self.justBooted and uptime > 90:
                             self.justBooted= False
                             ipText= ''
                             adapters = ifaddr.get_adapters()
@@ -253,7 +253,6 @@ class BotClock(object):
                                         continue
                                     for i in range(0, len(ip.ip)):
                                         ipText+= ip.ip[i]+ ' '
-                            print("ip: "+ str(ipText))
                             os.popen('espeak "current i p address is: '+  ipText+ '"')
 
                         # check all timers and run the active ones for the current second
