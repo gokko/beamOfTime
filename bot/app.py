@@ -44,7 +44,12 @@ def index():
     res= ''
     with open(webFolder+ '/index.html', 'r') as f:
         res= f.read()
-    res= res.replace('[random]', time.strftime("%Y%m%d", time.gmtime())) # %H%M%S
+    # get current version to use as random parameter in loading files
+    curVersion= {}
+    with open(webFolder+ '/version.json', 'r') as f:
+        curVersion= json.loads(f.read())
+
+    res= res.replace('[random]', str(curVersion.get('version', 0)))
     return res
     
 @app.route('/js/<path:path>')
