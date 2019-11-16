@@ -79,8 +79,9 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         {{$t('config.restart.msg_restart')}}<br/><br/>
         {{$t('config.restart.msg_reboot')}}<br/><br/>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
+        <v-btn outlined color="blue darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
         <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{$t('config.restart.btn_reboot')}}</v-btn>
+        <v-btn outlined color="red darken-1" @click="sendRestartRequest('shutdown')">{{$t('config.restart.btn_shutdown')}}</v-btn>
       </v-expansion-panel-content>  
     </v-expansion-panel>  
 
@@ -209,6 +210,7 @@ var bot_config = Vue.component("bot_config", {
     showPwd: false,
     wifi_type_items: ['WPA-PSK'],
     wifi_confirm_idx: null,
+    restart_req: '',
     form_valid: true,
     info_dlg: false,
     info_dlg_bg_activity: false,
@@ -327,22 +329,28 @@ var bot_config = Vue.component("bot_config", {
       });
     },
     sendRestartRequest(req) {
+      this.restart_req= req;
+      this.confirm_dialog_title= req;
+      this.confirm_dialog_text= this.$i18n.t('config.restart.req_'+ req);
+      this.confirm_dialog_text2= this.$i18n.t('config.restart.req2_'+ req);;
+      this.confirm_dialog_action= this.sendRestartConfirmed;
+      this.confirm_dialog= true;
+    },
+    sendRestartConfirmed() {
       $.ajax({
-        url: '/restart/'+ req,
+        url: '/restart/'+ this.restart_req,
         contentType: 'text/plain; charset=utf-8'
       });
+      this.confirm_dialog= false;
       // ignore any response as service can't anwser due to restart
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
-      if (req== 'restart') {
-        this.info_dlg_title= this.$i18n.t('config.restart.btn_restart');
-        this.info_dlg_text= this.$i18n.t('config.restart.req_sent');
-      }
-      else {
-        this.info_dlg_title= this.$i18n.t('config.reboot.btn_restart');
-        this.info_dlg_text= this.$i18n.t('config.reboot.req_sent');
-      }
-      setTimeout(function(){ window.location.reload(true); }, 3000);
+      this.info_dlg_title= this.$i18n.t('config.restart.btn_'+ this.restart_req);
+      this.info_dlg_text= this.$i18n.t('config.restart.req_sent_'+ this.restart_req);
+      if (this.restart_req== 'shutdown')
+        this.info_dlg_bg_activity= false;
+      else
+        setTimeout(function(){ window.location.reload(true); }, 5000);
     },
     sendWifiSaveRequest() {
       $.ajax({

@@ -278,6 +278,8 @@ def send_restart(path):
         call(['sudo', 'reboot'])
     elif (path.lower() == 'restart'):
         call(['sudo', 'service', 'bot', 'restart'])
+    elif (path.lower() == 'shutdown'):
+        call(['sudo', 'shutdown'])
     return path+ ' OK'
 
 

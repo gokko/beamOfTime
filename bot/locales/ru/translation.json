@@ -31,16 +31,14 @@
       "btn_ok": "Ok",
       "please_wait": "... please wait ..."
     },
-    "reboot": {
-      "req_sent": "reboot request was sent"
-    },
     "restart": {
       "btn_reboot": "reboot",
       "btn_restart": "restart",
       "msg": "A restart is required to activate the changes on this page.",
       "msg_reboot": "reboot: will boot the system (will take 2 minutes).",
       "msg_restart": "restart: will only restart the clock and the configuration service.",
-      "req_sent": "restart request was sent",
+      "req_sent_reboot": "reboot request was sent",
+      "req_sent_restart": "restart request was sent",
       "title": "restart"
     },
     "restore": {

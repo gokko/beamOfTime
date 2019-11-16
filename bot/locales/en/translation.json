@@ -33,16 +33,22 @@
       "btn_ok": "Ok",
       "please_wait": "... please wait ..."
     },
-    "reboot": {
-      "req_sent": "reboot request was sent"
-    },
     "restart": {
       "btn_reboot": "reboot",
       "btn_restart": "restart",
+      "btn_shutdown": "shutdown",
       "msg": "A restart is required to activate the changes on this page.",
       "msg_reboot": "reboot: will boot the system (will take 2 minutes).",
       "msg_restart": "restart: will only restart the clock and the configuration service.",
-      "req_sent": "restart request was sent",
+      "req2_reboot": "The reboot will take about 1 minute.",
+      "req2_restart": "The restart will take about 5 seconds.",
+      "req2_shutdown": "You will need to unplug the powersupply and plugin again to start the system.",
+      "req_reboot": "Are you sure you want to reboot the system?",
+      "req_restart": "Are you sure you want to restart the application?",
+      "req_sent_reboot": "reboot request was sent",
+      "req_sent_restart": "restart request was sent",
+      "req_sent_shutdown": "Shutdown request sent, system will shutdown.",
+      "req_shutdown": "Are you sure you want to shutdown the system?",
       "title": "restart"
     },
     "restore": {
