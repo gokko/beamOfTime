@@ -76,12 +76,13 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       </v-expansion-panel-header>  
       <v-expansion-panel-content>
         <br/>
-        {{$t('config.restart.msg_restart')}}<br/><br/>
-        {{$t('config.restart.msg_reboot')}}<br/><br/>
+        <v-icon color="blue darken-1">mdi-undo</v-icon> {{$t('config.restart.msg_restart')}}<br/><br/>
+        <v-icon color="orange darken-1">mdi-replay</v-icon> {{$t('config.restart.msg_reboot')}}<br/><br/>
+        <v-icon color="red darken-1">mdi-power</v-icon> {{$t('config.restart.msg_shutdown')}}<br/><br/>
         <v-spacer></v-spacer>
-        <v-btn outlined color="blue darken-1" @click="sendRestartRequest('restart')">{{$t('config.restart.btn_restart')}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')">{{$t('config.restart.btn_reboot')}}</v-btn>
-        <v-btn outlined color="red darken-1" @click="sendRestartRequest('shutdown')">{{$t('config.restart.btn_shutdown')}}</v-btn>
+        <v-btn outlined color="blue darken-1" @click="sendRestartRequest('restart')"><v-icon>mdi-undo</v-icon></v-btn>
+        <v-btn outlined color="orange darken-1" @click="sendRestartRequest('reboot')"><v-icon>mdi-replay</v-icon></v-btn>
+        <v-btn outlined color="red darken-1" @click="sendRestartRequest('shutdown')"><v-icon>mdi-power</v-icon></v-btn>
       </v-expansion-panel-content>  
     </v-expansion-panel>  
 
@@ -330,7 +331,7 @@ var bot_config = Vue.component("bot_config", {
     },
     sendRestartRequest(req) {
       this.restart_req= req;
-      this.confirm_dialog_title= req;
+      this.confirm_dialog_title= this.$i18n.t('config.restart.btn_'+ req);
       this.confirm_dialog_text= this.$i18n.t('config.restart.req_'+ req);
       this.confirm_dialog_text2= this.$i18n.t('config.restart.req2_'+ req);;
       this.confirm_dialog_action= this.sendRestartConfirmed;
@@ -349,6 +350,8 @@ var bot_config = Vue.component("bot_config", {
       this.info_dlg_text= this.$i18n.t('config.restart.req_sent_'+ this.restart_req);
       if (this.restart_req== 'shutdown')
         this.info_dlg_bg_activity= false;
+      else if (this.restart_req== 'reboot')
+        setTimeout(function(){ window.location.reload(true); }, 60000);
       else
         setTimeout(function(){ window.location.reload(true); }, 5000);
     },

@@ -1,6 +1,11 @@
 {
-  "version": 0.74,
+  "version": 0.75,
   "release_notes": [
+    {
+      "version": 0.75,
+      "date": "2019.11.16",
+      "info": "shutdown option in restart"
+    },
     {
       "version": 0.74,
       "date": "2019.11.11",
