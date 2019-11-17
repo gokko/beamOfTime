@@ -120,10 +120,10 @@ def get_info():
     file= bkupFolder+ '/info.txt'
     if os.path.isfile(file) and os.path.isfile(bkupFolder+ '/wpa_supplicant.conf') and os.path.isfile(bkupFolder+ '/beamOfTime/bot/app.py'):
         if platform.system() == 'Windows':
-            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(os.path.getmtime(file)))
+            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(os.path.getmtime(file)))
         else:
             stat = os.stat(file)
-            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(stat.st_mtime))
+            bkupTime= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stat.st_mtime))
 
     res['backup_time']= bkupTime
 
