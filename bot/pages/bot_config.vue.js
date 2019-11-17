@@ -277,7 +277,9 @@ var bot_config = Vue.component("bot_config", {
         url: "/update"
       }).then((data) => {
         this.info_dlg_text= data+ ' '+ this.$i18n.t('config.update.msg_done');
-        setTimeout(function(){ window.location.reload(true); }, 3000);
+        // send restart request to activate the new version
+        $.ajax({cache: false, url: "/restart/restart"});
+        setTimeout(function(){ window.location.reload(true); }, 5000);
       },
       (data) => {
         txt= data;
