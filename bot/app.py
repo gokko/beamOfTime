@@ -32,10 +32,20 @@ bkupFolder= os.path.dirname(rootFolder)+ '/.bkup'
 webFolder = rootFolder+ '/bot'
 i18nFolder = webFolder+ '/locales/'
 clockFolder = rootFolder+ '/bot/clock'
+soundsFolder= clockFolder+ '/sounds'
 wifiFolder = '/etc/wpa_supplicant/'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
 if not isRaspi:
     wifiFolder= rootFolder+ '/raspi-setup'
+
+def handleFileError(func, path, exc_info):
+    # Check if file access issue
+    if not os.access(path, os.W_OK):
+       # Try to change the permision of file
+       os.chmod(path, stat.S_IWUSR)
+       # call the calling function again
+       func(path)
+
 
 @app.route('/')
 @app.route('/index')
@@ -176,43 +186,10 @@ def send_wifi():
         call(['sudo', 'systemctl', 'restart', 'dhcpcd'])
     return 'OK'
 
-@app.route('/config', methods = ['GET'])
-def get_config():
-    res= {}
-    with open(clockFolder+ '/config.json', 'rb') as f:
-        res = json.load(f)
-    languages= []
-    for subdir, dirs, files in os.walk(i18nFolder):
-        for dir in dirs:
-            langCode = dir
-            langName= ''
-            langDir= 'ltr'
-            file= i18nFolder+ '/'+ dir+ '/translation.json'
-            if not os.path.isfile(file):
-                continue
-            with open(file, 'rb') as f:
-                js = json.load(f)
-                if js and js['main']:
-                    langName= js['main']['language_name']
-                    langDir= js['main']['language_dir']
-
-            languages.append({"value": langCode, "text": langName, "dir": langDir})
-
-    res['languages']= languages
-    return jsonify(res)
-
 @app.route('/update')
 def send_update():
     res= Popen(['git', '-C', rootFolder, 'pull', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     return res.stdout.read()
-
-def handleFileError(func, path, exc_info):
-    # Check if file access issue
-    if not os.access(path, os.W_OK):
-       # Try to change the permision of file
-       os.chmod(path, stat.S_IWUSR)
-       # call the calling function again
-       func(path)
 
 @app.route('/backup')
 def send_backup():
@@ -250,11 +227,51 @@ def send_restore():
     call(['sudo', 'service', 'bot', 'restart'])
     return 'OK'
 
+@app.route('/config', methods = ['GET'])
+def get_config():
+    res= {}
+    with open(clockFolder+ '/config.json', 'rb') as f:
+        res = json.load(f)
+    # create list of sound files based on sound folder
+    sounds= ['cuckoo-hours'] # special cuckoo sound for hours count
+    for subdir, dirs, files in os.walk(soundsFolder):
+        # skip special folder for cuckoo hours sound
+        subfolder= os.path.basename(subdir)
+        if subfolder== 'cuckoo-hours':
+            continue
+        for file in files:
+            sounds.append(subfolder+ '/'+ file)
+    res['sounds']= sounds
+
+    # create list of available languages based on locales folder content
+    languages= []
+    for subdir, dirs, files in os.walk(i18nFolder):
+        for dir in dirs:
+            langCode = dir
+            langName= ''
+            langDir= 'ltr'
+            file= i18nFolder+ '/'+ dir+ '/translation.json'
+            if not os.path.isfile(file):
+                continue
+            with open(file, 'rb') as f:
+                js = json.load(f)
+                if js and js['main']:
+                    langName= js['main']['language_name']
+                    langDir= js['main']['language_dir']
+
+            languages.append({"value": langCode, "text": langName, "dir": langDir})
+
+    res['languages']= languages
+    return jsonify(res)
+
 @app.route('/config', methods = ['POST'])
 def send_config():
     confJs= json.loads(request.data)
     # remove the langauges part from config, it will be recreated on request based on the locales folder content
     confJs.pop('languages', '')
+    # remove the sounds part from config, it will be recreated on request based on the sounds folder content
+    confJs.pop('sounds', '')
+    # write config to file
     conf = json.dumps(confJs, indent=4, ensure_ascii=False).encode('utf8')
     tmpFile = os.path.join(clockFolder, 'config-new.json')
     confFile = os.path.join(clockFolder, 'config.json')

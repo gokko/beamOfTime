@@ -13,7 +13,7 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
         <v-select :items="actions" v-model="timer.action" :label="$t('timers.action_lbl')"></v-select>
         <v-select v-if="timer.action=='animation'" :items="cfg.animations" v-model="timer.params" :label="$t('timers.param_animation_lbl')"></v-select>
         <v-select v-if="timer.action=='theme'" :items="theme_names" v-model="timer.params" :label="$t('timers.param_theme_lbl')"></v-select>
-        <v-select v-if="timer.action=='sound'" :items="sounds" v-model="timer.params" :label="$t('timers.param_sound_lbl')"></v-select>
+        <v-select v-if="timer.action=='sound'" :items="cfg.sounds" v-model="timer.params" :label="$t('timers.param_sound_lbl')"></v-select>
         <v-btn outlined color="orange darken-1" @click="timer_idx= index; confirm_dialog= true;"><v-icon>mdi-delete</v-icon></v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -54,7 +54,6 @@ var bot_timers = Vue.component("bot_timers", {
     confirm_dialog: false,
     time_edit_dialog: false,
     actions: ['animation', 'theme', 'sound'],
-    sounds: ['cuckoo.mp3', 'cuckoo-hours'],
     rules: {
       required: value => !!value || 'Required.'
     }

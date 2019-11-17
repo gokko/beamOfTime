@@ -292,7 +292,7 @@ class BotClock(object):
                                     # play special cuckoo sound once per hour count
                                     if tmr['params'] == 'cuckoo-hours':
                                         hr= self.tNow.hour % 12
-                                        file= '/home/pi/beamOfTime/bot/clock/sounds/cuckoo/'+ str(hr)+ '.mp3'
+                                        file= '/home/pi/beamOfTime/bot/clock/sounds/cuckoo-hours/'+ str(hr)+ '.mp3'
                                     # play given sound file
                                     else:
                                         file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
