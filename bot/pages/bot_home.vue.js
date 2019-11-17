@@ -3,10 +3,16 @@ const botHomeTemplate= `<v-container mt-4 mb-12>
   <v-switch color="#04BF3D" v-model="cfg.settings.startAnimation" inset :label="$t('home.start_animation_chk')"></v-switch>
   <v-subheader>{{$t('home.function.title')+ ' ('+ $t('home.function.'+ cfg.settings.mode) +')'}}</v-subheader>
   <v-btn-toggle v-model="cfg.settings.mode" mandatory>
+    <!--
     <v-btn outlined :value="'off'" text color="green"><v-icon>mdi-alarm-off</v-icon></v-btn>
     <v-btn outlined :value="'clock'" text color="green"><v-icon>mdi-alarm</v-icon></v-btn>
     <v-btn outlined :value="'lamp'" text color="green"><v-icon>mdi-white-balance-incandescent</v-icon></v-btn>
     <v-btn outlined :value="'animation'" text color="green"><v-icon>mdi-alpha</v-icon></v-btn>
+    -->
+    <v-btn outlined :value="'off'" text color="green">{{$t('home.function.off')}}</v-btn>
+    <v-btn outlined :value="'clock'" text color="green">{{$t('home.function.clock')}}</v-btn>
+    <v-btn outlined :value="'lamp'" text color="green">{{$t('home.function.lamp')}}</v-btn>
+    <v-btn outlined :value="'animation'" text color="green">{{$t('home.function.animation')}}</v-btn>
   </v-btn-toggle>
   <v-container mb-8 pl-0 v-if="cfg.settings.mode== 'clock'" >
     <v-select width="300px" :items="theme_names" v-model="ui.themeIndex" :label="$t('home.current_theme_lbl')"></v-select>
