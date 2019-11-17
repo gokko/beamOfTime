@@ -1,6 +1,11 @@
 {
-  "version": 0.76,
+  "version": 0.77,
   "release_notes": [
+    {
+      "version": 0.77,
+      "date": "2019.11.17",
+      "info": "many new sounds and hours count cuckoo"
+    },
     {
       "version": 0.76,
       "date": "2019.11.17",
