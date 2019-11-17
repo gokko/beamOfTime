@@ -17,28 +17,26 @@ class BotClock(BotClock):
         self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
 
+    def randomColor(self):
+        maxCol= 120
+        return (random.randrange(0, maxCol), random.randrange(0, maxCol), random.randrange(0, maxCol))
+        
     def animationColorDrop(self):
-        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        self.colorDrop(randomColor1, randomColor2, 20)
+        self.colorDrop(self.randomColor(), self.randomColor(), 20)
 
     def animationColorWipe(self):
-        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        self.colorWipe(randomColor1, 20)
-        self.colorWipe(randomColor2, 20)
+        self.colorWipe(self.randomColor(), 20)
+        self.colorWipe(self.randomColor(), 20)
 
     def animationColorWipeQuarter(self):
-        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
+        randomColor1= self.randomColor()
+        randomColor2= self.randomColor()
         self.colorWipeSpecial(randomColor1, randomColor1, 20, 4)
         self.colorWipeSpecial(randomColor2, randomColor2, 20, 4)
 
     def animationTheaterChase(self):
-        randomColor1= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        randomColor2= (random.randrange(0, 160), random.randrange(0, 160), random.randrange(0, 160))
-        self.theaterChase(randomColor1)
-        self.theaterChase(randomColor2)
+        self.theaterChase(self.randomColor())
+        self.theaterChase(self.randomColor())
 
     def animationRainbow(self):
         self.rainbow(10, 1)
