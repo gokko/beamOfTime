@@ -54,7 +54,7 @@ var bot_timers = Vue.component("bot_timers", {
     confirm_dialog: false,
     time_edit_dialog: false,
     actions: ['animation', 'theme', 'sound'],
-    sounds: ['cuckoo.mp3'],
+    sounds: ['cuckoo.mp3', 'cuckoo-hours'],
     rules: {
       required: value => !!value || 'Required.'
     }

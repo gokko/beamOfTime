@@ -289,7 +289,13 @@ class BotClock(object):
                             # play audio file if sound module available
                             elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
                                 try:
-                                    file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
+                                    # play special cuckoo sound once per hour count
+                                    if tmr['params'] == 'cuckoo-hours':
+                                        hr= self.tNow.hour % 12
+                                        file= '/home/pi/beamOfTime/bot/clock/sounds/cuckoo/'+ str(hr)+ '.mp3'
+                                    # play given sound file
+                                    else:
+                                        file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
