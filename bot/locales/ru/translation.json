@@ -99,13 +99,13 @@
     "title": "дизайн"
   },
   "timers": {
-    "action_lbl": "action",
+    "action": "action",
     "delete_msg": "Do you really want to delete the selected timer?",
-    "desc_lbl": "description",
-    "name_lbl": "name",
-    "param_lbl": "action parameter",
-    "select_lbl": "select timer",
-    "time_lbl": "time",
+    "desc": "description",
+    "name": "name",
+    "param": "action parameter",
+    "select": "select timer",
+    "time": "time",
     "title": "таймеры"
   }
 }

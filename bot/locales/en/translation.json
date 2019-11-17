@@ -129,20 +129,28 @@
     "title": "themes"
   },
   "timers": {
-    "action_lbl": "action",
+    "action": "action",
     "active": "active",
     "delete_msg": "Do you really want to delete the selected timer?",
-    "desc_lbl": "description",
-    "name_lbl": "name",
-    "param_animation_lbl": "animation",
-    "param_lbl": "action parameter",
-    "param_sound_lbl": "sound",
-    "param_theme_lbl": "theme",
+    "desc": "description",
+    "name": "name",
+    "param": "action parameter",
+    "param_animation": "animation",
+    "param_sound": "sound",
+    "param_theme": "theme",
     "remove_confirm_msg": "Are you sure to delete the current timer?",
     "remove_confirm_title": "Remove timer?",
-    "select_lbl": "select timer",
+    "select": "select timer",
+    "time": {
+      "days": "days (1-31)",
+      "hours": "hours (0-23)",
+      "minutes": "minutes (0-59)",
+      "months": "months (1-12)",
+      "weekdays": "weekdays (0-6), 0= Sunday",
+      "years": "years (1970-2099)"
+    },
+    "time_edit_info": "Use * for all values, multiple values are seperated by comma (15,45); ranges are defined by - (0-10,30-40); use / to define fractions (*/5 every 5 minutes, */3 every third hour).",
     "time_edit_title": "Change time",
-    "time_lbl": "time",
     "title": "timers"
   }
 }

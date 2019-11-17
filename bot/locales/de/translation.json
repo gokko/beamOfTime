@@ -131,20 +131,28 @@
     "title": "Motive"
   },
   "timers": {
-    "action_lbl": "Aktion",
+    "action": "Aktion",
     "active": "Aktiv",
     "delete_msg": "Soll der gewählte Zeitschalter wirklich gelöscht werden?",
-    "desc_lbl": "Beschreibung",
-    "name_lbl": "Name",
-    "param_animation_lbl": "Animation",
-    "param_lbl": "Aktionsparameter",
-    "param_sound_lbl": "Ton",
-    "param_theme_lbl": "Motiv",
+    "desc": "Beschreibung",
+    "name": "Name",
+    "param": "Aktionsparameter",
+    "param_animation": "Animation",
+    "param_sound": "Ton",
+    "param_theme": "Motiv",
     "remove_confirm_msg": "Soll dieser Timer wirklich gelöscht werden?",
     "remove_confirm_title": "Timer löschen?",
-    "select_lbl": "Zeitschalter wählen",
+    "select": "Zeitschalter wählen",
+    "time": {
+      "days": "Tage (1-31)",
+      "hours": "Stunden (0-23)",
+      "minutes": "Minuten (0-59)",
+      "months": "Monate (1-12)",
+      "weekdays": "Wochentage (0-6), 0= Sonntag",
+      "years": "Jahre (1970-2099)"
+    },
+    "time_edit_info": "* für alle Werte, einzelne Werte durch Komma trennen (15,45). Wertebereiche durch - definieren (0-10,30-40); ein / um Teile zu definieren (*/5 jede fünfte Minute, */3 jede dritte Stunde).",
     "time_edit_title": "Zeit bearbeiten",
-    "time_lbl": "Zeit",
     "title": "Timer"
   }
 }

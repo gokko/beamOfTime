@@ -9,7 +9,7 @@
     {
       "version": 0.76,
       "date": "2019.11.17",
-      "info": "enable/ disable timer"
+      "info": "enable/ disable timer and (cron-)time editor"
     },
     {
       "version": 0.75,
