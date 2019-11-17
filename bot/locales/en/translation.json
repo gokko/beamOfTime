@@ -48,7 +48,7 @@
       "req_restart": "Are you sure you want to restart the application?",
       "req_sent_reboot": "reboot request was sent",
       "req_sent_restart": "restart request was sent",
-      "req_sent_shutdown": "Shutdown request sent, the clock will shutdown soon.",
+      "req_sent_shutdown": "Shutdown request sent, the clock will shutdown now.",
       "req_shutdown": "Are you sure you want to shutdown the system?",
       "title": "restart"
     },
@@ -130,6 +130,7 @@
   },
   "timers": {
     "action_lbl": "action",
+    "active": "active",
     "delete_msg": "Do you really want to delete the selected timer?",
     "desc_lbl": "description",
     "name_lbl": "name",
@@ -140,6 +141,7 @@
     "remove_confirm_msg": "Are you sure to delete the current timer?",
     "remove_confirm_title": "Remove timer?",
     "select_lbl": "select timer",
+    "time_edit_title": "Change time",
     "time_lbl": "time",
     "title": "timers"
   }

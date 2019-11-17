@@ -238,9 +238,9 @@ class BotClock(object):
                         uptime= 0
                         if self.justBooted:
                             uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
-                        if uptime > 100:
+                        if uptime > 120:
                             self.justBooted= False
-                        if self.justBooted and uptime > 90:
+                        if self.justBooted and uptime > 60:
                             self.justBooted= False
                             ipText= ''
                             adapters = ifaddr.get_adapters()
@@ -270,13 +270,16 @@ class BotClock(object):
                             # run given animation if given timer is less than 1 sec. back
                             if (crontab.previous(self.tNow, default_utc=False) <= -1):
                                 continue
-                            if tmr['action'] == "animation":
+                            # skip if timer is disabled
+                            if tmr.get('enabled', True) == False:
+                                continue
+                            if tmr.get('action') == "animation":
                                 try:
                                     self.animations[tmr['params']]()
                                 except Exception as ex:
                                     print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             # apply new theme
-                            elif tmr['action'] == "theme":
+                            elif tmr.get('action') == "theme":
                                 if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
                                     settings["currentTheme"] = tmr['params']
                                     self.currentTheme = self.getCurrentTheme()
@@ -284,7 +287,7 @@ class BotClock(object):
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
                             # play audio file if sound module available
-                            elif tmr['action'] == "sound" and self.SOUND_AVAILABLE:
+                            elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
                                 try:
                                     file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
                                     res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
