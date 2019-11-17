@@ -39,6 +39,7 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
         <v-text-field type="text" v-model="timer_time.minutes" :label="$t('timers.time.minutes')" :rules="[rules.required]"></v-text-field>
         <v-text-field type="text" v-model="timer_time.hours" :label="$t('timers.time.hours')" :rules="[rules.required]"></v-text-field>
         <v-text-field type="text" v-model="timer_time.days" :label="$t('timers.time.days')" :rules="[rules.required]"></v-text-field>
+        <v-text-field type="text" v-model="timer_time.months" :label="$t('timers.time.months')" :rules="[rules.required]"></v-text-field>
         <v-text-field type="text" v-model="timer_time.weekdays" :label="$t('timers.time.weekdays')" :rules="[rules.required]"></v-text-field>
         <v-text-field type="text" v-model="timer_time.years" :label="$t('timers.time.years')" :rules="[rules.required]"></v-text-field>
       </v-card-text>
