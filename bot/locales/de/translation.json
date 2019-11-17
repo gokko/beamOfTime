@@ -38,7 +38,7 @@
       "btn_restart": "Neustart",
       "btn_shutdown": "Herunterfahren",
       "msg": "Es ist ein Neustart notwendig um die Änderungen auf dieser Seite zu aktivieren.",
-      "msg_reboot": "Reboot: Startet das komplette Uhr neu (ca. 1 Minute).",
+      "msg_reboot": "Reboot: Startet die komplette Uhr neu (ca. 1 Minute).",
       "msg_restart": "Neustart: Startet nur die Uhr- und Konfigurations- Dienste neu.",
       "msg_shutdown": "Herunterfahren: schaltet die Uhr vollständig aus.",
       "req2_reboot": "Der Neustart dauert ca. 1 Minute.",
@@ -87,7 +87,6 @@
     }
   },
   "home": {
-    "animation_color_lbl": "Animationsfarbe",
     "choose_theme_lbl": "Motiv wählen",
     "current_animation_lbl": "Aktuelle Animation",
     "current_language_lbl": "Sprache",
@@ -133,7 +132,6 @@
   "timers": {
     "action": "Aktion",
     "active": "Aktiv",
-    "delete_msg": "Soll der gewählte Zeitschalter wirklich gelöscht werden?",
     "desc": "Beschreibung",
     "name": "Name",
     "param": "Aktionsparameter",

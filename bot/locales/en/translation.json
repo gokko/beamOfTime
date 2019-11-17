@@ -5,7 +5,7 @@
       "btn_restore": "Restore",
       "confirm": "Are you sure you want to create a new backup, the previous backup will be replaced?",
       "done": "Backup was saved successfully.",
-      "evailable": "Backup available from: ",
+      "evailable": "Backup available from:",
       "info": "A backup can be created and restored in an emergency case.",
       "info2": "Backup contains the current software and clock and wifi settings.",
       "info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
@@ -23,9 +23,9 @@
       "count_lbl": "LED count",
       "pin_lbl": "LED pin",
       "ring1_dir_lbl": "inner LEDs direction",
-      "ring1_start_lbl": "inner LEDs direction",
+      "ring1_start_lbl": "inner LEDs start",
       "ring2_dir_lbl": "outer LEDs direction",
-      "ring2_start_lbl": "outer LEDs direction",
+      "ring2_start_lbl": "outer LEDs start",
       "title": "LED settings"
     },
     "main": {
@@ -46,14 +46,15 @@
       "req2_shutdown": "You will need to unplug the powersupply and plugin again to start the clock.",
       "req_reboot": "Are you sure you want to reboot the system?",
       "req_restart": "Are you sure you want to restart the application?",
-      "req_sent_reboot": "reboot request was sent",
-      "req_sent_restart": "restart request was sent",
-      "req_sent_shutdown": "Shutdown request sent, the clock will shutdown now.",
+      "req_sent_reboot": "Reboot request was sent, application is restarted. Please wait.",
+      "req_sent_restart": "Restart request was sent, application is restarted. Please wait.",
+      "req_sent_shutdown": "Shutdown request sent, the clock is going to shutdown now.",
       "req_shutdown": "Are you sure you want to shutdown the system?",
       "title": "restart"
     },
     "restore": {
       "confirm": "Are you sure you want to restore the latest backup? The current software incl. settings and Wifi configuration will be replaced.",
+      "done": "Restore successful, application is restarted. Please wait.",
       "title": "restore"
     },
     "sound": {
@@ -65,6 +66,7 @@
     "update": {
       "btn_install": "install",
       "change_history": "change history",
+      "msg_done": "The application will be restarted after the update.",
       "msg_new": "An updated software version is available.",
       "msg_old": "Your software version is up to date.",
       "title": "software update"
@@ -85,7 +87,6 @@
     }
   },
   "home": {
-    "animation_color_lbl": "color for animation",
     "choose_theme_lbl": "choose theme",
     "current_animation_lbl": "current animation",
     "current_language_lbl": "Language",
@@ -97,7 +98,7 @@
       "off": "Off",
       "title": "function"
     },
-    "lamp_color_lbl": "color when used as lamp",
+    "lamp_color_lbl": "lamp color",
     "start_animation_chk": "animation on start",
     "title": "home"
   },
@@ -109,7 +110,7 @@
     "language_dir": "ltr",
     "language_name": "English",
     "msg_config_save_error": "error saving configuration:",
-    "msg_config_saved": "configuration saved"
+    "msg_config_saved": "configuration saved successfully"
   },
   "themes": {
     "bg2_color_lbl": "background 2nd color",
@@ -118,7 +119,7 @@
     "create_new_lbl": "create new theme",
     "delete_msg": "Do you really want to delete the selected theme?",
     "hr_color_lbl": "hours hand color",
-    "hr_gradient_lbl": "Hours gradient",
+    "hr_gradient_lbl": "hours gradient",
     "min_color_lbl": "minutes hand color",
     "min_gradient_lbl": "Minutes gradient",
     "name_lbl": "name",
@@ -131,7 +132,6 @@
   "timers": {
     "action": "action",
     "active": "active",
-    "delete_msg": "Do you really want to delete the selected timer?",
     "desc": "description",
     "name": "name",
     "param": "action parameter",
@@ -146,7 +146,7 @@
       "hours": "hours (0-23)",
       "minutes": "minutes (0-59)",
       "months": "months (1-12)",
-      "weekdays": "weekdays (0-6), 0= Sunday",
+      "weekdays": "Days of week (0-6), 0 = Sunday",
       "years": "years (1970-2099)"
     },
     "time_edit_info": "Use * for all values, multiple values are seperated by comma (15,45); ranges are defined by - (0-10,30-40); use / to define fractions (*/5 every 5 minutes, */3 every third hour).",

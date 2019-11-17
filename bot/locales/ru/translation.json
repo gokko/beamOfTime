@@ -1,77 +1,103 @@
 {
   "config": {
     "backup": {
-      "btn_backup": "Backup",
-      "btn_restore": "Restore",
-      "confirm": "Are you sure you want to create a new backup, the previous backup will be replaced?",
-      "evailable": "Backup available from: ",
-      "info": "A backup can be created and restored in an emergency case.",
-      "info2": "Backup contains the current software and clock and wifi settings.",
-      "info3": "Restore can be triggered from here or by creating an empty file named bot.restore on the sd-card.",
-      "not_evailable": "No backup available.",
-      "title": "backup"
+      "btn_backup": "Сохранить",
+      "btn_restore": "Восстановить",
+      "confirm": "Вы уверены, что хотите создать новую резервную копию? Предыдущая резервная копия будет заменена.",
+      "done": "Резервная копия была успешно создана.",
+      "evailable": "Резервное копирование доступно от:",
+      "info": "Резервная копия может быть создана и восстановлена в случае чрезвычайной ситуации.",
+      "info2": "Резервная копия содержит текущее программное обеспечение и настройки часов и Wi-Fi.",
+      "info3": "Восстановление может быть вызвано созданием пустого файла с именем bot.restore на SD-карте.",
+      "not_evailable": "Резервная копия недоступна.",
+      "title": "Резервная копия"
     },
     "info": {
-      "adresses": "IP-addresses",
-      "hostname": "servername",
-      "msg_details": "Changes here may result in a not properly working clock.",
-      "msg_into": "Please be very careful with this settings.",
-      "title": "warning"
+      "adresses": "IP-адрес",
+      "hostname": "имя_серверы",
+      "msg_details": "Изменения могут привести к неправильной работе часов.",
+      "msg_into": "Пожалуйста, будьте осторожны с этими настройками.",
+      "title": "предупреждение"
     },
     "led": {
-      "count_lbl": "LED count",
-      "pin_lbl": "LED pin",
-      "ring1_dir_lbl": "inner LEDs direction",
-      "ring1_start_lbl": "inner LEDs direction",
-      "ring2_dir_lbl": "outer LEDs direction",
-      "ring2_start_lbl": "outer LEDs direction",
-      "title": "LED settings"
+      "count_lbl": "Количество светодиодов",
+      "pin_lbl": "Светодиодный штырь",
+      "ring1_dir_lbl": "направление внутреннего светодиода",
+      "ring1_start_lbl": "внутренний светодиодный старт",
+      "ring2_dir_lbl": "внешнее светодиодное направление",
+      "ring2_start_lbl": "внешний светодиодный старт",
+      "title": "Настройки светодиодов"
     },
     "main": {
-      "btn_ok": "Ok",
-      "please_wait": "... please wait ..."
+      "btn_cancel": "отменить",
+      "btn_ok": "ок",
+      "please_wait": "... пожалуйста, подождите ..."
     },
     "restart": {
-      "btn_reboot": "reboot",
-      "btn_restart": "restart",
-      "msg": "A restart is required to activate the changes on this page.",
-      "msg_reboot": "reboot: will boot the system (will take 2 minutes).",
-      "msg_restart": "restart: will only restart the clock and the configuration service.",
-      "req_sent_reboot": "reboot request was sent",
-      "req_sent_restart": "restart request was sent",
-      "title": "restart"
+      "btn_reboot": "перезагружать",
+      "btn_restart": "перезапуск",
+      "btn_shutdown": "выключение",
+      "msg": "Для активации изменений на этой странице требуется перезапуск.",
+      "msg_reboot": "перезагрузка: Перезапускает часы (занимает около 1 минуты).",
+      "msg_restart": "перезапуск: перезапускает только службы синхронизации и настройки.",
+      "msg_shutdown": "Выключение: полностью выключает часы.",
+      "req2_reboot": "Перезагрузка занимает около 1 минуты.",
+      "req2_restart": "Перезапуск занимает около 1 минуты.",
+      "req2_shutdown": "Для перезапуска часов подача питания должна быть прервана.",
+      "req_reboot": "Вы уверены, что хотите перезагрузить систему?",
+      "req_restart": "Вы уверены, что хотите перезапустить приложение?",
+      "req_sent_reboot": "Запрос на перезагрузку отправлен, приложение хочет быть перезапущено. Пожалуйста, подождите.",
+      "req_sent_restart": "Запрос на перезапуск отправлен, приложение хочет быть перезапущено. Пожалуйста, подождите.",
+      "req_sent_shutdown": "Запрос на отключение отправлен, часы будут отключены.",
+      "req_shutdown": "Вы уверены, что хотите выключить систему?",
+      "title": "перезапуск"
     },
     "restore": {
-      "confirm": "Are you sure you want to restore the latest backup? The current software incl. settings and Wifi configuration will be replaced.",
-      "title": "restore"
+      "confirm": "Вы уверены, что хотите восстановить последнюю резервную копию? Текущее программное обеспечение, включая настройки и конфигурацию Wi-Fi, будет заменено.",
+      "done": "Восстановление успешно, приложение перезапущено. Пожалуйста, подождите.",
+      "title": "восстановление"
+    },
+    "sound": {
+      "available": "Звук доступен",
+      "title": "Настройки звука",
+      "volume": "громкость"
     },
     "title": "настройки",
     "update": {
-      "btn_install": "install",
-      "change_history": "change history",
-      "msg_new": "An updated software version is available.",
-      "msg_old": "Your software version is up to date.",
-      "title": "software update"
+      "btn_install": "устанавливать",
+      "change_history": "изменить историю",
+      "msg_done": "Приложение будет перезапущено после обновления.",
+      "msg_new": "Доступна обновленная версия программного обеспечения.",
+      "msg_old": "Ваша версия программного обеспечения актуальна.",
+      "title": "обновление программного обеспечения"
     },
     "wifi": {
-      "btn_no": "no",
-      "btn_yes": "yes",
-      "confirm_question": "Are you sure you want to delete this connection?",
-      "confirm_question2": "When the last connection is deleted a default one will be created.",
-      "confirm_title": "delete wifi?",
-      "connections": "connections",
-      "country": "country",
-      "password": "password",
-      "saved": "Wifi settings saved.",
-      "ssid": "SSID",
-      "title": "wifi",
-      "type": "type"
+      "btn_no": "нет",
+      "btn_yes": "да",
+      "confirm_question": "Вы уверены, что хотите удалить это связь?",
+      "confirm_question2": "Когда последнее связи будет удалено, будет создано стандартное.",
+      "confirm_title": "удалить Wi-Fi?",
+      "connections": "связи",
+      "country": "страна",
+      "password": "пароль",
+      "saved": "Настройки Wifi сохранены.",
+      "ssid": "Имя связи",
+      "title": "Wi-Fi",
+      "type": "класс"
     }
   },
   "home": {
     "choose_theme_lbl": "выбрать дизайн",
+    "current_animation_lbl": "текущая анимация",
     "current_language_lbl": "язык",
     "current_theme_lbl": "текущий дизайн",
+    "function": {
+      "animation": "анимация",
+      "clock": "часы",
+      "lamp": "лампа",
+      "off": "выключен",
+      "title": "функция"
+    },
     "lamp_color_lbl": "цвет лампы",
     "start_animation_chk": "анимация на старте",
     "title": "главная"
@@ -83,29 +109,48 @@
     "app_title": "луч времени",
     "language_dir": "ltr",
     "language_name": "русский",
-    "msg_config_save_error": "error saving configuration:",
-    "msg_config_saved": "configuration saved"
+    "msg_config_save_error": "ошибка сохранения конфигурации:",
+    "msg_config_saved": "конфигурация успешно сохранена"
   },
   "themes": {
-    "bg2_color_lbl": "background 2nd color",
-    "bg_color_lbl": "background main color",
-    "change_lbl": "change theme",
-    "create_new_lbl": "create new theme",
-    "delete_msg": "Do you really want to delete the selected theme?",
-    "hr_color_lbl": "hours hand color",
-    "min_color_lbl": "minutes hand color",
-    "name_lbl": "name",
-    "sec_color_lbl": "seconds hand color",
-    "title": "дизайн"
+    "bg2_color_lbl": "фон 2-й цвет",
+    "bg_color_lbl": "основной цвет фона",
+    "change_lbl": "сменить тему",
+    "create_new_lbl": "создать новую тему",
+    "delete_msg": "Вы действительно хотите удалить выбранную тему?",
+    "hr_color_lbl": "цвет часовая стрелка",
+    "hr_gradient_lbl": "градиент часовой стрелки",
+    "min_color_lbl": "цвет минутная стрелка",
+    "min_gradient_lbl": "градиент минутной стрелки",
+    "name_lbl": "имя",
+    "remove_confirm_msg": "Вы уверены, что хотите удалить текущую тему?",
+    "remove_confirm_title": "Удалить тему?",
+    "sec_color_lbl": "цвет секундной стрелки",
+    "sec_gradient_lbl": "градиент секундной стрелки",
+    "title": "темы"
   },
   "timers": {
-    "action": "action",
-    "delete_msg": "Do you really want to delete the selected timer?",
-    "desc": "description",
-    "name": "name",
-    "param": "action parameter",
-    "select": "select timer",
-    "time": "time",
+    "action": "действие",
+    "active": "активный",
+    "desc": "описание",
+    "name": "имя",
+    "param": "параметр действия",
+    "param_animation": "анимация",
+    "param_sound": "звук",
+    "param_theme": "тема",
+    "remove_confirm_msg": "Вы уверены, что хотите удалить текущий таймер?",
+    "remove_confirm_title": "Удалить таймер?",
+    "select": "выберите таймер",
+    "time": {
+      "days": "дни (1-31)",
+      "hours": "часы (0-23)",
+      "minutes": "минуты (0-59)",
+      "months": "месяцы (1-12)",
+      "weekdays": "Дни недели (0-6), 0 = воскресенье",
+      "years": "годы (1970-2099)"
+    },
+    "time_edit_info": "Используйте * для всех значений, несколько значений разделяются запятой (15,45); диапазоны определяются как - (0-10, 30-40); используйте / для определения дроби (*/5 каждые 5 минут, */3 каждые третий час).",
+    "time_edit_title": "Изменить время",
     "title": "таймеры"
   }
 }
