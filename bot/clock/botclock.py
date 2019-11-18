@@ -333,8 +333,8 @@ class BotClock(object):
                                             textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
                                     # speak current time
                                     elif tmr.get('params', '') == 'current-date':
-                                        weekday= i18nSpeak.get('weekday_'+ self.tNow.weekday(), '')
-                                        month= i18nSpeak.get('month_'+ self.tNow.month, '')
+                                        weekday= i18nSpeak.get('weekday_{0}'.format(self.tNow.weekday()), '')
+                                        month= i18nSpeak.get('month_{0}'.format(self.tNow.month), '')
                                         textToSpeak= i18nSpeak.get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
                                     # speak provided text
                                     else:
