@@ -304,7 +304,7 @@ class BotClock(object):
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
                                 try:
                                     # speak current time
-                                    if tmr['params'] == 'current-time':
+                                    if tmr.get('params', '') == 'current-time':
                                         hr= self.tNow.hour % 12
                                         if hr== 0:
                                             hr= 12
@@ -312,7 +312,7 @@ class BotClock(object):
                                         timeText= 'Es ist '+ str(hr)+ ' Uhr '+ str(min)
                                     # speak provided text
                                     else:
-                                        timeText= tmr['params']
+                                        timeText= tmr.get('params', 'bitte einen Text eingeben')
                                     res= subprocess.Popen(['espeak', '-s', '10', '-g', '10', '-vde', timeText], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
