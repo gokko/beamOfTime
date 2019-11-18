@@ -14,7 +14,7 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
         <v-select v-if="timer.action=='animation'" :items="cfg.animations" v-model="timer.params" :label="$t('timers.param_animation')"></v-select>
         <v-select v-if="timer.action=='theme'" :items="theme_names" v-model="timer.params" :label="$t('timers.param_theme')"></v-select>
         <v-select v-if="timer.action=='sound'" :items="cfg.sounds" v-model="timer.params" :label="$t('timers.param_sound')"></v-select>
-        <v-text-field v-if="timer.action=='speak'" :value="timer.params" @change="v => timer.params = v" :label="$t('timers.param_speak')"></v-text-field>
+        <v-text-field v-if="timer.action=='speak'" :value="timer.params" @change="v => timer.params = v" :label="$t('timers.param_speak')" hint="current-date | current-time" persistent-hint></v-text-field>
         <v-btn outlined color="orange darken-1" @click="timer_idx= index; confirm_dialog= true;"><v-icon>mdi-delete</v-icon></v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>

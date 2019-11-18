@@ -323,15 +323,15 @@ class BotClock(object):
                                 try:
                                     i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                                     # speak current time
-                                    if tmr.get('params', '') == 'current-time':
+                                    if tmr.get('params', '').lower().find('current-time')>= 0:
                                         hr= self.tNow.hour % 12
                                         if hr== 0:
                                             hr= 12
                                         textToSpeak= i18nSpeak.get('current_time', '').format(hr, self.tNow.minute)
                                         if min== 0:
                                             textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
-                                    # speak current time
-                                    elif tmr.get('params', '') == 'current-date':
+                                    # speak current date
+                                    elif tmr.get('params', '').lower().find('current-date')>= 0:
                                         weekday= i18nSpeak.get('weekday_{0}'.format(self.tNow.weekday()), '')
                                         month= i18nSpeak.get('month_{0}'.format(self.tNow.month), '')
                                         textToSpeak= i18nSpeak.get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)

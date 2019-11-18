@@ -1,6 +1,11 @@
 {
-  "version": 0.77,
+  "version": 0.78,
   "release_notes": [
+    {
+      "version": 0.78,
+      "date": "2019.11.18",
+      "info": "new timer action speak, free text or current date/ time"
+    },
     {
       "version": 0.77,
       "date": "2019.11.17",

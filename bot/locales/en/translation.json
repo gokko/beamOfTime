@@ -137,7 +137,7 @@
     "param": "action parameter",
     "param_animation": "animation",
     "param_sound": "sound",
-    "param_speak": "text",
+    "param_speak": "free text or date/time",
     "param_theme": "theme",
     "remove_confirm_msg": "Are you sure to delete the current timer?",
     "remove_confirm_title": "Remove timer?",
