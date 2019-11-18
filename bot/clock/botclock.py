@@ -54,9 +54,11 @@ class BotClock(object):
         sysConfig= self.cfg.get("system", {})
         self.language= self.cfg.get("settings", {}).get("language", "en")
         i18nFile= self.localesFolder+ "/"+ self.language+ "/translation.json"
+        print("====== loading i18n for language {0}, file {1}".format(self.language, i18nFile))
         try:
             with open(i18nFile, 'r') as f:
                 self.i18n = json.load(f)
+            print("====== i18n loaded for language {0}, file {1}".format(self.language, self.i18n))
         except:
             print("error reading locales for language {0}, file {1}".format(self.language, i18nFile))
 
@@ -321,20 +323,21 @@ class BotClock(object):
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
                                 try:
+                                    i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                                     print("========= going to speak {0}".format(tmr.get("params")))
                                     # speak current time
                                     if tmr.get('params', '') == 'current-time':
                                         hr= self.tNow.hour % 12
                                         if hr== 0:
                                             hr= 12
-                                        textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_time', '').format(hr, self.tNow.minute)
+                                        textToSpeak= i18nSpeak.get('current_time', '').format(hr, self.tNow.minute)
                                         if min== 0:
-                                            textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_time_0min', '').format(hr)
+                                            textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
                                     # speak current time
                                     elif tmr.get('params', '') == 'current-date':
-                                        weekday= self.i18n.get('timers', {}).get('speak', {}).get('weekday_'+ self.tNow.weekday, '')
-                                        month= self.i18n.get('timers', {}).get('speak', {}).get('month_'+ self.tNow.month, '')
-                                        textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
+                                        weekday= i18nSpeak.get('weekday_'+ self.tNow.weekday, '')
+                                        month= i18nSpeak.get('month_'+ self.tNow.month, '')
+                                        textToSpeak= i18nSpeak.get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
                                     # speak provided text
                                     else:
                                         textToSpeak= tmr.get('params', '')
