@@ -116,6 +116,19 @@ class BotClock(object):
             color= (color[0]- color[0]// 3, color[1]// 2, color[2]// 2)
         self.strip[self.ledForPixel(pixel)]= color
 
+    def readCurrentIpAddress(self):
+        ipAddress= ''
+        adapters = ifaddr.get_adapters()
+        for adapter in adapters:
+            aName= adapter.nice_name.lower()
+            if aName== 'lo' or 'virtual' in aName or 'loopback' in aName or 'bluetooth' in aName:
+                continue
+            for ip in adapter.ips:
+                if not type(ip.ip) == str:
+                    continue
+                ipAddress= ip.ip[i]
+        return ipAddress
+
     def getConfigFromFile(self):
         cfg= {}
         try:
@@ -258,19 +271,12 @@ class BotClock(object):
                             uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
                         if uptime > 120:
                             self.justBooted= False
-                        if self.justBooted and uptime > 60:
+                        if self.justBooted and uptime >= 60 and self.SOUND_AVAILABLE:
                             self.justBooted= False
+                            ipAddress= self.readCurrentIpAddress()
                             ipText= ''
-                            adapters = ifaddr.get_adapters()
-                            for adapter in adapters:
-                                aName= adapter.nice_name.lower()
-                                if aName== 'lo' or 'virtual' in aName or 'loopback' in aName or 'bluetooth' in aName:
-                                    continue
-                                for ip in adapter.ips:
-                                    if not type(ip.ip) == str:
-                                        continue
-                                    for i in range(0, len(ip.ip)):
-                                        ipText+= ip.ip[i]+ ' '
+                            for i in range(0, len(ipAddress)):
+                                ipText+= ipText+ ' '
                             os.popen('espeak -s 30 -g 30 "my i p address is: '+  ipText+ '"')
 
                         # check all timers and run the active ones for the current second
