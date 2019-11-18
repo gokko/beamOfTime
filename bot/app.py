@@ -26,6 +26,16 @@ if isRaspi:
     from clock.botAnimations import *
 
 app = Flask(__name__)
+# set cache for static files globally to 300 seconds (5 minutes)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
+# No cacheing at all for API endpoints.
+@app.after_request
+def add_header(response):
+    # response.cache_control.no_store = True
+    if 'Cache-Control' not in response.headers:
+        response.headers['Cache-Control'] = 'no-store'
+    return response
+
 clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 bkupFolder= os.path.dirname(rootFolder)+ '/.bkup'
@@ -59,7 +69,7 @@ def index():
     with open(webFolder+ '/version.json', 'r') as f:
         curVersion= json.loads(f.read())
 
-    res= res.replace('[random]', str(curVersion.get('version', 0)))
+    res= res.replace('[version]', str(curVersion.get('version', 0)))
     return res
     
 @app.route('/js/<path:path>')

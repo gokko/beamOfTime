@@ -25,7 +25,7 @@ async function readVersion() {
 
 // read configuration json from webserver and initialize UI
 async function readConfig() {
-  model.cfg= await $.ajax({cache: false, url: "/config", dataType: "json"});
+  model.cfg= await $.ajax({url: "/config", dataType: "json"});
 
   // save original config for later compare
   oldConfig= JSON.stringify(model.cfg);
@@ -53,7 +53,6 @@ function sendUpdatedConfig(newConfig) {
 
   oldConfig= newConfig;
   $.ajax({
-    cache: false,
     url: '/config',
     type: 'POST',
     data: newConfig,
@@ -130,7 +129,7 @@ const app= new Vue({
         if (typeof this.model.ui.themeIndex === 'undefined') {
           this.model.ui.themeIndex= 0;
         }
-        if (this.model.cfg.settings.currentTheme!= this.model.cfg.themes[this.model.ui.themeIndex].name) {
+        if (this.model.cfg.themes.length > this.model.ui.themeIndex && this.model.cfg.settings.currentTheme!= this.model.cfg.themes[this.model.ui.themeIndex].name) {
           this.model.cfg.settings.currentTheme= this.model.cfg.themes[this.model.ui.themeIndex].name;
         }
         // check if config has changed
@@ -144,8 +143,6 @@ const app= new Vue({
   computed: {
   },
 });
-
-$.ajaxSetup({ cache: false });
 
 readConfig();
 readInfo();

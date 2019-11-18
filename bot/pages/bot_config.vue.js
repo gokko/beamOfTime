@@ -273,12 +273,11 @@ var bot_config = Vue.component("bot_config", {
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
-        cache: false,
         url: "/update"
       }).then((data) => {
         this.info_dlg_text= data+ ' '+ this.$i18n.t('config.update.msg_done');
         // send restart request to activate the new version
-        $.ajax({cache: false, url: "/restart/restart"});
+        $.ajax({url: "/restart/restart"});
         setTimeout(function(){ window.location.reload(true); }, 5000);
       },
       (data) => {
@@ -298,7 +297,6 @@ var bot_config = Vue.component("bot_config", {
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
-        cache: false,
         url: '/backup'
       }).then((data) => {
         // success
@@ -319,7 +317,6 @@ var bot_config = Vue.component("bot_config", {
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
-        cache: false,
         url: '/restore'
       }).then((data) => {
         // success
