@@ -54,11 +54,9 @@ class BotClock(object):
         sysConfig= self.cfg.get("system", {})
         self.language= self.cfg.get("settings", {}).get("language", "en")
         i18nFile= self.localesFolder+ "/"+ self.language+ "/translation.json"
-        print("====== loading i18n for language {0}, file {1}".format(self.language, i18nFile))
         try:
             with open(i18nFile, 'r') as f:
                 self.i18n = json.load(f)
-            print("====== i18n loaded for language {0}, file {1}".format(self.language, self.i18n))
         except:
             print("error reading locales for language {0}, file {1}".format(self.language, i18nFile))
 
