@@ -46,8 +46,9 @@ class BotClock(object):
         # LED strip configuration:
         
         # initialize configuration file
-        self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
-        self.localesFolder = os.path.dirname(os.path.realpath(__file__)) + "/locales"
+        baseFolder= os.path.dirname(os.path.realpath(__file__))
+        self.cfgFileName = baseFolder + "/config.json"
+        self.localesFolder = os.path.dirname(baseFolder) + "/locales"
         self.cfg = self.getConfigFromFile()
         # get system settings from config
         sysConfig= self.cfg.get("system", {})
