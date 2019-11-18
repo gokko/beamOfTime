@@ -321,23 +321,25 @@ class BotClock(object):
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
                                 try:
+                                    print("========= going to speak {0}".format(tmr.get("params")))
                                     # speak current time
                                     if tmr.get('params', '') == 'current-time':
                                         hr= self.tNow.hour % 12
                                         if hr== 0:
                                             hr= 12
-                                        timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_time', '').format(hr, self.tNow.minute)
+                                        textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_time', '').format(hr, self.tNow.minute)
                                         if min== 0:
-                                            timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_time_0min', '').format(hr)
+                                            textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_time_0min', '').format(hr)
                                     # speak current time
                                     elif tmr.get('params', '') == 'current-date':
                                         weekday= self.i18n.get('timers', {}).get('speak', {}).get('weekday_'+ self.tNow.weekday, '')
                                         month= self.i18n.get('timers', {}).get('speak', {}).get('month_'+ self.tNow.month, '')
-                                        timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
+                                        textToSpeak= self.i18n.get('timers', {}).get('speak', {}).get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
                                     # speak provided text
                                     else:
-                                        timeText= tmr.get('params', '')
-                                    res= subprocess.Popen(['espeak', '-g', '1', '-vde', timeText], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                        textToSpeak= tmr.get('params', '')
+                                    print("========= going to speak text: {0}".format(textToSpeak))
+                                    res= subprocess.Popen(['espeak', '-g', '1', '-vde', textToSpeak], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
