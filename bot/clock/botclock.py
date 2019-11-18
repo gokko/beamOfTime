@@ -51,6 +51,12 @@ class BotClock(object):
         self.cfg = self.getConfigFromFile()
         # get system settings from config
         sysConfig= self.cfg.get("system", {})
+        self.language= self.cfg.get("settings", {}).get("language", "en")
+        try:
+            with open(self.localesFolder+ "/"+ language+ "/translation.json", 'r') as f:
+                self.i18n = json.load(f)
+        except:
+            print("error reading locales file for language {0}".format(self.language))
 
         # NeoPixels must be connected to baord.D10, board.D12, board.D18 or board.D21 to work.
         self.LED_PIN = board.D18 if sysConfig.get("ledPin", 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
@@ -169,13 +175,13 @@ class BotClock(object):
                     config= self.cfg.get("system", {})
                     settings= self.cfg.get("settings", {})
                     # get language and read translations from i18n file
-                    if not hasattr(self, 'language') or self.language != settings.get("language", "en"):
+                    if self.language != settings.get("language", "en"):
                         self.language= settings.get("language", "en")
                         try:
                             with open(self.localesFolder+ "/"+ language+ "/translation.json", 'r') as f:
                                 self.i18n = json.load(f)
                         except:
-                            pass # no action
+                            print("error reading locales file for language {0}".format(self.language))
 
                     # get global settings
                     self.disabled = settings.get("mode")== 'off'
