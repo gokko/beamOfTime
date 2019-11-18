@@ -303,6 +303,8 @@ class BotClock(object):
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
                                 try:
+                                    file= '/home/pi/beamOfTime/bot/clock/sounds/cuckoo-hours/1.mp3'
+                                    res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                     # speak current time
                                     if tmr.get('params', '') == 'current-time':
                                         hr= self.tNow.hour % 12
