@@ -309,7 +309,7 @@ class BotClock(object):
                                         if hr== 0:
                                             hr= 12
                                         min= self.tNow.minute
-                                        timeText= 'Es ist '+ str(hr)+ ' : '+ str(min)
+                                        timeText= 'Es ist {0} {1}'.format(hr, min)
                                     # speak provided text
                                     else:
                                         timeText= tmr.get('params', '')
