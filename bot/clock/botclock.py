@@ -126,7 +126,7 @@ class BotClock(object):
             for ip in adapter.ips:
                 if not type(ip.ip) == str:
                     continue
-                ipAddress= ip.ip[i]
+                ipAddress= ip.ip
         return ipAddress
 
     def getConfigFromFile(self):
@@ -276,7 +276,7 @@ class BotClock(object):
                             ipAddress= self.readCurrentIpAddress()
                             ipText= ''
                             for i in range(0, len(ipAddress)):
-                                ipText+= ipText+ ' '
+                                ipText+= ipAddress[i]+ ' '
                             os.popen('espeak -s 30 -g 30 "my i p address is: '+  ipText+ '"')
 
                         # check all timers and run the active ones for the current second
