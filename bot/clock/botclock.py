@@ -313,7 +313,7 @@ class BotClock(object):
                                     # speak provided text
                                     else:
                                         timeText= tmr['params']
-                                    res= subprocess.Popen(['espeak', '-s 10 -g 10 -vde', "'"+ timeText+ "'"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                    res= subprocess.Popen(['espeak', '-s', '10', '-g', '10', '-vde', "'"+ timeText+ "'"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
