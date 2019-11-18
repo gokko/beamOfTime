@@ -26,8 +26,9 @@ if isRaspi:
     from clock.botAnimations import *
 
 app = Flask(__name__)
-# set cache for static files globally to 300 seconds (5 minutes)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
+# set cache for static files globally to 24 hours
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60*60*24
+
 # No cacheing at all for API endpoints.
 @app.after_request
 def add_header(response):

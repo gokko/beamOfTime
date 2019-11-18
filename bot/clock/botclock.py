@@ -46,20 +46,21 @@ class BotClock(object):
         # LED strip configuration:
         
         # initialize configuration file
-        self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + '/config.json'
+        self.cfgFileName = os.path.dirname(os.path.realpath(__file__)) + "/config.json"
+        self.localesFolder = os.path.dirname(os.path.realpath(__file__)) + "/locales"
         self.cfg = self.getConfigFromFile()
         # get system settings from config
-        config= self.cfg.get("system", {})
+        sysConfig= self.cfg.get("system", {})
 
         # NeoPixels must be connected to baord.D10, board.D12, board.D18 or board.D21 to work.
-        self.LED_PIN = board.D18 if config.get("ledPin", 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
-        self.LED_COUNT = config.get("ledCount", 120)            # Number of LED pixels.
-        self.LED_START = config.get("ledStart", 0)              # inner (1st) ring, which LED is the starting point (12 o'clock)
-        self.LED_DIRECTION = config.get("ledDirection", 1)      # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.LED_START2 = config.get("ledStart2", 60)           # outer (2nd) ring, which LED is the starting point (12 o'clock)
-        self.LED_DIRECTION2 = config.get("ledDirection2", -1)   # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.SOUND_AVAILABLE = config.get("soundAvailable", False)  # speaker is available for playing sounds or not
-        self.SOUND_VOLUME = config.get("soundVolume", 100)      # speaker volume
+        self.LED_PIN = board.D18 if sysConfig.get("ledPin", 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
+        self.LED_COUNT = sysConfig.get("ledCount", 120)            # Number of LED pixels.
+        self.LED_START = sysConfig.get("ledStart", 0)              # inner (1st) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION = sysConfig.get("ledDirection", 1)      # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.LED_START2 = sysConfig.get("ledStart2", 60)           # outer (2nd) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION2 = sysConfig.get("ledDirection2", -1)   # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.SOUND_AVAILABLE = sysConfig.get("soundAvailable", False)  # speaker is available for playing sounds or not
+        self.SOUND_VOLUME = sysConfig.get("soundVolume", 100)      # speaker volume
         try:
             if self.SOUND_AVAILABLE:
                 subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
@@ -167,6 +168,14 @@ class BotClock(object):
                     self.cfg = self.getConfigFromFile()
                     config= self.cfg.get("system", {})
                     settings= self.cfg.get("settings", {})
+                    # get language and read translations from i18n file
+                    if not hasattr(self, 'language') or self.language != settings.get("language", "en"):
+                        self.language= settings.get("language", "en")
+                        try:
+                            with open(self.localesFolder+ "/"+ language+ "/translation.json", 'r') as f:
+                                self.i18n = json.load(f)
+                        except:
+                            pass # no action
 
                     # get global settings
                     self.disabled = settings.get("mode")== 'off'
@@ -308,12 +317,18 @@ class BotClock(object):
                                         hr= self.tNow.hour % 12
                                         if hr== 0:
                                             hr= 12
-                                        min= self.tNow.minute
-                                        timeText= 'Es ist {0} Uhr {1}'.format(hr, min)
+                                        timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_time', '').format(hr, self.tNow.minute)
+                                        if min== 0:
+                                            timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_time_0min', '').format(hr)
+                                    # speak current time
+                                    elif tmr.get('params', '') == 'current-date':
+                                        weekday= self.i18n.get('timers', {}).get('speak', {}).get('weekday_'+ self.tNow.weekday, '')
+                                        month= self.i18n.get('timers', {}).get('speak', {}).get('month_'+ self.tNow.month, '')
+                                        timeText= self.i18n.get('timers', {}).get('speak', {}).get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
                                     # speak provided text
                                     else:
                                         timeText= tmr.get('params', '')
-                                    res= subprocess.Popen(['espeak', '-s', '1', '-g', '1', '-vde', timeText], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                    res= subprocess.Popen(['espeak', '-g', '1', '-vde', timeText], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
