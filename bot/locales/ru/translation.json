@@ -137,6 +137,7 @@
     "param": "параметр действия",
     "param_animation": "анимация",
     "param_sound": "звук",
+    "param_speak": "текст",
     "param_theme": "тема",
     "remove_confirm_msg": "Вы уверены, что хотите удалить текущий таймер?",
     "remove_confirm_title": "Удалить таймер?",

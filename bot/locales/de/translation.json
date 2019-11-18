@@ -137,6 +137,7 @@
     "param": "Aktionsparameter",
     "param_animation": "Animation",
     "param_sound": "Ton",
+    "param_speak": "Text",
     "param_theme": "Motiv",
     "remove_confirm_msg": "Soll dieser Timer wirklich gelöscht werden?",
     "remove_confirm_title": "Timer löschen?",
