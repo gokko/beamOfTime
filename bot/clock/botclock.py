@@ -278,6 +278,7 @@ class BotClock(object):
                             for i in range(0, len(ipAddress)):
                                 ipText+= ipAddress[i]+ ' '
                             i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
+                            ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
                             ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
                             os.popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText))
                             # subprocess.Popen(['espeak', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
