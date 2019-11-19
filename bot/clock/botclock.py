@@ -71,9 +71,9 @@ class BotClock(object):
         self.SOUND_VOLUME = sysConfig.get("soundVolume", 100)      # speaker volume
         try:
             if self.SOUND_AVAILABLE:
-                Popen("amixer cset numid=1 --{0}%".format(self.SOUND_VOLUME))
+                Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
         except:
-            print("error setting volume")
+            print("error setting volume {0}".format(sys.exc_info()[0]))
 
         # get current theme from config
         self.currentTheme = self.getCurrentTheme()
@@ -211,9 +211,9 @@ class BotClock(object):
                     self.SOUND_VOLUME = config.get("soundVolume", 100)
                     try:
                         if self.SOUND_AVAILABLE:
-                            Popen("amixer cset numid=1 --{0}%".format(self.SOUND_VOLUME))
+                            Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
                     except:
-                        print("error setting volume")
+                        print("error setting volume {0}".format(sys.exc_info()[0]))
 
                     # reset background as current theme may have changed (but only if enabled)
                     if (not self.disabled and (not startAnimation or self.running)):
@@ -280,7 +280,7 @@ class BotClock(object):
                             i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                             ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
                             ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
-                            Popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText))
+                            Popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText), shell=True)
 
                         # check all timers and run the active ones for the current second
 
@@ -325,7 +325,7 @@ class BotClock(object):
                                     # play given sound file
                                     else:
                                         file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
-                                    res= Popen(['mpg123', file])
+                                    res= Popen('mpg123 {0}'.format(file), shell=True)
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
@@ -347,7 +347,7 @@ class BotClock(object):
                                     # speak provided text
                                     else:
                                         textToSpeak= tmr.get('params', '')
-                                    Popen('espeak -g 1 -v{0} "{1}"'.format(self.language, textToSpeak))
+                                    Popen('espeak -g 1 -v{0} "{1}"'.format(self.language, textToSpeak), shell=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
