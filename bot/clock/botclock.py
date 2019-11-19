@@ -325,7 +325,7 @@ class BotClock(object):
                                     # play given sound file
                                     else:
                                         file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
-                                    res= Popen('mpg123 {0}'.format(file), shell=True)
+                                    res= Popen('mpg123 "{0}"'.format(file), shell=True)
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
