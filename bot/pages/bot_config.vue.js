@@ -284,7 +284,7 @@ var bot_config = Vue.component("bot_config", {
         txt= data;
         if (!data.responseText === undefined)
           txt= data.responseText.toLowerCase();
-        if (txt.index('<h1>')>= 0)
+        if (!txt === undefined && txt.index('<h1>')>= 0)
           txt= txt.match(/<h1>(.*)</)[1]+ ', '+ txt.match(/<p>(.*)</)[1];
         this.info_dlg_text= txt
         this.info_dlg_bg_activity= false;
