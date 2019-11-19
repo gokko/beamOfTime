@@ -171,7 +171,7 @@ def say_ip():
     for i in range(0, len(ipText)):
         ipToSay+= ipText[i]+ ' '
     if isRaspi:
-        Popen('espeak -s 30 -g 30 "my i p address is: {0}"'.format(ipToSay), shell= True)
+        Popen('espeak -s 30 -g 30 "my i p address is: {0}"'.format(ipToSay), shell=True)
     return ipText
 
 @app.route('/wifi', methods = ['GET'])
@@ -193,12 +193,12 @@ def send_wifi():
     wifi.write(wpaFilename)
     # restart wifi service
     if isRaspi:
-        Popen('sudo systemctl daemon-reload && sudo systemctl restart dhcpcd', shell= True)
+        Popen('sudo systemctl daemon-reload && sudo systemctl restart dhcpcd', shell=True)
     return 'OK'
 
 @app.route('/update')
 def send_update():
-    proc= Popen('git -C {0} pull origin master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True)
+    proc= Popen('git -C {0} pull origin master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True, shell=True)
     res= proc.stdout.read()
     proc.stdout.close()
     return res
@@ -236,7 +236,7 @@ def send_restore():
     except OSError as e:
         return 'Error: %s' % e
 
-    Popen('sudo service bot restart', shell= True)
+    Popen('sudo service bot restart', shell=True)
     return 'OK'
 
 @app.route('/config', methods = ['GET'])
@@ -304,11 +304,11 @@ def send_restart(path):
 
     # client is not expecting any result, as service can't responde due to restart
     if (path.lower() == 'reboot'):
-        Popen('sudo reboot', shell= True)
+        Popen('sudo reboot', shell=True)
     elif (path.lower() == 'restart'):
-        Popen('sudo service bot restart', shell= True)
+        Popen('sudo service bot restart', shell=True)
     elif (path.lower() == 'shutdown'):
-        Popen('sudo shutdown now', shell= True)
+        Popen('sudo shutdown now', shell=True)
     return path+ ' OK'
 
 
