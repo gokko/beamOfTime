@@ -151,6 +151,8 @@ readWifi();
 
 // disable splash screen after 1 sec
 setTimeout(() => {
-  model.ui.bottomNav= 'bot_home';
+  if (model.ui.bottomNav== 'intro') {
+    model.ui.bottomNav= 'bot_home';
+  }
 }, 2000);
 
