@@ -144,9 +144,10 @@
     "select": "Zeitschalter wählen",
     "speak": {
       "current_date": "Heute ist {0}, der {1}. {2} {3}",
-      "current_ip_address": "Die I P Adresse ist {0}",
+      "current_ip_address": "Im Browser foldgende Adresse eingeben {0}",
       "current_time": "Es ist {0} Uhr {1}",
       "current_time_0min": "Es ist {0} Uhr",
+      "dot": "Punk",
       "month_1": "Januar",
       "month_10": "Oktober",
       "month_11": "November",

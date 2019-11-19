@@ -144,9 +144,10 @@
     "select": "select timer",
     "speak": {
       "current_date": "Today is {0}, {1}. of {2} {3}",
-      "current_ip_address": "current I P address is {0}",
+      "current_ip_address": "In you browser enter following address {0}",
       "current_time": "It's {0} {1}",
       "current_time_0min": "It's {0} o'clock",
+      "dot": "dot",
       "month_1": "January",
       "month_10": "October",
       "month_11": "November",
