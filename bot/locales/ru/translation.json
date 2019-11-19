@@ -144,6 +144,7 @@
     "select": "выберите таймер",
     "speak": {
       "current_date": "сегодня {0}, {1}. {2} {3}. года",
+      "current_ip_address": "адрес I P - {0}",
       "current_time": "время {0} часа {1} минут",
       "current_time_0min": "время ровно {0} часа",
       "month_1": "января",

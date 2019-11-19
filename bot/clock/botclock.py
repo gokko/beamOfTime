@@ -277,7 +277,10 @@ class BotClock(object):
                             ipText= ''
                             for i in range(0, len(ipAddress)):
                                 ipText+= ipAddress[i]+ ' '
-                            os.popen('espeak -s 30 -g 30 "my i p address is: '+  ipText+ '"')
+                            i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
+                            ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
+                            os.popen('espeak -v{0} -s 5 -g 5 "{1}"'.format(self.language, ipText))
+                            # subprocess.Popen(['espeak', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 
                         # check all timers and run the active ones for the current second
 
