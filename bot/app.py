@@ -14,7 +14,7 @@ import platform
 import urllib.request
 from flask import Flask, request, jsonify, send_from_directory, send_file
 from threading import Thread
-from subprocess import call, Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
 
 # check if this script is running on a raspberry pi (Linux with arm processor)
@@ -193,8 +193,7 @@ def send_wifi():
     wifi.write(wpaFilename)
     # restart wifi service
     if isRaspi:
-        call(['sudo', 'systemctl', 'daemon-reload'])
-        call(['sudo', 'systemctl', 'restart', 'dhcpcd'])
+        Popen('sudo systemctl daemon-reload && sudo systemctl restart dhcpcd', shell= True)
     return 'OK'
 
 @app.route('/update')
@@ -235,7 +234,7 @@ def send_restore():
     except OSError as e:
         return 'Error: %s' % e
 
-    call(['sudo', 'service', 'bot', 'restart'])
+    Popen('sudo service bot restart', shell= True)
     return 'OK'
 
 @app.route('/config', methods = ['GET'])
@@ -303,11 +302,11 @@ def send_restart(path):
 
     # client is not expecting any result, as service can't responde due to restart
     if (path.lower() == 'reboot'):
-        call(['sudo', 'reboot'])
+        Popen('sudo reboot', shell= True)
     elif (path.lower() == 'restart'):
-        call(['sudo', 'service', 'bot', 'restart'])
+        Popen('sudo service bot restart', shell= True)
     elif (path.lower() == 'shutdown'):
-        call(['sudo', 'shutdown', 'now'])
+        Popen('sudo shutdown now', shell= True)
     return path+ ' OK'
 
 

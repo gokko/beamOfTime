@@ -127,7 +127,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
           <div v-if="cfg.system.soundAvailable">
             <v-subheader>{{$t('config.sound.volume')}}</v-subheader>
             <br/>
-            <v-slider v-model="cfg.system.soundVolume" color="green" min="0" max="100" thumb-label="always">
+            <v-slider :value="cfg.system.soundVolume" @change="v => cfg.system.soundVolume = v" step="5" color="green" min="0" max="100" thumb-label="always">
               <template v-slot:prepend>
                 <v-icon color="green" @click="cfg.system.soundVolume--">mdi-minus</v-icon>
               </template>
