@@ -171,7 +171,7 @@ def say_ip():
     for i in range(0, len(ipText)):
         ipToSay+= ipText[i]+ ' '
     if isRaspi:
-        os.popen('espeak -s 30 -g 30 "my i p address is: '+  ipToSay+ '"')
+        Popen('espeak -s 30 -g 30 "my i p address is: {0}"'.format(ipToSay), shell= True)
     return ipText
 
 @app.route('/wifi', methods = ['GET'])
@@ -198,8 +198,10 @@ def send_wifi():
 
 @app.route('/update')
 def send_update():
-    res= Popen(['git', '-C', rootFolder, 'pull', 'origin', 'master'], stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-    return res.stdout.read()
+    proc= Popen('git -C {0} pull origin master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True)
+    res= proc.stdout.read()
+    proc.stdout.close()
+    return res
 
 @app.route('/backup')
 def send_backup():
