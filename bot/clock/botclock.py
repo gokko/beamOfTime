@@ -12,10 +12,10 @@ import signal
 import time
 import json
 import ifaddr
-import subprocess
 import board
 import neopixel
 import argparse
+from subprocess import Popen, PIPE, STDOUT
 
 from crontab import CronTab
 from datetime import datetime
@@ -71,7 +71,7 @@ class BotClock(object):
         self.SOUND_VOLUME = sysConfig.get("soundVolume", 100)      # speaker volume
         try:
             if self.SOUND_AVAILABLE:
-                subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+                Popen("amixer cset numid=1 --{0}%".format(self.SOUND_VOLUME))
         except:
             print("error setting volume")
 
@@ -211,7 +211,7 @@ class BotClock(object):
                     self.SOUND_VOLUME = config.get("soundVolume", 100)
                     try:
                         if self.SOUND_AVAILABLE:
-                            subprocess.Popen(['amixer', 'cset', 'numid=1', '--', str(self.SOUND_VOLUME)+ '%'])
+                            Popen("amixer cset numid=1 --{0}%".format(self.SOUND_VOLUME))
                     except:
                         print("error setting volume")
 
@@ -280,8 +280,7 @@ class BotClock(object):
                             i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                             ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
                             ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
-                            os.popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText))
-                            # subprocess.Popen(['espeak', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                            Popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText))
 
                         # check all timers and run the active ones for the current second
 
@@ -326,7 +325,7 @@ class BotClock(object):
                                     # play given sound file
                                     else:
                                         file= '/home/pi/beamOfTime/bot/clock/sounds/'+ tmr['params']
-                                    res= subprocess.Popen(['mpg123', file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                    res= Popen(['mpg123', file])
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                             elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
@@ -338,7 +337,7 @@ class BotClock(object):
                                         if hr== 0:
                                             hr= 12
                                         textToSpeak= i18nSpeak.get('current_time', '').format(hr, self.tNow.minute)
-                                        if min== 0:
+                                        if self.tNow.minute== 0:
                                             textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
                                     # speak current date
                                     elif tmr.get('params', '').lower().find('current-date')>= 0:
@@ -348,7 +347,7 @@ class BotClock(object):
                                     # speak provided text
                                     else:
                                         textToSpeak= tmr.get('params', '')
-                                    res= subprocess.Popen(['espeak', '-g', '1', '-v'+ self.language, textToSpeak], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+                                    Popen('espeak -g 1 -v{0} "{1}"'.format(self.language, textToSpeak))
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
