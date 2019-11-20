@@ -14,5 +14,10 @@
     "app_title": "پرتوی زمان",
     "language_dir": "rtl",
     "language_name": "فارسی"
+  },
+  "timers": {
+    "speak": {
+      "speed": "-s0"
+    }
   }
 }

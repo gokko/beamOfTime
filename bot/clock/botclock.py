@@ -48,6 +48,7 @@ class BotClock(object):
         # initialize configuration file
         baseFolder= os.path.dirname(os.path.realpath(__file__))
         self.cfgFileName = baseFolder + "/config.json"
+        self.mediaFolder = os.path.dirname(os.path.dirname(os.path.dirname(baseFolder)))+ "/media"
         self.localesFolder = os.path.dirname(baseFolder) + "/locales"
         self.cfg = self.getConfigFromFile()
         # get system settings from config
@@ -280,7 +281,7 @@ class BotClock(object):
                             i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                             ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
                             ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
-                            Popen('espeak -v{0} -s 3 -g 3 "{1}"'.format(self.language, ipText), shell=True)
+                            Popen('espeak -v{0} -s2 -g2 "{1}"'.format(self.language, ipText), shell=True)
 
                         # check all timers and run the active ones for the current second
 
@@ -347,7 +348,8 @@ class BotClock(object):
                                     # speak provided text
                                     else:
                                         textToSpeak= tmr.get('params', '')
-                                    Popen('espeak -g 1 -v{0} "{1}"'.format(self.language, textToSpeak), shell=True)
+                                    speed= i18nSpeak.get('speed', '')
+                                    Popen('espeak {0} -v{1} "{2}"'.format(speed, self.language, textToSpeak), shell=True)
                                 except Exception as ex:
                                     print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
                         
