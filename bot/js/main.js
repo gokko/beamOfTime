@@ -125,8 +125,8 @@ const app= new Vue({
     model: {
       deep: true,
       handler() {
-        // set the selected theme name
-        if (typeof this.model.ui.themeIndex === 'undefined') {
+        // set the selected theme
+        if (this.model.ui.themeIndex === undefined) {
           this.model.ui.themeIndex= 0;
         }
         if (!(this.model.cfg.themes === undefined) && this.model.cfg.themes.length > this.model.ui.themeIndex && this.model.cfg.settings.currentTheme!= this.model.cfg.themes[this.model.ui.themeIndex].name) {

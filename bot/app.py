@@ -21,9 +21,9 @@ from wpasupplicantconf import WpaSupplicantConf
 isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
 
 # only load the clock if it's running on the raspberry pi
-if isRaspi:
-    from clock.botclock import BotClock
-    from clock.botAnimations import *
+#if isRaspi:
+from clock.botclock import BotClock
+from clock.botAnimations import *
 
 app = Flask(__name__)
 # set cache for static files globally to 24 hours
@@ -324,16 +324,16 @@ if __name__ == '__main__':
     signal.signal(signal.SIGTERM, sigterm_handler)
 
     # only start clock if running on raspi
-    if isRaspi:
-        clock = BotClock()
-        t = Thread(target=clock.run, args=())
-        t.start()
+    clock = BotClock()
+    # t = Thread(target=clock.run, args=())
 
     app.config['JSON_AS_ASCII'] = False
-    app.run(debug=False, host='0.0.0.0', port=int("80"))
+    t = Thread(target=app.run, args=('0.0.0.0', 80, False))
+    t.start()
+    # app.run(debug=False, host='0.0.0.0', port=int("80"))
     
+    clock.run()
     # stop clock if running on raspi
-    if isRaspi:
-        clock.stop()
+    clock.stop()
 
     

@@ -15,12 +15,15 @@ import ifaddr
 import board
 import neopixel
 import argparse
+import platform
 from subprocess import Popen, PIPE, STDOUT
 
 from crontab import CronTab
 from datetime import datetime
 from subprocess import call
 from math import *
+
+isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
 
 # class with some helpful functions to deal with Color
 class ColorHelper(object):
@@ -71,7 +74,7 @@ class BotClock(object):
         self.SOUND_AVAILABLE = sysConfig.get("soundAvailable", False)  # speaker is available for playing sounds or not
         self.SOUND_VOLUME = sysConfig.get("soundVolume", 100)      # speaker volume
         try:
-            if self.SOUND_AVAILABLE:
+            if self.SOUND_AVAILABLE and isRaspi:
                 Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
         except:
             print("error setting volume {0}".format(sys.exc_info()[0]))
@@ -183,7 +186,8 @@ class BotClock(object):
                     continue
 
                 # if config file changed, read and get settings and colors
-                cfgFileChangeTimeNew = os.stat(self.cfgFileName).st_mtime
+                if (os.path.isfile(self.cfgFileName)):
+                    cfgFileChangeTimeNew = os.stat(self.cfgFileName).st_mtime
                 if (cfgFileChangeTime != cfgFileChangeTimeNew):
                     cfgFileChangeTime = cfgFileChangeTimeNew
                     # read changed config file
@@ -211,7 +215,7 @@ class BotClock(object):
                     self.SOUND_AVAILABLE = config.get("soundAvailable", False)
                     self.SOUND_VOLUME = config.get("soundVolume", 100)
                     try:
-                        if self.SOUND_AVAILABLE:
+                        if self.SOUND_AVAILABLE and isRaspi:
                             Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
                     except:
                         print("error setting volume {0}".format(sys.exc_info()[0]))
@@ -268,7 +272,7 @@ class BotClock(object):
                     if (self.secNew == 0):
                         # check if clock was booted recently and tell IP address if sound module is available
                         uptime= 0
-                        if self.justBooted:
+                        if self.justBooted and isRaspi:
                             uptime= float(os.popen("awk '{print $1}' /proc/uptime").readline().strip())
                         if uptime > 120:
                             self.justBooted= False
@@ -315,7 +319,7 @@ class BotClock(object):
                                 else:
                                     print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
                             # play audio file if sound module available
-                            elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
+                            elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE and isRaspi:
                                 try:
                                     # play special cuckoo sound once per hour count
                                     if tmr['params'] == 'cuckoo-hours':
@@ -329,7 +333,7 @@ class BotClock(object):
                                     res= Popen('mpg123 "{0}"'.format(file), shell=True)
                                 except Exception as ex:
                                     print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                            elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
+                            elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE and isRaspi:
                                 try:
                                     i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                                     # speak current time

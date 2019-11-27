@@ -88,7 +88,7 @@ class BotClock(BotClock):
                 self.strip.show()
                 time.sleep(wait_ms/1000.0)
                 for i in range(0, self.strip.n, 3):
-                    self.strip[self.ledForPixel(i+q)]= 0
+                    self.strip[self.ledForPixel(i+q)]= (0, 0, 0)
 
     def wheel(self, pos):
         """Generate rainbow colors across 0-255 positions."""
