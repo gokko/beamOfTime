@@ -7,6 +7,14 @@ import os
 from tkinter import *
 from math import *
 
+def f2r(f):
+    return f* 2* pi
+
+def drawHand(canvas, x1, y1, angle, l, w, col):
+    x2= x1+ sin(angle)* l
+    y2= y1- cos(angle)* l
+    return canvas.create_line((x1, y1, x2, y2), fill=col, width=w)
+
 def Color(green, red, blue, white = 0):
     """Convert the provided red, green, blue color to a 24-bit color value.
     Each color component should be a value 0-255 where 0 is the lowest intensity
@@ -70,14 +78,6 @@ class _LED_Data(object):
 class NeoPixel(object):
     def __init__(self, pin, num, freq_hz=800000, dma=10, invert=False,
             brightness=255, channel=0, strip_type=1):
-        """Class to represent a NeoPixel/WS281x LED display.  Num should be the
-        number of pixels in the display, and pin should be the GPIO pin connected
-        to the display signal line (must be a PWM pin like 18!).  Optional
-        parameters are freq, the frequency of the display signal in hertz (default
-        800khz), dma, the DMA channel to use (default 10), invert, a boolean
-        specifying if the signal line should be inverted (default False), and
-        channel, the PWM channel to use (defaults to 0).
-        """
 
         self.n= num
         self.ww = self.wh = 800     # window size
@@ -107,29 +107,29 @@ class NeoPixel(object):
         # initialize lines for minutes
         self.pts = {}
         # inner ring
-        for w in range(0, 91, 6):
-            r= (self.r- self.ll- 20)
-            y = round(sin(radians(w)) * r)
-            x = round(sqrt(pow(r, 2) - pow(y, 2)))
-            y2 = round(sin(radians(w)) * (r- self.ll))
-            x2 = round(sqrt(pow((r - self.ll), 2) - pow(y2, 2)))
-            self.pts[15 + (w // 6)] = self.c.create_line((self.mid + x, self.mid + y, self.mid + x2, self.mid + y2), fill='#000000', width=self.lw)
-            self.pts[45 + (w // 6)] = self.c.create_line((self.mid - x, self.mid - y, self.mid - x2, self.mid - y2), fill='#000000', width=self.lw)
-            self.pts[15 - (w // 6)] = self.c.create_line((self.mid + x, self.mid - y, self.mid + x2, self.mid - y2), fill='#000000', width=self.lw)
-            self.pts[45 - (w // 6)] = self.c.create_line((self.mid - x, self.mid + y, self.mid - x2, self.mid + y2), fill='#000000', width=self.lw)
+        for i in range(0, 60):
+            l= self.ll
+            r= (self.r- 2* l- 20)
+            if self.n<= 60:
+                r= self.r- 2* l
+                l= l* 2
+            elif i % 5== 0:
+                r= r- l
+                l= 2* l
+            angle= f2r(i/ 60)
+            x1= self.mid + (sin(angle) * r)
+            y1= self.mid - (cos(angle) * r)
+            self.pts[i] = drawHand(self.c, x1, y1, angle, l, self.lw, '#000000')
 
-        # outer ring
-        for w in range(0, 91, 6):
-            y = round(sin(radians(w)) * self.r)
-            x = round(sqrt(pow(self.r, 2) - pow(y, 2)))
-            y2 = round(sin(radians(w)) * (self.r- self.ll))
-            x2 = round(sqrt(pow((self.r - self.ll), 2) - pow(y2, 2)))
-            self.pts[75 + (w // 6)] = self.c.create_line((self.mid + x, self.mid + y, self.mid + x2, self.mid + y2), fill='#000000', width=self.lw)
-            self.pts[105 + (w // 6)] = self.c.create_line((self.mid - x, self.mid - y, self.mid - x2, self.mid - y2), fill='#000000', width=self.lw)
-            self.pts[75 - (w // 6)] = self.c.create_line((self.mid + x, self.mid - y, self.mid + x2, self.mid - y2), fill='#000000', width=self.lw)
-            self.pts[105 - (w // 6)] = self.c.create_line((self.mid - x, self.mid + y, self.mid - x2, self.mid + y2), fill='#000000', width=self.lw)
+        for i in range(60, self.n):
+            l= self.ll
+            r= self.r- l
+            angle= f2r((i-60)/ 60)
+            x1= self.mid + sin(angle) * r
+            y1= self.mid - cos(angle) * r
+            self.pts[i] = drawHand(self.c, x1, y1, angle, l, self.lw, '#000000')
 
-            # Grab the led data array.
+        # Grab the led data array.
         self._led_data = _LED_Data(0, num)
 
         # Substitute for __del__, traps an exit condition and cleans up properly
@@ -154,7 +154,7 @@ class NeoPixel(object):
 
     def show(self):
         """Update the display with the data from the LED buffer."""
-        for p in range(0, self.n+ 1):
+        for p in range(0, self.n):
             self.c.itemconfig(self.pts[p], fill='#{:02X}{:02X}{:02X}'.format(self._led_data[p][0], self._led_data[p][1], self._led_data[p][2]))
         self.mw.update()
 
