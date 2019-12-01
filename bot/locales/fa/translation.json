@@ -141,8 +141,8 @@
     "speak": {
       "current_date": "تاریخ جاری",
       "current_ip_address": "آدرس زیر را در موتور جستجوی خود وارد کنید {0}",
-      "current_time": "ساعت  {0} {1}  دقیقه است",
-      "current_time_0min": "ساعت  {0} است",
+      "current_time": "ساعت  {0} و {1}  دقیقه است",
+      "current_time_0min": "ساعت {0} است",
       "dot": "نقطه",
       "month_1": "ژانویه",
       "month_10": "اکتبر",
