@@ -342,17 +342,12 @@ if __name__ == '__main__':
     # handle SIGTERM to gracefully stop clock
     signal.signal(signal.SIGTERM, sigterm_handler)
 
-    # only start clock if running on raspi
     clock = BotClock()
-    # t = Thread(target=clock.run, args=())
 
     app.config['JSON_AS_ASCII'] = False
     t = Thread(target=app.run, args=('0.0.0.0', 80, False))
     t.start()
-    # app.run(debug=False, host='0.0.0.0', port=int("80"))
     
     clock.run()
-    # stop clock if running on raspi
-    clock.stop()
 
     

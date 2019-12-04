@@ -400,4 +400,4 @@ class BotClock(object):
         finally:
             print ('stopping clock')
             self.colorWipe((0,0,0), 10, 8)
-
+            os._exit(1)
