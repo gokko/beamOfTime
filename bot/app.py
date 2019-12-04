@@ -157,6 +157,25 @@ def get_info():
     res['ips']= ipaddresses
     return  jsonify(res)
 
+@app.route('/datetime')
+def get_datetime():
+    res= {}
+    if isRaspi:
+        p= Popen('timedatectl show', shell=True, stdout=PIPE, close_fds=True)
+        for line in p.stdout:
+            (key, val)= line.decode('ascii').strip().split('=')
+            res[key]= val
+    else:
+        now= datetime.now()
+        # tz= now.astimezone().tzinfo.tzname(now)
+        res['Timezone']= 'Europe/Berlin'
+        res['LocalRTC']= 'no'
+        res['CanNTP']= 'yes'
+        res['NTPSynchronized']= 'yes'
+        res['NTP']= 'yes'
+        res['TimeUSec']= now.strftime("%Y-%m-%d %H:%M:%S CET")
+    return jsonify(res)
+
 @app.route('/sayIp')
 def say_ip():
     ipText= ipToSay= ''
