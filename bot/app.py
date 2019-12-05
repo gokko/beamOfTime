@@ -12,7 +12,7 @@ import socket
 import shutil
 import platform
 import urllib.request
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from flask import Flask, request, jsonify, send_from_directory, send_file, Response
 from threading import Thread
 from subprocess import Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
@@ -73,13 +73,62 @@ def index():
     res= res.replace('[version]', str(curVersion.get('version', 0)))
     return res
     
-@app.route('/js/<path:path>')
-def send_js(path):
-    return send_from_directory(webFolder+ '/js', path, mimetype="application/javascript")
-
 @app.route('/favicon.ico')
 def send_favicon():
     return send_from_directory(webFolder+ '/files', 'favicon.ico', mimetype="image/x-icon")
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    # request may have multiple files comma separated, combine all of them into one result
+    path_array= path.split(',')
+    res = ''
+    for fname in path_array:
+        # skip version variable
+        if len(fname.strip())== 0:
+            continue
+        with open(webFolder+ '/js/'+ fname.strip(), 'r') as f:
+            res += ('\n' + f.read())
+    return Response(res, mimetype='application/javascript')
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    # request may have multiple files comma separated, combine all of them into one result
+    path_array= path.split(',')
+    res = ''
+    for fname in path_array:
+        # skip version variable
+        if len(fname.strip())== 0:
+            continue
+        with open(webFolder+ '/css/'+ fname.strip(), 'r') as f:
+            res += ('\n' + f.read())
+    return Response(res, mimetype='text/css')
+
+@app.route('/pages/<path:path>')
+def send_pages(path):
+    # request may have multiple files comma separated, combine all of them into one result
+    path_array= path.split(',')
+    res = ''
+    for fname in path_array:
+        # skip version variable
+        if len(fname.strip())== 0:
+            continue
+        with open(webFolder+ '/pages/'+ fname.strip(), 'r') as f:
+            res += ('\n' + f.read())
+    return Response(res, mimetype='application/javascript')
+
+@app.route('/i18n/<path:path>')
+def send_i18n(path):
+    file= i18nFolder+ '/'+ path+ '/translation.json'
+    # if given language is not found return english
+    return send_file(file)
+
+@app.route('/files/<path:path>')
+def send_files(path):
+    return send_from_directory(webFolder+ '/files', path)
+
+@app.route('/fonts/<path:path>')
+def send_webfonts(path):
+    return send_from_directory(webFolder+ '/fonts', path)
 
 @app.route('/version')
 def get_version():
@@ -100,28 +149,6 @@ def get_version():
     res['update_available']= updateAvailable
 
     return jsonify(res)
-
-@app.route('/css/<path:path>')
-def send_css(path):
-    return send_from_directory(webFolder+ '/css', path, mimetype="text/css")
-
-@app.route('/i18n/<path:path>')
-def send_i18n(path):
-    file= i18nFolder+ '/'+ path+ '/translation.json'
-    # if given language is not found return english
-    return send_file(file)
-
-@app.route('/files/<path:path>')
-def send_files(path):
-    return send_from_directory(webFolder+ '/files', path)
-
-@app.route('/fonts/<path:path>')
-def send_webfonts(path):
-    return send_from_directory(webFolder+ '/fonts', path)
-
-@app.route('/pages/<path:path>')
-def send_pages(path):
-    return send_from_directory(webFolder+ '/pages', path, mimetype="application/javascript")
 
 @app.route('/info', methods = ['GET'])
 def get_info():
@@ -165,6 +192,13 @@ def get_datetime():
         for line in p.stdout:
             (key, val)= line.decode('ascii').strip().split('=')
             res[key]= val
+        p= Popen('timedatectl list-timezones', shell=True, stdout=PIPE, close_fds=True)
+        tzones= []
+        for idx, line in p.stdout:
+            tz= line.decode('ascii').strip()
+            tzones[idx]= tz
+        res['timezones']= tzones
+
     else:
         now= datetime.now()
         # tz= now.astimezone().tzinfo.tzname(now)
@@ -174,6 +208,7 @@ def get_datetime():
         res['NTPSynchronized']= 'yes'
         res['NTP']= 'yes'
         res['TimeUSec']= now.strftime("%Y-%m-%d %H:%M:%S CET")
+        res['timezones']= ['Europe/Berlin', 'Africa/Windhoek', 'America/Adak', 'Antarctica/Vostok', 'Asia/Almaty', 'Indian/Reunion', 'Pacific/Apia']
     return jsonify(res)
 
 @app.route('/sayIp')
