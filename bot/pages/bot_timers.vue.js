@@ -27,7 +27,7 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="orange darken-1" text @click="removeTimer()">{{$t('config.main.btn_ok')}}</v-btn>
-        <v-btn color="green darken-1" text @click="confirm_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
+        <v-btn color="grey lighten-1" text @click="confirm_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

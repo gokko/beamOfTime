@@ -72,8 +72,8 @@ def index():
 
     res= res.replace('[version]', str(curVersion.get('version', 0)))
     if not isRaspi:
-        res= res.replace('<!--isRaspi-->', '<!--').replace('<!--!isRaspi-->', '-->')
-        res= res.replace('<!--isDev ', '').replace(' isDev-->', '')
+        res= res.replace('<!--isRaspi-->', '<!--').replace('<!--/isRaspi-->', '-->')
+        res= res.replace('<!--isDev ', '').replace(' /isDev-->', '')
     return res
     
 @app.route('/favicon.ico')
