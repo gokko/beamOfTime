@@ -13,6 +13,10 @@ async function readInfo() {
   model.info= await $.getJSON("/info");
 }
 
+async function readDatetime() {
+  model.datetime= await $.getJSON("/datetime");
+}
+
 // get current version and check for version updates
 async function readVersion() {
   model.version= await $.getJSON("/version");
@@ -148,6 +152,7 @@ readConfig();
 readInfo();
 readVersion();
 readWifi();
+readDatetime();
 
 // disable splash screen after 1 sec
 setTimeout(() => {

@@ -33,6 +33,34 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
     </v-expansion-panel>
 
     <v-expansion-panel>
+      <v-expansion-panel-header>{{$t('config.datetime.title')}}</v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-list one-line>
+          <v-autocomplete :label="$t('config.datetime.timezone')" v-model="datetime.Timezone" :items="datetime.timezones"></v-autocomplete>
+          <v-switch color="#04BF3D" v-model="datetime.NTP" inset :label="$t('config.datetime.useNTP')"></v-switch>
+          <div v-if="datetime.NTP">
+            <v-text-field disabled="true" v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar"></v-text-field>
+            <v-text-field disabled="true" v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock"></v-text-field>
+          </div>
+          <div v-if="!datetime.NTP">
+            <v-menu v-model="datePopup" :nudge-right="40"
+                transition="scale-transition" offset-y min-width="290px">
+              <template v-slot:activator="{ on }">
+                <v-text-field v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar" readonly v-on="on"></v-text-field>
+              </template>
+              <v-date-picker v-model="date" @input="datePopup = false"></v-date-picker>
+            </v-menu>
+            <v-menu v-model="timePopup" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+              <template v-slot:activator="{ on }">
+                <v-text-field v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock" readonly v-on="on"></v-text-field>
+              </template>
+              <v-time-picker v-if="timePopup" v-model="time" full-width @click:minute="timePopup= false"></v-time-picker>
+            </v-menu>
+          </div>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
       <v-expansion-panel-header>
         {{$t('config.backup.title')}}
       </v-expansion-panel-header>
@@ -204,33 +232,45 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
 
 var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
-  props: ["cfg", "i18n", "wifi", "version", "info"],
-  data: () => ({
-    config_panel: 0,
-    wifi_panel: null,
-    showPwd: false,
-    wifi_type_items: ['WPA-PSK'],
-    wifi_confirm_idx: null,
-    restart_req: '',
-    form_valid: true,
-    info_dlg: false,
-    info_dlg_bg_activity: false,
-    info_dlg_title: '',
-    info_dlg_text: '',
-    confirm_dialog: false,
-    confirm_dialog_title: '',
-    confirm_dialog_text: '',
-    confirm_dialog_text2: '',
-    confirm_dialog_action: null,
-    pwd_rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 8 || 'Min 8 characters',
+  props: ["cfg", "i18n", "wifi", "version", "info", "datetime"],
+  data() {
+    return {
+      config_panel: 0,
+      wifi_panel: null,
+      showPwd: false,
+      wifi_type_items: ['WPA-PSK'],
+      wifi_confirm_idx: null,
+      restart_req: '',
+      form_valid: true,
+      info_dlg: false,
+      info_dlg_bg_activity: false,
+      info_dlg_title: '',
+      info_dlg_text: '',
+      confirm_dialog: false,
+      confirm_dialog_title: '',
+      confirm_dialog_text: '',
+      confirm_dialog_text2: '',
+      confirm_dialog_action: null,
+      datePopup: false,
+      timePopup: false,
+      pwd_rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+      },
+      ledStartRule: [
+        v => (parseInt(v) <= 120) || 'start must be <= 120',
+        v => (parseInt(v) >= 0) || 'start must be >= 0',
+      ]
+    }
+  },
+  computed: {
+    date: function () {
+      return this.datetime.TimeUSec.substr(0, 10);
     },
-    ledStartRule: [
-      v => (parseInt(v) <= 120) || 'start must be <= 120',
-      v => (parseInt(v) >= 0) || 'start must be >= 0',
-    ]
-  }),
+    time: function () {
+      return this.datetime.TimeUSec.substr(11, 8);
+    },
+  },
   methods: {
     showConfirmDialog(title, text, action) {
       this.confirm_dialog_title= title;

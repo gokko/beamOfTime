@@ -12,6 +12,13 @@
       "not_evailable": "Es ist keine Sicherung vorhanden.",
       "title": "Sicherung"
     },
+    "datetime": {
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "timezone": "Zeitzone",
+      "title": "Datum & Uhrzeit",
+      "useNTP": "Zeit automatisch setzen"
+    },
     "info": {
       "adresses": "IP-Adressen",
       "hostname": "Rechnername",

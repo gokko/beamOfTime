@@ -12,6 +12,13 @@
       "not_evailable": "No backup available.",
       "title": "backup"
     },
+    "datetime": {
+      "date": "date",
+      "time": "time",
+      "timezone": "Timezone",
+      "title": "Date & Time",
+      "useNTP": "set time from internet"
+    },
     "info": {
       "adresses": "IP-addresses",
       "hostname": "servername",
