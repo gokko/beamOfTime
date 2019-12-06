@@ -9,12 +9,12 @@
 	<meta charset="utf-8"/>
 
 	<!--isRaspi-->
-	<link href="./css/roboto-fonts.css,materialdesignicons.min.css,vuetify-v2.1.9.css,index.css" rel="stylesheet">
+	<link href="./css/roboto-fonts.css,materialdesignicons.min.css,vuetify-v2.1.13.css,index.css" rel="stylesheet">
 	<!--!isRaspi-->
 
 	<!--isDev <link href="./css/roboto-fonts.css" rel="stylesheet"> /isDev-->
 	<!--isDev <link href="./css/materialdesignicons.min.css" rel="stylesheet"> /isDev-->
-	<!--isDev <link href="./css/vuetify-v2.1.9.css" rel="stylesheet"> /isDev-->
+	<!--isDev <link href="./css/vuetify-v2.1.13.css" rel="stylesheet"> /isDev-->
 	<!--isDev <link href="./css/index.css" rel="stylesheet"> /isDev-->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
@@ -39,7 +39,7 @@
 				<bot_home v-if="model.ui.bottomNav=='bot_home'" :cfg.sync="model.cfg" :ui.sync="model.ui"></bot_home>
 				<bot_themes v-if="model.ui.bottomNav=='bot_themes'" :cfg.sync="model.cfg" :ui.sync="model.ui"></bot_themes>
 				<bot_timers v-if="model.ui.bottomNav=='bot_timers'" :cfg.sync="model.cfg"></bot_timers>
-				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :wifi.sync="model.wifi" :version="model.version" :info="model.info" :datetime="model.datetime"></bot_config>
+				<bot_config v-if="model.ui.bottomNav=='bot_config'" :cfg.sync="model.cfg" :wifi.sync="model.wifi" :version="model.version" :info="model.info" :datetime.sync="model.datetime"></bot_config>
 				<v-img v-if="model.ui.bottomNav=='bot_intro'" src="./files/bot-intro.png" style="width: 320px; display: block; margin-left: auto; margin-right: auto; top:100px;" />
 			</v-container>
 			<v-snackbar :color="model.ui.snackbar_color" v-model="model.ui.snackbar" :timeout="3000">
@@ -79,15 +79,15 @@
 	</div>
 
 	<!--isRaspi-->
-	<script src="./js/jquery-v3.4.1.min.js,vue-v2.6.10.min.js,vuetify-v2.1.9.min.js,i18next.min-v8.0.0.js,vue-i18next-v0.15.1.js,i18nextXHRBackend.min.js"></script>
+	<script src="./js/jquery-v3.4.1.min.js,vue-v2.6.10.min.js,vuetify-v2.1.13.min.js,i18next.min-v8.0.0.js,vue-i18next-v0.15.1.js,i18nextXHRBackend.min.js"></script>
 	<!--!isRaspi-->
 
-	<!--isDev <script src="./js/jquery-v3.4.1.min.js"></script> /isDev--> <!-- https://github.com/jquery/jquery/releases -->
-	<!--isDev <script src="./js/vue-v2.6.10.min.js"></script> /isDev--> <!-- https://github.com/vuejs/vue/releases -->
-	<!--isDev <script src="./js/vuetify-v2.1.9.min.js"></script> /isDev--> <!-- https://github.com/vuetifyjs/vuetify/releases -->
-	<!--isDev <script src="./js/i18next.min-v8.0.0.js"></script> /isDev--> <!-- https://unpkg.com/browse/i18next@8.0.0/ -->
+	<!--isDev <script src="./js/jquery-v3.4.1.js"></script> /isDev--> <!-- https://github.com/jquery/jquery/releases -->
+	<!--isDev <script src="./js/vue-v2.6.10.js"></script> /isDev--> <!-- https://github.com/vuejs/vue/releases -->
+	<!--isDev <script src="./js/vuetify-v2.1.13.js"></script> /isDev--> <!-- https://github.com/vuetifyjs/vuetify/releases -->
+	<!--isDev <script src="./js/i18next-v8.0.0.js"></script> /isDev--> <!-- https://unpkg.com/browse/i18next@8.0.0/ -->
 	<!--isDev <script src="./js/vue-i18next-v0.15.1.js"></script> /isDev--> <!-- https://unpkg.com/browse/@panter/vue-i18next@0.15.1/dist/ -->
-	<!--isDev <script src="./js/i18nextXHRBackend.min.js"></script> /isDev--> <!-- https://github.com/i18next/i18next-xhr-backend -->
+	<!--isDev <script src="./js/i18nextXHRBackend.js"></script> /isDev--> <!-- https://github.com/i18next/i18next-xhr-backend -->
 
 	<!-- Vue Pages and Components here -->
 	<!--isRaspi-->

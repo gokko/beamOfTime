@@ -35,14 +35,15 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
     <v-expansion-panel>
       <v-expansion-panel-header>{{$t('config.datetime.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-list one-line>
+        <v-form>
           <v-autocomplete :label="$t('config.datetime.timezone')" v-model="datetime.Timezone" :items="datetime.timezones"></v-autocomplete>
           <v-switch color="#04BF3D" v-model="datetime.NTP" inset :label="$t('config.datetime.useNTP')"></v-switch>
+          <v-text-field disabled v-model="datetime.NTP" label="NTP"></v-text-field>
           <div v-if="datetime.NTP">
-            <v-text-field disabled="true" v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar"></v-text-field>
-            <v-text-field disabled="true" v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock"></v-text-field>
+            <v-text-field disabled v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar"></v-text-field>
+            <v-text-field disabled v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock"></v-text-field>
           </div>
-          <div v-if="!datetime.NTP">
+          <div v-else>
             <v-menu v-model="datePopup" :nudge-right="40"
                 transition="scale-transition" offset-y min-width="290px">
               <template v-slot:activator="{ on }">
@@ -57,6 +58,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
               <v-time-picker v-if="timePopup" v-model="time" full-width @click:minute="timePopup= false"></v-time-picker>
             </v-menu>
           </div>
+        </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
