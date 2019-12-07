@@ -36,10 +36,9 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       <v-expansion-panel-header>{{$t('config.datetime.title')}}</v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-form>
-          <v-autocomplete :label="$t('config.datetime.timezone')" v-model="datetime.Timezone" :items="datetime.timezones"></v-autocomplete>
-          <v-switch color="#04BF3D" v-model="datetime.NTP" inset :label="$t('config.datetime.useNTP')"></v-switch>
-          <v-text-field disabled v-model="datetime.NTP" label="NTP"></v-text-field>
-          <div v-if="datetime.NTP">
+          <v-autocomplete :label="$t('config.datetime.timezone')" v-model="dt.Timezone" :items="dt.timezones"></v-autocomplete>
+          <v-switch color="#04BF3D" v-model="dt.NTP" inset :label="$t('config.datetime.useNTP')"></v-switch>
+          <div v-if="dt.NTP">
             <v-text-field disabled v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar"></v-text-field>
             <v-text-field disabled v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock"></v-text-field>
           </div>
@@ -234,7 +233,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
 
 var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
-  props: ["cfg", "i18n", "wifi", "version", "info", "datetime"],
+  props: ["cfg", "i18n", "wifi", "version", "info", "dt"],
   data() {
     return {
       config_panel: 0,
@@ -266,11 +265,23 @@ var bot_config = Vue.component("bot_config", {
     }
   },
   computed: {
-    date: function () {
-      return this.datetime.TimeUSec.substr(0, 10);
+    date: {
+      get: function () {
+        return this.dt.TimeUSec.substr(0, 10);
+      },
+      set: function(val) {
+        this.dt.TimeUSec= val+ ' '+ this.dt.TimeUSec.substr(11, 8);
+      }
     },
-    time: function () {
-      return this.datetime.TimeUSec.substr(11, 8);
+    time: {
+      get: function () {
+        return this.dt.TimeUSec.substr(11, 8);
+      },
+      set: function(val) {
+        if (val.length== 5)
+          val+= ':00';
+        this.dt.TimeUSec= this.dt.TimeUSec.substr(0, 10)+ ' '+ val;
+      }
     },
   },
   methods: {

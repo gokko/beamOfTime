@@ -14,7 +14,8 @@ async function readInfo() {
 }
 
 async function readDatetime() {
-  model.datetime= await $.getJSON("/datetime");
+  model.dt= await $.getJSON("/datetime");
+  model.dt['curDateTime']= model.dt.TimeUSec;
 }
 
 // get current version and check for version updates
@@ -91,6 +92,7 @@ var model = {
     info: {},
     version: {},
     wifi: {},
+    dt: {},
     ui: {
       bottomNav: 'bot_intro',
       themeIndex: 0,
@@ -160,4 +162,17 @@ setTimeout(() => {
     model.ui.bottomNav= 'bot_home';
   }
 }, 2000);
+
+// keep time shown in config up to date
+setInterval(() => {
+  if (model.dt.curDateTime) {
+    d1= new Date(model.dt.curDateTime.slice(0, 19).replace(' ', 'T'));
+    d2= new Date(d1.getTime()+ 1000);
+    d2.setMinutes(d2.getMinutes() - d2.getTimezoneOffset());
+    model.dt.curDateTime= d2.toISOString().slice(0, 19).replace('T', ' ');
+  }
+  if (model.dt.NTP) {
+    model.dt.TimeUSec= model.dt.curDateTime;
+  }
+}, 1000);
 
