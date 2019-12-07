@@ -194,6 +194,8 @@ def get_datetime():
         p= Popen('timedatectl show', shell=True, stdout=PIPE, close_fds=True)
         for line in p.stdout:
             (key, val)= line.decode('ascii').strip().split('=')
+            if key== 'TimeUSec':
+                val= val[4:]
             res[key]= val
         p= Popen('timedatectl list-timezones', shell=True, stdout=PIPE, close_fds=True)
         tzones= []
