@@ -197,11 +197,9 @@ def get_datetime():
             res[key]= val
         p= Popen('timedatectl list-timezones', shell=True, stdout=PIPE, close_fds=True)
         tzones= []
-        idx= 0
         for line in p.stdout:
             tz= line.decode('ascii').strip()
-            tzones[idx]= tz
-            idx+= 1
+            tzones.append(tz)
         res['timezones']= tzones
 
     else:
