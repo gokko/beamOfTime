@@ -234,11 +234,11 @@ def send_datetime():
     # on raspi set timezone and date & time
     if isRaspi:
         Popen('sudo timedatectl set-timezone {0}'.format(dtJson.get('Timezone', 'Europe/Berlin')), shell=True)
-        # enable NTP and update hwclock
-        if dtJson.get('NTP', True) and not curSettings.get('NTP', True):
+        # enable NTP if it's currently disabled
+        if dtJson.get('NTP', True) and curSettings.get('NTP', True)== False:
             Popen('sudo timedatectl set-ntp true', shell=True)
-        elif not dtJson.get('NTP', True):
-            print("sudo timedatectl set-ntp false && sudo date -s '{0}'".format(dtJson.get('TimeUSec', '')))
+        # disable NTP and set given date and time
+        elif dtJson.get('NTP', True)== False:
             Popen("sudo timedatectl set-ntp false && sudo date -s '{0}'".format(dtJson.get('TimeUSec', '')), shell=True)
     # on other systems write dummy values to file for debugging
     else:

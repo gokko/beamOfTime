@@ -315,9 +315,11 @@ var bot_config = Vue.component("bot_config", {
         model.ui.snackbar_text= 'update date & time request sent'; // this.$i18n.t('config.wifi.saved');
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
-        // get new values after 3 sec.
-        this.restart_req= 'restart';
-        this.sendRestartConfirmed();
+        // restart after 3 sec.
+        setTimeout(() => {
+          this.restart_req= 'restart';
+          this.sendRestartConfirmed();
+        }, 3000);
       },
       (data) => {
         model.ui.snackbar_text= data.statusText;
