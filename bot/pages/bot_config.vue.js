@@ -316,7 +316,8 @@ var bot_config = Vue.component("bot_config", {
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
         // get new values after 3 sec.
-        setTimeout(() => { readDatetime(); }, 3000);
+        this.restart_req= 'restart';
+        sendRestartConfirmed();
       },
       (data) => {
         model.ui.snackbar_text= data.statusText;
