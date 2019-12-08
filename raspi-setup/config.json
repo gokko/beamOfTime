@@ -7,8 +7,8 @@
         "nothing"
     ],
     "settings": {
-        "currentTheme": "orange",
-        "language": "de",
+        "currentTheme": "pc",
+        "language": "en",
         "lightColor": "#C34117",
         "mode": "clock",
         "startAnimation": false
@@ -17,11 +17,11 @@
         "ledCount": 120,
         "ledDirection": 1,
         "ledDirection2": -1,
-        "ledPin": 12,
+        "ledPin": 18,
         "ledStart": 0,
         "ledStart2": 60,
         "soundAvailable": true,
-        "soundVolume": 100
+        "soundVolume": 95
     },
     "themes": [
         {
@@ -41,15 +41,15 @@
         },
         {
             "color": {
-                "bg": "#011111",
-                "bg2": "#555555",
+                "bg": "#171818",
+                "bg2": "#292929",
                 "hr": "#8C31BF",
                 "min": "#188418",
                 "sec": "#FF0F44"
             },
             "gradient": {
-                "hr": false,
-                "min": false,
+                "hr": true,
+                "min": true,
                 "sec": false
             },
             "name": "pc"
@@ -193,52 +193,67 @@
     "timers": [
         {
             "action": "animation",
-            "desc": "animation each minute, from 7:00 to 22:59",
+            "desc": "animation every full minute, from 7:00 to 22:59",
             "name": "full minute animation",
             "params": "colorDrop",
-            "time": "* 7-22 * * *"
+            "time": "* 7-22 * * *",
+            "enabled": true
         },
         {
             "action": "animation",
             "desc": "animation every full hour, from 7:00 to 22.59",
             "name": "full hour animation",
             "params": "colorWipeQuarter",
-            "time": "0 7-22 * * *"
+            "time": "0 7-22 * * *",
+            "enabled": true
         },
         {
             "action": "theme",
             "desc": "switch to night theme every day at 23:00",
             "name": "night theme",
-            "params": "night_green",
-            "time": "0 23 * * *"
+            "params": "night_red",
+            "time": "0 23 * * *",
+            "enabled": true
         },
         {
             "action": "theme",
             "desc": "switch to day theme every day at 7:00",
             "name": "morning theme",
             "params": "blue",
-            "time": "0 7 * * *"
+            "time": "0 7 * * *",
+            "enabled": true
         },
         {
             "action": "theme",
             "desc": "switch theme every day at 12:00",
             "name": "afternoon theme",
             "params": "orange",
-            "time": "0 12 * * *"
+            "time": "0 12 * * *",
+            "enabled": true
         },
         {
             "action": "theme",
             "desc": "switch theme at 18:00 every day",
             "name": "evening theme",
             "params": "red",
-            "time": "0 18 * * *"
+            "time": "0 18 * * *",
+            "enabled": true
         },
         {
             "action": "sound",
-            "desc": "sound every minute from 7-22",
-            "name": "cuckoo sound every minute",
-            "params": "cuckoo.mp3",
-            "time": "* 7-22 * * *"
+            "desc": "cuckoo sound every full hour from 9am - 9pm",
+            "enabled": true,
+            "name": "cuckoo every hour",
+            "params": "cuckoo-hours",
+            "time": "0 9-21 * * * *"
+        },
+        {
+            "action": "speak",
+            "desc": "say current time every 5 minutes from 9am - 9pm",
+            "enabled": true,
+            "name": "say current time every 5 minutes",
+            "params": "current-time",
+            "time": "*/5 9-21 * * *"
         }
     ]
 }

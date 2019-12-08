@@ -26,8 +26,8 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
       <v-card-text>{{$t('timers.remove_confirm_msg')}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="orange darken-1" text @click="removeTimer()">{{$t('config.main.btn_ok')}}</v-btn>
-        <v-btn color="grey lighten-1" text @click="confirm_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
+        <v-btn color="grey lighten-1" text @click="confirm_dialog= false">{{$t('main.btn_cancel')}}</v-btn>
+        <v-btn color="orange darken-1" text @click="removeTimer()">{{$t('main.btn_delete')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -46,8 +46,8 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="orange darken-1" text @click="editTimeConfirm()">{{$t('config.main.btn_ok')}}</v-btn>
-        <v-btn color="green darken-1" text @click="time_edit_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
+        <v-btn color="grey lighten-1" text @click="time_edit_dialog= false">{{$t('main.btn_cancel')}}</v-btn>
+        <v-btn color="orange darken-1" text @click="editTimeConfirm()">{{$t('main.btn_ok')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -94,7 +94,7 @@ var bot_timers = Vue.component("bot_timers", {
         enabled: false,
         name: '',
         params: '',
-        time: ''
+        time: '* * * * *'
       };
       this.cfg.timers.push(timer);
       this.timer_panel= this.cfg.timers.length- 1;
@@ -126,7 +126,6 @@ var bot_timers = Vue.component("bot_timers", {
       t.weekdays= t.weekdays.replace(/ /g, '');
       t.years= t.years.replace(/ /g, '');
       this.cfg.timers[this.timer_idx].time= [t.minutes, t.hours, t.days, t.months, t.weekdays, t.years].join(' ');
-      console.log(this.cfg.timers[this.timer_idx].time);
     }
   }
 });

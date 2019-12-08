@@ -43,20 +43,28 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
             <v-text-field disabled v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock"></v-text-field>
           </div>
           <div v-else>
-            <v-menu v-model="datePopup" :nudge-right="40"
-                transition="scale-transition" offset-y min-width="290px">
+            <v-menu ref="dateMenu" v-model="datePopup" :nudge-right="40" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
               <template v-slot:activator="{ on }">
                 <v-text-field v-model="date" :label="$t('config.datetime.date')" prepend-icon="mdi-calendar" readonly v-on="on"></v-text-field>
               </template>
-              <v-date-picker v-model="date" @input="datePopup = false"></v-date-picker>
+              <v-date-picker v-model="date" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="grey lighten-1" @click="datePopup= false">{{$t('main.btn_cancel')}}</v-btn>
+                <v-btn text color="green darken-1" @click="$refs.dateMenu.save(date)">{{$t('main.btn_ok')}}</v-btn>
+              </v-date-picker>
             </v-menu>
-            <v-menu v-model="timePopup" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+            <v-menu ref="timeMenu" v-model="timePopup" :return-value.sync="time" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
               <template v-slot:activator="{ on }">
                 <v-text-field v-model="time" :label="$t('config.datetime.time')" prepend-icon="mdi-clock" readonly v-on="on"></v-text-field>
               </template>
-              <v-time-picker v-if="timePopup" v-model="time" full-width @click:minute="timePopup= false"></v-time-picker>
+              <v-time-picker v-if="timePopup" v-model="time" full-width format="24hr" use-seconds>
+                <v-spacer></v-spacer>
+                <v-btn text color="grey lighten-1" @click="timePopup= false">{{$t('main.btn_cancel')}}</v-btn>
+                <v-btn text color="green darken-1" @click="$refs.timeMenu.save(time)">{{$t('main.btn_ok')}}</v-btn>
+              </v-time-picker>
             </v-menu>
           </div>
+          <v-btn outlined color="green darken-1" @click="sendDateTimeUpdate()"><v-icon>mdi-content-save</v-icon></v-btn>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -73,8 +81,8 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
         <div v-if="info.backup_time == ''">{{$t('config.backup.not_evailable')}}<br/><br/></div>
         <div v-if="info.backup_time != ''">{{$t('config.backup.evailable')}}<br/>{{this.info.backup_time}}<br/><br/></div>
         <v-spacer></v-spacer>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.backup.title'), $t('config.backup.confirm'), sendBackupRequest)">{{$t('config.backup.btn_backup')}}</v-btn>
-        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.restore.title'), $t('config.restore.confirm'), sendRestoreRequest)">{{$t('config.backup.btn_restore')}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.backup.title'), $t('config.backup.confirm'), '', sendBackupRequest, $t('config.backup.btn_backup'))">{{$t('config.backup.btn_backup')}}</v-btn>
+        <v-btn outlined color="orange darken-1" @click="showConfirmDialog($t('config.restore.title'), $t('config.restore.confirm'), '', sendRestoreRequest, $t('config.backup.btn_restore'))">{{$t('config.backup.btn_restore')}}</v-btn>
       </v-expansion-panel-content>
     </v-expansion-panel>
 
@@ -211,7 +219,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       <v-card-text>{{info_dlg_text}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text :loading="info_dlg_bg_activity" @click="info_dlg = false">{{$t('config.main.btn_ok')}}</v-btn>
+        <v-btn color="green darken-1" text :loading="info_dlg_bg_activity" @click="info_dlg = false">{{$t('main.btn_ok')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -223,8 +231,8 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
       <v-card-text>{{confirm_dialog_text2}}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="orange darken-1" text @click="confirm_dialog_action()">{{$t('config.main.btn_ok')}}</v-btn>
-        <v-btn color="grey lighten-1" text @click="confirm_dialog= false">{{$t('config.main.btn_cancel')}}</v-btn>
+        <v-btn color="grey lighten-1" text @click="confirm_dialog= false">{{$t('main.btn_cancel')}}</v-btn>
+        <v-btn color="orange darken-1" text @click="confirm_dialog_action()">{{confirm_dialog_action_button}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -252,6 +260,7 @@ var bot_config = Vue.component("bot_config", {
       confirm_dialog_text: '',
       confirm_dialog_text2: '',
       confirm_dialog_action: null,
+      confirm_dialog_action_button: '',
       datePopup: false,
       timePopup: false,
       pwd_rules: {
@@ -285,12 +294,33 @@ var bot_config = Vue.component("bot_config", {
     },
   },
   methods: {
-    showConfirmDialog(title, text, action) {
+    showConfirmDialog(title, text, text2, action, action_button) {
       this.confirm_dialog_title= title;
       this.confirm_dialog_text= text;
-      this.confirm_dialog_text2= '';
+      this.confirm_dialog_text2= text2;
       this.confirm_dialog_action= action;
+      this.confirm_dialog_action_button= action_button;
       this.confirm_dialog= true;
+    },
+    sendDateTimeUpdate() {
+      dt2= Object.assign({}, this.dt);
+      delete dt2['timezones']; // no need to send back the long list of timezones
+      $.ajax({
+        url: '/datetime',
+        type: 'POST',
+        data: JSON.stringify(dt2),
+        contentType: 'application/json; charset=utf-8'
+      }).then((data) => {
+        // success
+        model.ui.snackbar_text= 'update date & time request sent, please restart'; // this.$i18n.t('config.wifi.saved');
+        model.ui.snackbar_color= 'green';
+        model.ui.snackbar= true;
+      },
+      (data) => {
+        model.ui.snackbar_text= data.statusText;
+        model.ui.snackbar_color= 'orange';
+        model.ui.snackbar= true;
+      });
     },
     addWifi() {
       con= {
@@ -304,13 +334,12 @@ var bot_config = Vue.component("bot_config", {
     },
     removeWifi(idx) {
       this.wifi_confirm_idx= idx;
-      this.confirm_dialog_title= this.$i18n.t('config.wifi.confirm_title');
-      this.confirm_dialog_text= this.$i18n.t('config.wifi.confirm_question');
-      this.confirm_dialog_text2= '';
+      title= this.$i18n.t('config.wifi.confirm_title');
+      text= this.$i18n.t('config.wifi.confirm_question');
+      text2= '';
       if (this.wifi.networks.length== 1)
-        this.confirm_dialog_text2= this.$i18n.t('config.wifi.confirm_question2');
-      this.confirm_dialog_action= this.removeWifiConfirm;
-      this.confirm_dialog= true;
+        text2= this.$i18n.t('config.wifi.confirm_question2');
+      this.showConfirmDialog(title, text, text2, this.removeWifiConfirm, this.$i18n.t('main.btn_delete'))
     },
     removeWifiConfirm() {
       this.confirm_dialog= false;
@@ -322,7 +351,7 @@ var bot_config = Vue.component("bot_config", {
     },
     sendUpdateRequest() {
       this.info_dlg_title= this.$i18n.t('config.update.title');
-      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
+      this.info_dlg_text= this.$i18n.t('main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
@@ -346,7 +375,7 @@ var bot_config = Vue.component("bot_config", {
     sendBackupRequest() {
       this.confirm_dialog= false;
       this.info_dlg_title= this.$i18n.t('config.backup.title');
-      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
+      this.info_dlg_text= this.$i18n.t('main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
@@ -366,7 +395,7 @@ var bot_config = Vue.component("bot_config", {
     sendRestoreRequest() {
       this.confirm_dialog= false;
       this.info_dlg_title= this.$i18n.t('config.restore.title');
-      this.info_dlg_text= this.$i18n.t('config.main.please_wait');
+      this.info_dlg_text= this.$i18n.t('main.please_wait');
       this.info_dlg= true;
       this.info_dlg_bg_activity= true;
       $.ajax({
@@ -383,11 +412,10 @@ var bot_config = Vue.component("bot_config", {
     },
     sendRestartRequest(req) {
       this.restart_req= req;
-      this.confirm_dialog_title= this.$i18n.t('config.restart.btn_'+ req);
-      this.confirm_dialog_text= this.$i18n.t('config.restart.req_'+ req);
-      this.confirm_dialog_text2= this.$i18n.t('config.restart.req2_'+ req);;
-      this.confirm_dialog_action= this.sendRestartConfirmed;
-      this.confirm_dialog= true;
+      title= this.$i18n.t('config.restart.btn_'+ req);
+      text= this.$i18n.t('config.restart.req_'+ req);
+      text2= this.$i18n.t('config.restart.req2_'+ req);;
+      this.showConfirmDialog(title, text, text2, this.sendRestartConfirmed, title)
     },
     sendRestartConfirmed() {
       $.ajax({

@@ -164,7 +164,7 @@ setTimeout(() => {
   }
 }, 2000);
 
-// keep time shown in config up to date
+// keep time shown in config/datetime up to date if set to auto-uptate (NTP)
 setInterval(() => {
   // update internal value current time every second
   if (model.dt.curTime) {

@@ -190,6 +190,7 @@ def get_info():
 @app.route('/datetime')
 def get_datetime():
     res= {}
+    # on raspi read system settings using timedatectl
     if isRaspi:
         p= Popen('timedatectl show', shell=True, stdout=PIPE, close_fds=True)
         for line in p.stdout:
@@ -204,17 +205,36 @@ def get_datetime():
             tzones.append(tz)
         res['timezones']= tzones
 
+    # on other systems read dummy values from file for debugging
     else:
+        with open(webFolder+ '/timedatectl.json') as f:
+            res = json.load(f)
         now= datetime.now()
-        # tz= now.astimezone().tzinfo.tzname(now)
-        res['Timezone']= 'Europe/Berlin'
-        res['LocalRTC']= 'no'
-        res['CanNTP']= 'yes'
-        res['NTPSynchronized']= 'yes'
-        res['NTP']= 'yes'
         res['TimeUSec']= now.strftime("%Y-%m-%d %H:%M:%S CET")
         res['timezones']= ['Europe/Berlin', 'Africa/Windhoek', 'America/Adak', 'Antarctica/Vostok', 'Asia/Almaty', 'Indian/Reunion', 'Pacific/Apia']
+
     return jsonify(res)
+
+@app.route('/datetime', methods = ['POST'])
+def send_datetime():
+    curSettings= json.loads(get_datetime())
+
+    dtJson= json.loads(request.data)
+    # on raspi set timezone and date & time
+    if isRaspi:
+        Popen('sudo timedatectl set-timezone {0}'.format(dtJson.get('Timezone', 'Europe/Berlin')), shell=True)
+        # enable NTP and update hwclock
+        if dtJson.get('NTP', True) and not curSettings.get('NTP', True):
+            Popen('sudo timedatectl set-ntp true', shell=True)
+        else:
+            Popen("sudo timedatectl set-ntp false && sudo date -s '{0}'".format(dtJson.get('TimeUSec', True)), shell=True)
+    # on other systems write dummy values to file for debugging
+    else:
+        with open(webFolder+ '/timedatectl.json', 'w') as f:
+            json.dump(dtJson, f)
+
+    # return latest values
+    return get_datetime()
 
 @app.route('/sayIp')
 def say_ip():

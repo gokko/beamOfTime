@@ -35,11 +35,6 @@
       "ring2_start_lbl": "outer LEDs start",
       "title": "LED settings"
     },
-    "main": {
-      "btn_cancel": "Cancel",
-      "btn_ok": "Ok",
-      "please_wait": "... please wait ..."
-    },
     "restart": {
       "btn_reboot": "reboot",
       "btn_restart": "restart",
@@ -114,10 +109,14 @@
   },
   "main": {
     "app_title": "beam of time",
+    "btn_cancel": "Cancel",
+    "btn_delete": "delete",
+    "btn_ok": "Ok",
     "language_dir": "ltr",
     "language_name": "English",
     "msg_config_save_error": "error saving configuration:",
-    "msg_config_saved": "configuration saved successfully"
+    "msg_config_saved": "configuration saved successfully",
+    "please_wait": "... please wait ..."
   },
   "themes": {
     "bg2_color_lbl": "background 2nd color",

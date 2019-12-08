@@ -28,11 +28,6 @@
       "ring2_start_lbl": "راه‌اندازی LED خارجی",
       "title": "تنظیمات LED"
     },
-    "main": {
-      "btn_cancel": "لغو",
-      "btn_ok": "تأیید",
-      "please_wait": "...لطفاً صبر کنید..."
-    },
     "restart": {
       "btn_reboot": "راه‌اندازی مجدد",
       "btn_restart": "شروع مجدد",
@@ -107,10 +102,13 @@
   },
   "main": {
     "app_title": "پرتوی زمان",
+    "btn_cancel": "لغو",
+    "btn_ok": "تأیید",
     "language_dir": "rtl",
     "language_name": "فارسی",
     "msg_config_save_error": "خطا در ذخیره پیکربندی",
-    "msg_config_saved": "پیکربندی ذخیره شد"
+    "msg_config_saved": "پیکربندی ذخیره شد",
+    "please_wait": "...لطفاً صبر کنید..."
   },
   "themes": {
     "bg2_color_lbl": "رنگ دوم زمینه",

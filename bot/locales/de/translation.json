@@ -17,7 +17,7 @@
       "time": "Uhrzeit",
       "timezone": "Zeitzone",
       "title": "Datum & Uhrzeit",
-      "useNTP": "Zeit automatisch setzen"
+      "useNTP": "Zeit automatisch stellen"
     },
     "info": {
       "adresses": "IP-Adressen",
@@ -34,11 +34,6 @@
       "ring2_dir_lbl": "Richtung äußere LEDs",
       "ring2_start_lbl": "Start äußere LEDs",
       "title": "LED Einstellungen"
-    },
-    "main": {
-      "btn_cancel": "Abbrechen",
-      "btn_ok": "Ok",
-      "please_wait": "... bitte warten ..."
     },
     "restart": {
       "btn_reboot": "Reboot",
@@ -114,10 +109,14 @@
   },
   "main": {
     "app_title": "beam of time",
+    "btn_cancel": "Abbrechen",
+    "btn_delete": "Löschen",
+    "btn_ok": "Ok",
     "language_dir": "ltr",
     "language_name": "Deutsch",
     "msg_config_save_error": "Fehler beim Speichern der Konfiguration:",
-    "msg_config_saved": "Konfiguration gespeichert"
+    "msg_config_saved": "Konfiguration gespeichert",
+    "please_wait": "... bitte warten ..."
   },
   "themes": {
     "bg2_color_lbl": "2te Hintergrundfarbe",

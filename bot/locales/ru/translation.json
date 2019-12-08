@@ -35,11 +35,6 @@
       "ring2_start_lbl": "внешний светодиодный старт",
       "title": "Настройки светодиодов"
     },
-    "main": {
-      "btn_cancel": "отменить",
-      "btn_ok": "ок",
-      "please_wait": "... пожалуйста, подождите ..."
-    },
     "restart": {
       "btn_reboot": "перезагружать",
       "btn_restart": "перезапуск",
@@ -114,10 +109,14 @@
   },
   "main": {
     "app_title": "луч времени",
+    "btn_cancel": "отменить",
+    "btn_delete": "удалить",
+    "btn_ok": "ок",
     "language_dir": "ltr",
     "language_name": "русский",
     "msg_config_save_error": "ошибка сохранения конфигурации:",
-    "msg_config_saved": "конфигурация успешно сохранена"
+    "msg_config_saved": "конфигурация успешно сохранена",
+    "please_wait": "... пожалуйста, подождите ..."
   },
   "themes": {
     "bg2_color_lbl": "фон 2-й цвет",
