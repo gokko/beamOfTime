@@ -237,7 +237,7 @@ def send_datetime():
         # enable NTP and update hwclock
         if dtJson.get('NTP', True) and not curSettings.get('NTP', True):
             Popen('sudo timedatectl set-ntp true', shell=True)
-        else:
+        elif not dtJson.get('NTP', True):
             Popen("sudo timedatectl set-ntp false && sudo date -s '{0}'".format(dtJson.get('TimeUSec', True)), shell=True)
     # on other systems write dummy values to file for debugging
     else:
