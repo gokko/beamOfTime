@@ -14,6 +14,7 @@
     },
     "datetime": {
       "date": "Datum",
+      "save_msg": "Uhrzeit gespeichert, Uhr wird neu gestartet",
       "time": "Uhrzeit",
       "timezone": "Zeitzone",
       "title": "Datum & Uhrzeit",

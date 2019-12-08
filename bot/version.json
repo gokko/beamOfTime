@@ -1,6 +1,11 @@
 {
-  "version": 0.80,
+  "version": 0.81,
   "release_notes": [
+    {
+      "version": 0.81,
+      "date": "2019.12.08",
+      "info": "datetime + timezone settings in system and UI improvements & cleanup"
+    },
     {
       "version": 0.80,
       "date": "2019.11.22",

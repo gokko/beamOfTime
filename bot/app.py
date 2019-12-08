@@ -405,13 +405,15 @@ def send_restart(path):
 # handle exit request
 def sigterm_handler(_signo, _stack_frame):
     print("bot clock service is going to stop")
-    if isRaspi:
-        clock.stop()
-    sys.exit(0)
+    clock.stop()
+    os._exit(0)
+
 
 if __name__ == '__main__':
     # handle SIGTERM to gracefully stop clock
     signal.signal(signal.SIGTERM, sigterm_handler)
+
+    # check if valid config file is available
 
     clock = BotClock()
 
