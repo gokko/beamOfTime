@@ -317,7 +317,7 @@ var bot_config = Vue.component("bot_config", {
         model.ui.snackbar= true;
         // get new values after 3 sec.
         this.restart_req= 'restart';
-        sendRestartConfirmed();
+        this.sendRestartConfirmed();
       },
       (data) => {
         model.ui.snackbar_text= data.statusText;
