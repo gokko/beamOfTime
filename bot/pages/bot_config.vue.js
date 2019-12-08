@@ -312,10 +312,11 @@ var bot_config = Vue.component("bot_config", {
         contentType: 'application/json; charset=utf-8'
       }).then((data) => {
         // success, update date & time in model
-        model.dt= data;
         model.ui.snackbar_text= 'update date & time request sent'; // this.$i18n.t('config.wifi.saved');
         model.ui.snackbar_color= 'green';
         model.ui.snackbar= true;
+        // get new values after 3 sec.
+        setTimeout(() => { readDatetime(); }, 3000);
       },
       (data) => {
         model.ui.snackbar_text= data.statusText;

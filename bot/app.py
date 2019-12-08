@@ -244,8 +244,7 @@ def send_datetime():
         with open(webFolder+ '/timedatectl.json', 'w') as f:
             json.dump(dtJson, f)
 
-    # return latest values
-    return get_datetime()
+    return 'OK'
 
 @app.route('/sayIp')
 def say_ip():
