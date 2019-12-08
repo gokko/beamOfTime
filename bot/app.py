@@ -196,6 +196,10 @@ def get_timedatectl():
             (key, val)= line.decode('ascii').strip().split('=')
             if key== 'TimeUSec':
                 val= val[4:]
+            if val== 'no':
+                val= False
+            if val== 'yes':
+                val= True
             res[key]= val
         p= Popen('timedatectl list-timezones', shell=True, stdout=PIPE, close_fds=True)
         tzones= []
