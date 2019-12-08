@@ -187,8 +187,7 @@ def get_info():
     res['ips']= ipaddresses
     return  jsonify(res)
 
-@app.route('/datetime')
-def get_datetime():
+def get_timedatectl():
     res= {}
     # on raspi read system settings using timedatectl
     if isRaspi:
@@ -204,6 +203,14 @@ def get_datetime():
             tz= line.decode('ascii').strip()
             tzones.append(tz)
         res['timezones']= tzones
+    return res
+
+@app.route('/datetime')
+def get_datetime():
+    res= {}
+    # on raspi read system settings using timedatectl
+    if isRaspi:
+        res= get_timedatectl()
 
     # on other systems read dummy values from file for debugging
     else:
@@ -217,7 +224,7 @@ def get_datetime():
 
 @app.route('/datetime', methods = ['POST'])
 def send_datetime():
-    curSettings= json.loads(get_datetime())
+    curSettings= get_timedatectl()
 
     dtJson= json.loads(request.data)
     # on raspi set timezone and date & time
