@@ -54,7 +54,10 @@ class BotClock(object):
         self.homeFolder = os.path.dirname(os.path.dirname(os.path.dirname(baseFolder)))
         self.mediaFolder = baseFolder+ '/sounds' # self.homeFolder+ "/media"
         self.localesFolder = os.path.dirname(baseFolder) + "/locales"
-        self.cfg = self.getConfigFromFile()
+        # read config from file once on init, will be updated later from web application using updateConfig() method
+        self.cfgChanged= True
+        with open(self.cfgFileName, 'r') as f:
+            self.cfg = json.load(f)
         # get system settings from config
         sysConfig= self.cfg.get("system", {})
         self.language= self.cfg.get("settings", {}).get("language", "en")
@@ -131,17 +134,9 @@ class BotClock(object):
                 ipAddress= ip.ip
         return ipAddress
 
-    def getConfigFromFile(self):
-        cfg= {}
-        try:
-            with open(self.cfgFileName, 'r') as f:
-                cfg = json.load(f)
-        except:
-            # retry after 100ms in case of exception (maybe file was just written)
-            time.sleep(100)
-            with open(self.cfgFileName, 'r') as f:
-                cfg = json.load(f)
-        return cfg
+    def updateConfig(self, cfg):
+        self.cfg= cfg
+        self.cfgChanged= True
 
     def getCurrentTheme(self):
         themeName = self.cfg["settings"].get("currentTheme")
@@ -183,13 +178,9 @@ class BotClock(object):
                     time.sleep(0.1)
                     continue
 
-                # if config file changed, read and get settings and colors
-                if (os.path.isfile(self.cfgFileName)):
-                    cfgFileChangeTimeNew = os.stat(self.cfgFileName).st_mtime
-                if (cfgFileChangeTime != cfgFileChangeTimeNew):
-                    cfgFileChangeTime = cfgFileChangeTimeNew
-                    # read changed config file
-                    self.cfg = self.getConfigFromFile()
+                # if config changed (from web application), get settings and colors
+                if (self.cfgChanged):
+                    self.cfgChanged= False
                     config= self.cfg.get("system", {})
                     settings= self.cfg.get("settings", {})
                     # get language and read translations from i18n file
@@ -259,7 +250,7 @@ class BotClock(object):
 
                 # use clock to play an animation only, no further actions required
                 if (justAnimation):
-                    self.animations[settings.get('currentAnimation')]()
+                    self.animations[settings.get('currentAnimation', 'colorDrop')]()
                     # pause and skip all the rest
                     time.sleep(0.1)
                     continue

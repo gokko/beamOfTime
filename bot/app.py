@@ -45,6 +45,7 @@ i18nFolder = webFolder+ '/locales/'
 clockFolder = rootFolder+ '/bot/clock'
 soundsFolder= clockFolder+ '/sounds'
 wifiFolder = '/etc/wpa_supplicant/'
+configFilename= 'config.json'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
 if not isRaspi:
     wifiFolder= rootFolder+ '/raspi-setup'
@@ -56,6 +57,16 @@ def handleFileError(func, path, exc_info):
        os.chmod(path, stat.S_IWUSR)
        # call the calling function again
        func(path)
+
+def checkOrRestoreConfigFile():
+    curConfigFile= os.path.join(clockFolder, configFilename)
+    bkupConfigFile= os.path.join(bkupFolder+ '/beamOfTime/bot/clock', configFilename)
+    setupConfigFile= os.path.join(rootFolder+ '/raspi-setup/', configFilename)
+    if not os.path.isfile(curConfigFile):
+        if os.path.isfile(bkupConfigFile):
+            shutil.copy(bkupConfigFile, curConfigFile)
+        else:
+            shutil.copy(setupConfigFile, curConfigFile)
 
 
 @app.route('/')
@@ -332,8 +343,17 @@ def send_restore():
 @app.route('/config', methods = ['GET'])
 def get_config():
     res= {}
-    with open(clockFolder+ '/config.json', 'rb') as f:
+    checkOrRestoreConfigFile()
+    with open(os.path.join(clockFolder, configFilename), 'rb') as f:
         res = json.load(f)
+    # get current theme from clock (may have changed by timer)
+    if clock.currentTheme.get('name', '')!= '':
+        res['settings']['currentTheme']= clock.currentTheme.get('name', '')
+    # get list of animations from clock
+    animations= []
+    for anim in clock.animations.keys():
+        animations.append(anim)
+    res['animations']= animations
     # create list of sound files based on sound folder
     sounds= ['cuckoo-hours'] # special cuckoo sound for hours count
     for subdir, dirs, files in os.walk(soundsFolder):
@@ -373,10 +393,12 @@ def send_config():
     confJs.pop('languages', '')
     # remove the sounds part from config, it will be recreated on request based on the sounds folder content
     confJs.pop('sounds', '')
+    # update config in clock app
+    clock.updateConfig(confJs)
     # write config to file
     conf = json.dumps(confJs, indent=4, ensure_ascii=False).encode('utf8')
     tmpFile = os.path.join(clockFolder, 'config-new.json')
-    confFile = os.path.join(clockFolder, 'config.json')
+    confFile = os.path.join(clockFolder, configFilename)
     # create temporary file
     with open(tmpFile, 'wb') as f:
         f.write(conf)
@@ -413,7 +435,8 @@ if __name__ == '__main__':
     # handle SIGTERM to gracefully stop clock
     signal.signal(signal.SIGTERM, sigterm_handler)
 
-    # check if valid config file is available
+    # if config file doesn't exist, copy from backup or from setup
+    checkOrRestoreConfigFile()
 
     clock = BotClock()
 
