@@ -8,7 +8,7 @@
     ],
     "settings": {
         "currentTheme": "pc",
-        "language": "en",
+        "language": "de",
         "lightColor": "#C34117",
         "mode": "clock",
         "startAnimation": false
@@ -17,7 +17,7 @@
         "ledCount": 120,
         "ledDirection": 1,
         "ledDirection2": -1,
-        "ledPin": 18,
+        "ledPin": 12,
         "ledStart": 0,
         "ledStart2": 60,
         "soundAvailable": true,
