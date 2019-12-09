@@ -406,7 +406,7 @@ def send_restart(path):
 def sigterm_handler(_signo, _stack_frame):
     print("bot clock service is going to stop")
     clock.stop()
-    os._exit(0)
+    #os._exit(0)
 
 
 if __name__ == '__main__':
