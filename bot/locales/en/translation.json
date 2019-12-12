@@ -151,7 +151,7 @@
     "select": "select timer",
     "speak": {
       "current_date": "Today is {0}, {1}. of {2} {3}",
-      "current_ip_address": "In your browser enter following address {0}",
+      "current_ip_address": "ٍٍEnter following address in your browser {0}",
       "current_time": "It's {0} {1}",
       "current_time_0min": "It's {0} o'clock",
       "dot": "dot",

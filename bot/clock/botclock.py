@@ -274,8 +274,7 @@ class BotClock(object):
                             i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                             ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
                             ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
-                            speed= i18nSpeak.get('speed', '-s 160')
-                            Popen('espeak -v{0} {1} "{2}"'.format(self.language, speed, ipText), shell=True)
+                            Popen('espeak -v{0} -s 100 "{2}"'.format(self.language, ipText), shell=True)
 
                         # check all timers and run the active ones for the current second
 
