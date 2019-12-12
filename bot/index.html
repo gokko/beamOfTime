@@ -24,11 +24,11 @@
 		<v-app>
 			<v-app-bar app color='#00685d' style="max-width:400px; margin-left: auto; margin-right: auto;">
 				<v-toolbar-title><v-btn text @click="model.ui.bottomNav= 'bot_home'">{{$t('main.app_title')}}</v-btn> 
-					<i v-if="model.ui.bottomNav== 'bot_intro'" style="color:grey">{{$t('intro.title')}}</i>
-					<i v-if="model.ui.bottomNav== 'bot_home'" style="color:grey">{{$t('home.title')}}</i>
-					<i v-if="model.ui.bottomNav== 'bot_themes'" style="color:grey">{{$t('themes.title')}}</i>
-					<i v-if="model.ui.bottomNav== 'bot_timers'" style="color:grey">{{$t('timers.title')}}</i>
-					<i v-if="model.ui.bottomNav== 'bot_config'" style="color:grey">{{$t('config.title')}}</i>
+					<span style="font-size:70%; color:lightgrey;" v-if="model.ui.bottomNav== 'bot_intro'" style="color:grey">{{$t('intro.title')}}</span>
+					<span style="font-size:70%; color:lightgrey;" v-if="model.ui.bottomNav== 'bot_home'" style="color:grey">{{$t('home.title')}}</span>
+					<span style="font-size:70%; color:lightgrey;" v-if="model.ui.bottomNav== 'bot_themes'" style="color:grey">{{$t('themes.title')}}</span>
+					<span style="font-size:70%; color:lightgrey;" v-if="model.ui.bottomNav== 'bot_timers'" style="color:grey">{{$t('timers.title')}}</span>
+					<span style="font-size:70%; color:lightgrey;" v-if="model.ui.bottomNav== 'bot_config'" style="color:grey">{{$t('config.title')}}</span>
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn text @click="model.ui.bottomNav= 'bot_home'">
