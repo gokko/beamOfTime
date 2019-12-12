@@ -95,14 +95,14 @@
     "current_language_lbl": "زبان",
     "current_theme_lbl": "تم فعلی",
     "function": {
-      "animation": "انیمیشن",
+      "animation": "رقص نور",
       "clock": "ساعت",
-      "lamp": "رقص نور",
+      "lamp": "چراغ",
       "off": "خاموش",
       "title": "عملکرد"
     },
     "lamp_color_lbl": "تنظیم رنگ رقص نور",
-    "start_animation_chk": "شروع انیمیشن",
+    "start_animation_chk": "شروع رقص نور",
     "title": "خانه"
   },
   "intro": {
