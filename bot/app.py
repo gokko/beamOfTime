@@ -146,22 +146,24 @@ def send_webfonts(path):
 
 @app.route('/version')
 def get_version():
-    localJs= {}
-    with open(webFolder+ '/version.json', 'r') as f:
-        localJs= json.loads(f.read())
-
-    remoteJs= {}
-    u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
-    with urllib.request.urlopen(u) as url:
-        remoteJs = json.loads(url.read().decode())
     res= {}
-    res['current']= localJs
-    res['new']= remoteJs
-    updateAvailable= False
-    if (remoteJs['version']> localJs['version']):
-        updateAvailable= True
-    res['update_available']= updateAvailable
+    try:
+        localJs= {}
+        with open(webFolder+ '/version.json', 'r') as f:
+            localJs= json.loads(f.read())
+        res['current']= localJs
 
+        remoteJs= {}
+        u= 'https://raw.githubusercontent.com/gokko/beamOfTime/master/bot/version.json'
+        with urllib.request.urlopen(u) as url:
+            remoteJs = json.loads(url.read().decode())
+        res['new']= remoteJs
+        updateAvailable= False
+        if (remoteJs['version']> localJs['version']):
+            updateAvailable= True
+        res['update_available']= updateAvailable
+    except Exception as ex:
+        print("error reading version {0}".format(ex))
     return jsonify(res)
 
 @app.route('/info', methods = ['GET'])
