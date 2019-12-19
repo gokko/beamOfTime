@@ -348,9 +348,9 @@ class BotClock(object):
                                         Popen('espeak {0} -v{1} "{2}"'.format(speed, self.language, textToSpeak), shell=True)
                                     except Exception as ex:
                                         print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                                        
-                        except Exception as ex:
-                            print("error processing timer {0} ".format(tmr['name']), ex)
+
+                            except Exception as ex:
+                                print("error processing timer {0} ".format(tmr['name']), ex)
                         
                     # always reset background first
                     self.setBgColors(self.colBg, self.colBg2)
