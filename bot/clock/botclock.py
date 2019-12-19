@@ -287,64 +287,70 @@ class BotClock(object):
                         # 24 7 L * * -> 7:24 AM on the last day of every mont
 
                         for tmr in self.cfg['timers']:
-                            crontab = CronTab(tmr['time'])
-                            # run given animation if given timer is less than 1 sec. back
-                            if (crontab.previous(self.tNow, default_utc=False) <= -1):
-                                continue
-                            # skip if timer is disabled
-                            if tmr.get('enabled', True) == False:
-                                continue
-                            if tmr.get('action') == "animation":
-                                try:
-                                    self.animations[tmr['params']]()
-                                except Exception as ex:
-                                    print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                            # apply new theme
-                            elif tmr.get('action') == "theme":
-                                if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
-                                    settings["currentTheme"] = tmr['params']
-                                    self.currentTheme = self.getCurrentTheme()
-                                    self.refreshColorsForCurrentTheme()
-                                else:
-                                    print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
-                            # play audio file if sound module available
-                            elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
-                                try:
-                                    # play special cuckoo sound once per hour count
-                                    if tmr['params'] == 'cuckoo-hours':
-                                        hr= self.tNow.hour % 12
-                                        if hr== 0:
-                                            hr= 12
-                                        file= self.mediaFolder+ '/cuckoo-hours/'+ str(hr)+ '.mp3'
-                                    # play given sound file
+                            try:
+                                # skip if timer is disabled
+                                if tmr.get('enabled', True) == False:
+                                    continue
+                                # parse the crontab entry
+                                crontab = CronTab(tmr['time'])
+                                # skip if this entry is not due in the current second
+                                if (crontab.previous(self.tNow, default_utc=False) <= -1):
+                                    continue
+                                # run given animation if given timer is less than 1 sec. back
+                                if tmr.get('action') == "animation":
+                                    try:
+                                        self.animations[tmr['params']]()
+                                    except Exception as ex:
+                                        print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                                # apply new theme
+                                elif tmr.get('action') == "theme":
+                                    if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
+                                        settings["currentTheme"] = tmr['params']
+                                        self.currentTheme = self.getCurrentTheme()
+                                        self.refreshColorsForCurrentTheme()
                                     else:
-                                        file= self.mediaFolder+ tmr['params']
-                                    res= Popen('mpg123 "{0}"'.format(file), shell=True)
-                                except Exception as ex:
-                                    print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                            elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
-                                try:
-                                    i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
-                                    # speak current time
-                                    if tmr.get('params', '').lower().find('current-time')>= 0:
-                                        hr= self.tNow.hour % 12
-                                        if hr== 0:
-                                            hr= 12
-                                        textToSpeak= i18nSpeak.get('current_time', '').format(hr, self.tNow.minute)
-                                        if self.tNow.minute== 0:
-                                            textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
-                                    # speak current date
-                                    elif tmr.get('params', '').lower().find('current-date')>= 0:
-                                        weekday= i18nSpeak.get('weekday_{0}'.format(self.tNow.weekday()), '')
-                                        month= i18nSpeak.get('month_{0}'.format(self.tNow.month), '')
-                                        textToSpeak= i18nSpeak.get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
-                                    # speak provided text
-                                    else:
-                                        textToSpeak= tmr.get('params', '')
-                                    speed= i18nSpeak.get('speed', '')
-                                    Popen('espeak {0} -v{1} "{2}"'.format(speed, self.language, textToSpeak), shell=True)
-                                except Exception as ex:
-                                    print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                                        print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
+                                # play audio file if sound module available
+                                elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
+                                    try:
+                                        # play special cuckoo sound once per hour count
+                                        if tmr['params'] == 'cuckoo-hours':
+                                            hr= self.tNow.hour % 12
+                                            if hr== 0:
+                                                hr= 12
+                                            file= self.mediaFolder+ '/cuckoo-hours/'+ str(hr)+ '.mp3'
+                                        # play given sound file
+                                        else:
+                                            file= self.mediaFolder+ tmr['params']
+                                        res= Popen('mpg123 "{0}"'.format(file), shell=True)
+                                    except Exception as ex:
+                                        print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                                elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
+                                    try:
+                                        i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
+                                        # speak current time
+                                        if tmr.get('params', '').lower().find('current-time')>= 0:
+                                            hr= self.tNow.hour % 12
+                                            if hr== 0:
+                                                hr= 12
+                                            textToSpeak= i18nSpeak.get('current_time', '').format(hr, self.tNow.minute)
+                                            if self.tNow.minute== 0:
+                                                textToSpeak= i18nSpeak.get('current_time_0min', '').format(hr)
+                                        # speak current date
+                                        elif tmr.get('params', '').lower().find('current-date')>= 0:
+                                            weekday= i18nSpeak.get('weekday_{0}'.format(self.tNow.weekday()), '')
+                                            month= i18nSpeak.get('month_{0}'.format(self.tNow.month), '')
+                                            textToSpeak= i18nSpeak.get('current_date', '').format(weekday, self.tNow.day, month, self.tNow.year)
+                                        # speak provided text
+                                        else:
+                                            textToSpeak= tmr.get('params', '')
+                                        speed= i18nSpeak.get('speed', '')
+                                        Popen('espeak {0} -v{1} "{2}"'.format(speed, self.language, textToSpeak), shell=True)
+                                    except Exception as ex:
+                                        print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                                        
+                        except Exception as ex:
+                            print("error processing timer {0} ".format(tmr['name']), ex)
                         
                     # always reset background first
                     self.setBgColors(self.colBg, self.colBg2)
