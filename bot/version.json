@@ -1,6 +1,11 @@
 {
-  "version": 0.81,
+  "version": 0.82,
   "release_notes": [
+    {
+      "version": 0.82,
+      "date": "2019.12.19",
+      "info": "improve error handling on timers"
+    },
     {
       "version": 0.81,
       "date": "2019.12.08",
