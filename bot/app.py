@@ -62,7 +62,7 @@ def checkOrRestoreConfigFile():
     curConfigFile= os.path.join(clockFolder, configFilename)
     bkupConfigFile= os.path.join(bkupFolder+ '/beamOfTime/bot/clock', configFilename)
     setupConfigFile= os.path.join(rootFolder+ '/raspi-setup/', configFilename)
-    if not os.path.isfile(curConfigFile):
+    if not os.path.isfile(curConfigFile) or os.path.getsize(curConfigFile) < 100:
         if os.path.isfile(bkupConfigFile):
             shutil.copy(bkupConfigFile, curConfigFile)
         else:

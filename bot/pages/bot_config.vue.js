@@ -241,7 +241,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
 
 var bot_config = Vue.component("bot_config", {
   template: botConfigTemplate,
-  props: ["cfg", "i18n", "wifi", "version", "info", "dt"],
+  props: ["cfg", "wifi", "version", "info", "dt"],
   data() {
     return {
       config_panel: 0,

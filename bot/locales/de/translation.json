@@ -140,6 +140,28 @@
     "action": "Aktion",
     "active": "Aktiv",
     "desc": "Beschreibung",
+    "function": {
+      "daily": "täglich",
+      "extended": "erweitert",
+      "monthly": "monatlich",
+      "weekly": "wöchentlich",
+      "yearly": "jährlich"
+    },
+    "mode_lbl": "Wiederholung",
+    "months": {
+      "apr": "Apr",
+      "aug": "Aug",
+      "dec": "Dez",
+      "feb": "Feb",
+      "jan": "Jan",
+      "jul": "Jul",
+      "jun": "Jun",
+      "mar": "Mär",
+      "may": "Mai",
+      "nov": "Nov",
+      "oct": "Okt",
+      "sep": "Sep"
+    },
     "name": "Name",
     "param": "Aktionsparameter",
     "param_animation": "Animation",
@@ -177,15 +199,25 @@
       "weekday_6": "Sonntag"
     },
     "time": {
-      "days": "Tage (1-31)",
-      "hours": "Stunden (0-23)",
-      "minutes": "Minuten (0-59)",
-      "months": "Monate (1-12)",
-      "weekdays": "Wochentage (0-6), 0= Sonntag",
-      "years": "Jahre (1970-2099)"
+      "all": "alle",
+      "days": "Tag(e):",
+      "hours": "Stunde(n):",
+      "minutes": "Minute(n):",
+      "months": "Monat(e):",
+      "weekdays": "Wochentag(e):",
+      "years": "Jahr(e):"
     },
     "time_edit_info": "* für alle Werte, einzelne Werte durch Komma trennen (15,45). Wertebereiche durch - definieren (0-10,30-40); ein / um Teile zu definieren (*/5 jede fünfte Minute, */3 jede dritte Stunde).",
     "time_edit_title": "Zeit bearbeiten",
-    "title": "Timer"
+    "title": "Timer",
+    "weekdays": {
+      "fri": "Fr",
+      "mon": "Mo",
+      "sat": "Sa",
+      "sun": "So",
+      "thu": "Do",
+      "tue": "Di",
+      "wed": "Mi"
+    }
   }
 }
