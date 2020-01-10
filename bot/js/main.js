@@ -110,7 +110,7 @@ i18next.use(i18nextXHRBackend).init({
   fallbackLng: "en",
   backend: {
     // load from i18next-gitbook repo
-    loadPath: '/i18n/{{lng}}'
+    loadPath: '/i18n/{{lng}}?_=[version]'
   }
 });
 const i18n= new VueI18next(i18next);

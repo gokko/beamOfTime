@@ -92,8 +92,27 @@ var bot_timers = Vue.component("bot_timers", {
       weekdays: '',
       years: ''
     },
-    weekdays: [app.$i18n.t('timers.weekdays.sun'), app.$i18n.t('timers.weekdays.mon'), app.$i18n.t('timers.weekdays.tue'), app.$i18n.t('timers.weekdays.wed'), app.$i18n.t('timers.weekdays.thu'), app.$i18n.t('timers.weekdays.fri'), app.$i18n.t('timers.weekdays.sat')],
-    months: ['', app.$i18n.t('timers.months.jan'), app.$i18n.t('timers.months.feb'), app.$i18n.t('timers.months.mar'), app.$i18n.t('timers.months.apr'), app.$i18n.t('timers.months.may'), app.$i18n.t('timers.months.jun'), app.$i18n.t('timers.months.jul'), app.$i18n.t('timers.months.aug'), app.$i18n.t('timers.months.sep'), app.$i18n.t('timers.months.oct'), app.$i18n.t('timers.months.nov'), app.$i18n.t('timers.months.dec')],
+    weekdays: [
+      app.$i18n.t('timers.weekdays.sun'),
+      app.$i18n.t('timers.weekdays.mon'),
+      app.$i18n.t('timers.weekdays.tue'),
+      app.$i18n.t('timers.weekdays.wed'),
+      app.$i18n.t('timers.weekdays.thu'),
+      app.$i18n.t('timers.weekdays.fri'),
+      app.$i18n.t('timers.weekdays.sat')],
+    months: ['', // month 0 doesn't exist
+      app.$i18n.t('timers.months.jan'),
+      app.$i18n.t('timers.months.feb'),
+      app.$i18n.t('timers.months.mar'),
+      app.$i18n.t('timers.months.apr'),
+      app.$i18n.t('timers.months.may'),
+      app.$i18n.t('timers.months.jun'),
+      app.$i18n.t('timers.months.jul'),
+      app.$i18n.t('timers.months.aug'),
+      app.$i18n.t('timers.months.sep'),
+      app.$i18n.t('timers.months.oct'),
+      app.$i18n.t('timers.months.nov'),
+      app.$i18n.t('timers.months.dec')],
     actions: ['animation', 'theme', 'sound', 'speak'],
     rules: {
       required: value => !!value || 'Required.'

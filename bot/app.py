@@ -17,11 +17,7 @@ from threading import Thread
 from subprocess import Popen, PIPE, STDOUT
 from wpasupplicantconf import WpaSupplicantConf
 
-# check if this script is running on a raspberry pi (Linux with arm processor)
-isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
-
-# only load the clock if it's running on the raspberry pi
-#if isRaspi:
+# load the clock (can be an emulator)
 from clock.botclock import BotClock
 from clock.botAnimations import *
 
@@ -37,6 +33,9 @@ def add_header(response):
         response.headers['Cache-Control'] = 'no-store'
     return response
 
+# determine if this script is running on a raspberry pi (Linux with arm processor)
+isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
+
 clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 bkupFolder= os.path.dirname(rootFolder)+ '/.bkup'
@@ -49,6 +48,13 @@ configFilename= 'config.json'
 # if script is not running on raspi, use the local version of wpa_supplicant.conf file
 if not isRaspi:
     wifiFolder= rootFolder+ '/raspi-setup'
+
+# get current application source version to use as parameter in loading files
+curVersion= {}
+with open(webFolder+ '/version.json', 'r') as f:
+    curVersion= json.loads(f.read())
+appVersion= curVersion.get('version', 0)
+
 
 def handleFileError(func, path, exc_info):
     # Check if file access issue
@@ -76,12 +82,8 @@ def index():
     res= ''
     with open(webFolder+ '/index.html', 'r') as f:
         res= f.read()
-    # get current version to use as random parameter in loading files
-    curVersion= {}
-    with open(webFolder+ '/version.json', 'r') as f:
-        curVersion= json.loads(f.read())
 
-    res= res.replace('[version]', str(curVersion.get('version', 0)))
+    res= res.replace('[version]', str(appVersion))
     if not isRaspi:
         res= res.replace('<!--isRaspi-->', '<!--').replace('<!--/isRaspi-->', '-->')
         res= res.replace('<!--isDev ', '').replace(' /isDev-->', '')
@@ -102,6 +104,8 @@ def send_js(path):
             continue
         with open(webFolder+ '/js/'+ fname.strip(), 'r') as f:
             res += ('\n' + f.read())
+
+    res= res.replace('[version]', str(appVersion))
     return Response(res, mimetype='application/javascript')
 
 @app.route('/css/<path:path>')
