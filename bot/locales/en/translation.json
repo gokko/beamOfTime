@@ -214,7 +214,6 @@
       "weekdays": "weekday(s):",
       "years": "year(s):"
     },
-    "time_edit_info": "Use * for all values, multiple values are seperated by comma (15,45); ranges are defined by - (0-10,30-40); use / to define fractions (*/5 every 5 minutes, */3 every third hour).",
     "time_edit_title": "Change time",
     "title": "timers",
     "weekdays": {

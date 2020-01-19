@@ -214,7 +214,6 @@
       "weekdays": "Wochentag(e):",
       "years": "Jahr(e):"
     },
-    "time_edit_info": "* für alle Werte, einzelne Werte durch Komma trennen (15,45). Wertebereiche durch - definieren (0-10,30-40); ein / um Teile zu definieren (*/5 jede fünfte Minute, */3 jede dritte Stunde).",
     "time_edit_title": "Zeit bearbeiten",
     "title": "Timer",
     "weekdays": {
