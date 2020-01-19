@@ -352,6 +352,8 @@ def get_config():
     checkOrRestoreConfigFile()
     with open(os.path.join(clockFolder, configFilename), 'rb') as f:
         res = json.load(f)
+    # get current function from clock (may have changed by timer)
+    res['settings']['mode']= clock.cfg.get('settings', {}).get('mode', '')
     # get current theme from clock (may have changed by timer)
     if clock.currentTheme.get('name', '')!= '':
         res['settings']['currentTheme']= clock.currentTheme.get('name', '')

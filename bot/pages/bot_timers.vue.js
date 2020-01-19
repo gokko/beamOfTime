@@ -14,6 +14,7 @@ const botTimersTemplate= `<v-container mt-4 mb-12>
         <v-select v-if="timer.action=='animation'" :items="cfg.animations" v-model="timer.params" :label="$t('timers.param_animation')"></v-select>
         <v-select v-if="timer.action=='theme'" :items="theme_names" v-model="timer.params" :label="$t('timers.param_theme')"></v-select>
         <v-select v-if="timer.action=='sound'" :items="cfg.sounds" v-model="timer.params" :label="$t('timers.param_sound')"></v-select>
+        <v-select v-if="timer.action=='function'" :items="functions" v-model="timer.params" :label="$t('timers.param_function')"></v-select>
         <v-text-field v-if="timer.action=='speak'" :value="timer.params" @change="v => timer.params = v" :label="$t('timers.param_speak')" hint="current-date | current-time" persistent-hint></v-text-field>
         <v-btn outlined color="orange darken-1" @click="timer_idx= index; confirm_dialog= true;"><v-icon>mdi-delete</v-icon></v-btn>
       </v-expansion-panel-content>
@@ -92,28 +93,26 @@ var bot_timers = Vue.component("bot_timers", {
       weekdays: '',
       years: ''
     },
+    functions: [
+      {value: 'off', text: app.$i18n.t('home.function.off')},
+      {value: 'clock', text: app.$i18n.t('home.function.clock')},
+      {value: 'lamp', text: app.$i18n.t('home.function.lamp')},
+      {value: 'animation', text: app.$i18n.t('home.function.animation')}
+    ],
     weekdays: [
-      app.$i18n.t('timers.weekdays.sun'),
-      app.$i18n.t('timers.weekdays.mon'),
-      app.$i18n.t('timers.weekdays.tue'),
-      app.$i18n.t('timers.weekdays.wed'),
-      app.$i18n.t('timers.weekdays.thu'),
-      app.$i18n.t('timers.weekdays.fri'),
-      app.$i18n.t('timers.weekdays.sat')],
+      app.$i18n.t('timers.weekdays.sun'), app.$i18n.t('timers.weekdays.mon'), app.$i18n.t('timers.weekdays.tue'), app.$i18n.t('timers.weekdays.wed'),
+      app.$i18n.t('timers.weekdays.thu'), app.$i18n.t('timers.weekdays.fri'), app.$i18n.t('timers.weekdays.sat')],
     months: ['', // month 0 doesn't exist
-      app.$i18n.t('timers.months.jan'),
-      app.$i18n.t('timers.months.feb'),
-      app.$i18n.t('timers.months.mar'),
-      app.$i18n.t('timers.months.apr'),
-      app.$i18n.t('timers.months.may'),
-      app.$i18n.t('timers.months.jun'),
-      app.$i18n.t('timers.months.jul'),
-      app.$i18n.t('timers.months.aug'),
-      app.$i18n.t('timers.months.sep'),
-      app.$i18n.t('timers.months.oct'),
-      app.$i18n.t('timers.months.nov'),
-      app.$i18n.t('timers.months.dec')],
-    actions: ['animation', 'theme', 'sound', 'speak'],
+      app.$i18n.t('timers.months.jan'), app.$i18n.t('timers.months.feb'), app.$i18n.t('timers.months.mar'), app.$i18n.t('timers.months.apr'),
+      app.$i18n.t('timers.months.may'), app.$i18n.t('timers.months.jun'), app.$i18n.t('timers.months.jul'), app.$i18n.t('timers.months.aug'),
+      app.$i18n.t('timers.months.sep'), app.$i18n.t('timers.months.oct'),app.$i18n.t('timers.months.nov'), app.$i18n.t('timers.months.dec')],
+    actions: [
+        {value: 'function', text: app.$i18n.t('timers.actions.function')},
+        {value: 'animation', text: app.$i18n.t('timers.actions.animation')},
+        {value: 'theme', text: app.$i18n.t('timers.actions.theme')},
+        {value: 'sound', text: app.$i18n.t('timers.actions.sound')},
+        {value: 'speak', text: app.$i18n.t('timers.actions.speak')}
+      ],
     rules: {
       required: value => !!value || 'Required.'
     }

@@ -1,6 +1,11 @@
 {
-  "version": 0.83,
+  "version": 0.84,
   "release_notes": [
+    {
+      "version": 0.84,
+      "date": "2020.01.19",
+      "info": "switch function (off, clock, lamp, animation) via timer and don't tell IP on start during night times"
+    },
     {
       "version": 0.83,
       "date": "2020.01.09",

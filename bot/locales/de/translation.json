@@ -138,6 +138,13 @@
   },
   "timers": {
     "action": "Aktion",
+    "actions": {
+      "animation": "Animation abspielen",
+      "function": "Funktion umschalten",
+      "sound": "Ton abspielen",
+      "speak": "Text sprechen",
+      "theme": "Motiv ändern"
+    },
     "active": "Aktiv",
     "desc": "Beschreibung",
     "function": {
@@ -165,6 +172,7 @@
     "name": "Name",
     "param": "Aktionsparameter",
     "param_animation": "Animation",
+    "param_function": "Funktion",
     "param_sound": "Ton",
     "param_speak": "beliebiger Text oder Datum/Zeit",
     "param_theme": "Motiv",
