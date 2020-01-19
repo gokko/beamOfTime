@@ -98,7 +98,7 @@
       "animation": "animation",
       "clock": "clock",
       "lamp": "lamp",
-      "off": "Off",
+      "off": "off",
       "title": "function"
     },
     "lamp_color_lbl": "lamp color",
