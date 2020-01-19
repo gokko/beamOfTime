@@ -170,7 +170,6 @@
       "sep": "Sep"
     },
     "name": "name",
-    "param": "action parameter",
     "param_animation": "animation",
     "param_function": "function",
     "param_sound": "sound",

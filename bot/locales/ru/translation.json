@@ -147,6 +147,13 @@
     },
     "active": "активный",
     "desc": "описание",
+    "function": {
+      "daily": "суточный",
+      "extended": "расширенный",
+      "monthly": "месячный",
+      "weekly": "недельный",
+      "yearly": "годовой"
+    },
     "mode_lbl": "повторение",
     "months": {
       "apr": "апр",
@@ -163,7 +170,6 @@
       "sep": "сент"
     },
     "name": "имя",
-    "param": "параметр действия",
     "param_animation": "анимация",
     "param_function": "функция",
     "param_sound": "звук",
