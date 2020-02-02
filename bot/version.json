@@ -1,6 +1,11 @@
 {
-  "version": 0.84,
+  "version": 0.85,
   "release_notes": [
+    {
+      "version": 0.85,
+      "date": "2020.02.02",
+      "info": "fix function switch via timer and farsi translation"
+    },
     {
       "version": 0.84,
       "date": "2020.01.19",
