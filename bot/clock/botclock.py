@@ -30,7 +30,7 @@ class ColorHelper(object):
 
     @classmethod
     def getColorFromRgb(cls, rgb):
-        col = int(rgb.replace("#", "0x"), 16)
+        col = int(rgb.replace('#', '0x'), 16)
         r = (col & 0xff0000) >> 16
         g = (col & 0xff00) >> 8
         b = (col & 0xff)
@@ -50,38 +50,38 @@ class BotClock(object):
         
         # initialize configuration file
         baseFolder= os.path.dirname(os.path.realpath(__file__))
-        self.cfgFileName = baseFolder + "/config.json"
+        self.cfgFileName = baseFolder + '/config.json'
         self.homeFolder = os.path.dirname(os.path.dirname(os.path.dirname(baseFolder)))
-        self.mediaFolder = baseFolder+ '/sounds' # self.homeFolder+ "/media"
-        self.localesFolder = os.path.dirname(baseFolder) + "/locales"
+        self.mediaFolder = baseFolder+ '/sounds' # self.homeFolder+ '/media'
+        self.localesFolder = os.path.dirname(baseFolder) + '/locales'
         # read config from file once on init, will be updated later from web application using updateConfig() method
         self.cfgChanged= True
         with open(self.cfgFileName, 'r', encoding='utf-8') as f:
             self.cfg = json.load(f)
         # get system settings from config
-        sysConfig= self.cfg.get("system", {})
-        self.language= self.cfg.get("settings", {}).get("language", "en")
-        i18nFile= self.localesFolder+ "/"+ self.language+ "/translation.json"
+        sysConfig= self.cfg.get('system', {})
+        self.language= self.cfg.get('settings', {}).get('language', 'en')
+        i18nFile= self.localesFolder+ '/'+ self.language+ '/translation.json'
         try:
             with open(i18nFile, 'r', encoding='utf-8') as f:
                 self.i18n = json.load(f)
         except:
-            print("error reading locales for language {0}, file {1}".format(self.language, i18nFile))
+            print('error reading locales for language {0}, file {1}'.format(self.language, i18nFile))
 
         # NeoPixels must be connected to baord.D10, board.D12, board.D18 or board.D21 to work.
-        self.LED_PIN = board.D18 if sysConfig.get("ledPin", 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
-        self.LED_COUNT = sysConfig.get("ledCount", 120)            # Number of LED pixels.
-        self.LED_START = sysConfig.get("ledStart", 0)              # inner (1st) ring, which LED is the starting point (12 o'clock)
-        self.LED_DIRECTION = sysConfig.get("ledDirection", 1)      # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.LED_START2 = sysConfig.get("ledStart2", 60)           # outer (2nd) ring, which LED is the starting point (12 o'clock)
-        self.LED_DIRECTION2 = sysConfig.get("ledDirection2", -1)   # 1 for clockwise, -1 for anticlockwise direction of LEDs
-        self.SOUND_AVAILABLE = sysConfig.get("soundAvailable", False)  # speaker is available for playing sounds or not
-        self.SOUND_VOLUME = sysConfig.get("soundVolume", 100)      # speaker volume
+        self.LED_PIN = board.D18 if sysConfig.get('ledPin', 12) == 18 else board.D12   # PIN on raspi where LED strip is connected
+        self.LED_COUNT = sysConfig.get('ledCount', 120)            # Number of LED pixels.
+        self.LED_START = sysConfig.get('ledStart', 0)              # inner (1st) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION = sysConfig.get('ledDirection', 1)      # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.LED_START2 = sysConfig.get('ledStart2', 60)           # outer (2nd) ring, which LED is the starting point (12 o'clock)
+        self.LED_DIRECTION2 = sysConfig.get('ledDirection2', -1)   # 1 for clockwise, -1 for anticlockwise direction of LEDs
+        self.SOUND_AVAILABLE = sysConfig.get('soundAvailable', False)  # speaker is available for playing sounds or not
+        self.SOUND_VOLUME = sysConfig.get('soundVolume', 100)      # speaker volume
         try:
             if self.SOUND_AVAILABLE and isRaspi:
-                Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
+                Popen('amixer -q sset Master {0}%'.format(self.SOUND_VOLUME), shell=True)
         except:
-            print("error setting volume {0}".format(sys.exc_info()[0]))
+            print('error setting volume {0}'.format(sys.exc_info()[0]))
 
         # get current theme from config
         self.currentTheme = self.getCurrentTheme()
@@ -138,18 +138,18 @@ class BotClock(object):
         self.cfgChanged= True
 
     def getCurrentTheme(self):
-        themeName = self.cfg["settings"].get("currentTheme")
-        theme = [x for x in self.cfg["themes"] if x["name"] == themeName]
+        themeName = self.cfg['settings'].get('currentTheme')
+        theme = [x for x in self.cfg['themes'] if x['name'] == themeName]
         if (not theme):
-            theme = self.cfg["themes"]
+            theme = self.cfg['themes']
         return theme[0]
 
     def refreshColorsForCurrentTheme(self):
-        self.colBg = ColorHelper.getColorFromRgb(self.currentTheme["color"]["bg"])
-        self.colBg2 = ColorHelper.getColorFromRgb(self.currentTheme["color"]["bg2"])
-        self.secCol = ColorHelper.getColorFromRgb(self.currentTheme["color"]["sec"])
-        self.minCol = ColorHelper.getColorFromRgb(self.currentTheme["color"]["min"])
-        self.hrCol = ColorHelper.getColorFromRgb(self.currentTheme["color"]["hr"])
+        self.colBg = ColorHelper.getColorFromRgb(self.currentTheme['color']['bg'])
+        self.colBg2 = ColorHelper.getColorFromRgb(self.currentTheme['color']['bg2'])
+        self.secCol = ColorHelper.getColorFromRgb(self.currentTheme['color']['sec'])
+        self.minCol = ColorHelper.getColorFromRgb(self.currentTheme['color']['min'])
+        self.hrCol = ColorHelper.getColorFromRgb(self.currentTheme['color']['hr'])
 
     # timers format: [seconds, optional2] [minutes] [hours] [day of month] [month] [day of week] [year, optional1]
     # https://github.com/josiahcarlson/parse-crontab
@@ -159,7 +159,7 @@ class BotClock(object):
     # 0 1 * * SUN -> 1AM every Sunday (same as above)
     # 24 7 L * * -> 7:24 AM on the last day of every mont
     def checkAndApplyTimers(self):
-        settings= self.cfg.get("settings", {})
+        settings= self.cfg.get('settings', {})
         for tmr in self.cfg['timers']:
             try:
                 # skip if timer is disabled
@@ -172,25 +172,25 @@ class BotClock(object):
                 if (tmrDiff != 0):
                     continue
                 # switch function (off, clock, lamp, animation)
-                if tmr.get('action') == "function" and tmr['params'] in ['off', 'clock', 'lamp', 'animation']:
-                    settings["mode"]= tmr['params']
+                if tmr.get('action') == 'function' and tmr['params'] in ['off', 'clock', 'lamp', 'animation']:
+                    settings['mode']= tmr['params']
                     self.cfgChanged= True
                 # run given animation
-                if tmr.get('action') == "animation":
+                if tmr.get('action') == 'animation':
                     try:
                         self.animations[tmr['params']]()
                     except Exception as ex:
-                        print("animation '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                        print('animation {0} error for timer {1} '.format(tmr['params'], tmr['name']), ex)
                 # apply new theme
-                elif tmr.get('action') == "theme":
-                    if ([x for x in self.cfg["themes"] if x["name"] == tmr['params']]):
-                        settings["currentTheme"] = tmr['params']
+                elif tmr.get('action') == 'theme':
+                    if ([x for x in self.cfg['themes'] if x['name'] == tmr['params']]):
+                        settings['currentTheme'] = tmr['params']
                         self.currentTheme = self.getCurrentTheme()
                         self.refreshColorsForCurrentTheme()
                     else:
-                        print("theme '{0}' not found for timer {1} ".format(tmr['params'], tmr['name']))
+                        print('theme {0} not found for timer {1} '.format(tmr['params'], tmr['name']))
                 # play audio file if sound module available
-                elif tmr.get('action') == "sound" and self.SOUND_AVAILABLE:
+                elif tmr.get('action') == 'sound' and self.SOUND_AVAILABLE:
                     try:
                         # play special cuckoo sound once per hour count
                         if tmr['params'] == 'cuckoo-hours':
@@ -200,11 +200,11 @@ class BotClock(object):
                             file= self.mediaFolder+ '/cuckoo-hours/'+ str(hr)+ '.mp3'
                         # play given sound file
                         else:
-                            file= self.mediaFolder+ tmr['params']
+                            file= self.mediaFolder+ '/'+ tmr['params']
                         res= Popen('mpg123 "{0}"'.format(file), shell=True)
                     except Exception as ex:
-                        print("sound '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
-                elif tmr.get('action') == "speak" and self.SOUND_AVAILABLE:
+                        print('sound {0} error for timer {1} '.format(tmr['params'], tmr['name']), ex)
+                elif tmr.get('action') == 'speak' and self.SOUND_AVAILABLE:
                     try:
                         i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
                         # speak current time
@@ -226,10 +226,10 @@ class BotClock(object):
                         speed= i18nSpeak.get('speed', '')
                         Popen('espeak {0} -v{1} "{2}"'.format(speed, self.language, textToSpeak), shell=True)
                     except Exception as ex:
-                        print("speak '{0}' error for timer {1} ".format(tmr['params'], tmr['name']), ex)
+                        print('speak {0} error for timer {1} '.format(tmr['params'], tmr['name']), ex)
 
             except Exception as ex:
-                print("error processing timer {0} ".format(tmr['name']), ex)
+                print('error processing timer {0} '.format(tmr['name']), ex)
         
 
     # the actual logic running the beam of time clock
@@ -269,43 +269,58 @@ class BotClock(object):
                 # if config changed (from web application), get settings and colors
                 if (self.cfgChanged):
                     self.cfgChanged= False
-                    config= self.cfg.get("system", {})
-                    settings= self.cfg.get("settings", {})
+                    config= self.cfg.get('system', {})
+                    settings= self.cfg.get('settings', {})
                     # get language and read translations from i18n file
-                    if self.language != settings.get("language", "en"):
-                        self.language= settings.get("language", "en")
-                        i18nFile= self.localesFolder+ "/"+ self.language+ "/translation.json"
+                    if self.language != settings.get('language', 'en'):
+                        self.language= settings.get('language', 'en')
+                        i18nFile= self.localesFolder+ '/'+ self.language+ '/translation.json'
                         try:
                             with open(i18nFile, 'r', encoding='utf-8') as f:
                                 self.i18n = json.load(f)
                         except:
-                            print("error reading locales for language {0}, file {1}".format(self.language, i18nFile))
+                            print('error reading locales for language {0}, file {1}'.format(self.language, i18nFile))
 
                     # get global settings
-                    startAnimation = settings.get("startAnimation")
+                    startAnimation = settings.get('startAnimation')
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
 
-                    self.SOUND_AVAILABLE = config.get("soundAvailable", False)
-                    self.SOUND_VOLUME = config.get("soundVolume", 100)
+                    self.SOUND_AVAILABLE = config.get('soundAvailable', False)
+                    self.SOUND_VOLUME = config.get('soundVolume', 100)
                     try:
                         if self.SOUND_AVAILABLE and isRaspi:
-                            Popen("amixer -q sset Master {0}%".format(self.SOUND_VOLUME), shell=True)
+                            Popen('amixer -q sset Master {0}%'.format(self.SOUND_VOLUME), shell=True)
                     except:
-                        print("error setting volume {0}".format(sys.exc_info()[0]))
+                        print('error setting volume {0}'.format(sys.exc_info()[0]))
 
-                # if not in clock mode, only check timers
-                if (settings.get("mode")!= 'clock'):
-                    # check timers
-                    if self.secNew== 0:
-                        self.checkAndApplyTimers()
+                # check if clock was booted recently and tell IP address if sound module is available
+                if self.secNew == 0 and self.justBooted:
+                    self.justBooted= False
+                    # only speak IP during day times if sound module is available
+                    if self.SOUND_AVAILABLE and self.tNow.hour>= 8 and self.tNow.hour<= 22:
+                        ipAddress= self.readCurrentIpAddress()
+                        ipText= ''
+                        for i in range(0, len(ipAddress)):
+                            ipText+= ipAddress[i]+ ' '
+                        i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
+                        ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
+                        ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
+                        Popen('espeak -v{0} -s 100 "{1}"'.format(self.language, ipText), shell=True)
+
+                # every full minute check for timers in config matching current time
+                if (self.secNew == 0):
+                    self.checkAndApplyTimers()
+
+                # if not in clock mode, simple update
+                if (settings.get('mode')!= 'clock'):
                     # remember time
                     self.sec = self.secNew
                     self.min = self.minNew
                     self.hr = self.hrNew
                     # keep LEDs updated even if unchanged
                     self.strip.show()
-                    # if mode didn't change skip all the reset
+                    # if mode didn't change skip all the rest
                     if settings.get('mode')== prevMode:
                         continue
 
@@ -313,7 +328,7 @@ class BotClock(object):
                 prevMode= settings.get('mode')
 
                 # if disabled, stop if was running before or do nothing
-                if (settings.get("mode")== 'off'):
+                if (settings.get('mode')== 'off'):
                     # show stop animation and stop if still running
                     if (self.running):
                         self.running = False
@@ -322,7 +337,7 @@ class BotClock(object):
                     # skip all the rest
                     continue
 
-                # it is enabled, so if not running yet play start animation if requested
+                # clock is enabled, so if it's not running yet play start animation if enabled
                 if (startAnimation and not self.running):
                     self.colorWipe((255, 0, 0), 30)  # Green wipe
                     self.colorWipe((0, 255, 0), 20)  # Green wipe
@@ -333,51 +348,32 @@ class BotClock(object):
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
                     self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
                     # set background to prepare for clock if not disabled
-                    if (settings.get("mode")!= 'off'):
+                    if (settings.get('mode')!= 'off'):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
                 self.running = True
 
                 # use clock as light, if just light is enabled, no further actions required
-                if (settings.get("mode")== 'lamp'):
-                    self.colorWipe(ColorHelper.getColorFromRgb(settings.get("lightColor")), 30, 4)
+                if (settings.get('mode')== 'lamp'):
+                    self.colorWipe(ColorHelper.getColorFromRgb(settings.get('lightColor')), 30, 4)
                     # skip all the rest
                     continue
 
                 # use clock to play an animation only, no further actions required
-                if (settings.get("mode")== 'animation'):
+                if (settings.get('mode')== 'animation'):
                     self.animations[settings.get('currentAnimation', 'colorDrop')]()
                     # skip all the rest
                     continue
 
                 # else do all the clock magic
                 if (self.sec != self.secNew):
-                    # every full minute check for timers in config matching current time
-                    if (self.secNew == 0):
-                        # check if clock was booted recently and tell IP address if sound module is available
-                        if self.justBooted:
-                            self.justBooted= False
-                            # only speak IP during day times if sound module is available
-                            if self.SOUND_AVAILABLE and self.tNow.hour>= 8 and self.tNow.hour<= 22:
-                                ipAddress= self.readCurrentIpAddress()
-                                ipText= ''
-                                for i in range(0, len(ipAddress)):
-                                    ipText+= ipAddress[i]+ ' '
-                                i18nSpeak= self.i18n.get('timers', {}).get('speak', {})
-                                ipText= ipText.replace('.', i18nSpeak.get('dot', '.'))
-                                ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
-                                Popen('espeak -v{0} -s 100 "{1}"'.format(self.language, ipText), shell=True)
-
-                        # check all timers and run the active ones for the current second
-                        self.checkAndApplyTimers()
-
                     # always reset background first
                     self.setBgColors(self.colBg, self.colBg2)
 
                     if (self.hrCol != (0, 0, 0)):
                         # set brightness range from 12h to current hour based on config
-                        if ("gradient" in self.currentTheme and self.currentTheme["gradient"]["hr"]):
+                        if ('gradient' in self.currentTheme and self.currentTheme['gradient']['hr']):
                             for i in range(1, self.hrNew):
                                 r= round(self.hrCol[0]/ self.hrNew* i)
                                 g= round(self.hrCol[1]/ self.hrNew* i)
@@ -387,7 +383,7 @@ class BotClock(object):
                         self.colorSet(self.hrCol, self.hrNew)
                     if (self.minCol != (0, 0, 0)):
                         # set brightness range from 12h to current hour based on config
-                        if ("gradient" in self.currentTheme and self.currentTheme["gradient"]["min"]):
+                        if ('gradient' in self.currentTheme and self.currentTheme['gradient']['min']):
                             for i in range(1, self.minNew):
                                 r= round(self.minCol[0]/ self.minNew* i)
                                 g= round(self.minCol[1]/ self.minNew* i)
@@ -410,7 +406,7 @@ class BotClock(object):
                 # time.sleep(0.01)
                 
         except:
-            print("Unexpected error:", ', '.join(map(str, sys.exc_info())) )
+            print('Unexpected error:', ', '.join(map(str, sys.exc_info())) )
             raise
 
         finally:
