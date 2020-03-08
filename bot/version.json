@@ -1,6 +1,11 @@
 {
-  "version": 0.85,
+  "version": 0.86,
   "release_notes": [
+    {
+      "version": 0.86,
+      "date": "2020.03.08",
+      "info": "make function switch via timers more stable"
+    },
     {
       "version": 0.85,
       "date": "2020.02.02",

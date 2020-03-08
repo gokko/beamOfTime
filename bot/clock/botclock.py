@@ -90,7 +90,6 @@ class BotClock(object):
         self.sec = self.min = self.hr  = 0
         self.secNew = self.minNew = self.hrNew = 0
         self.running = False
-        self.disabled = True
         self.thread_running= True
         
         # initialize colors
@@ -167,9 +166,10 @@ class BotClock(object):
                 if tmr.get('enabled', True) == False:
                     continue
                 # parse the crontab entry
-                crontab = CronTab(tmr['time'])
+                tmrDiff = round(CronTab(tmr['time']).previous(self.tNow, default_utc=False))
+                # print(self.tNow, tmr['name'], tmr['time'], tmrDiff)
                 # skip if this entry is not due in the current second
-                if (crontab.previous(self.tNow, default_utc=False) <= -1):
+                if (tmrDiff != 0):
                     continue
                 # switch function (off, clock, lamp, animation)
                 if tmr.get('action') == "function" and tmr['params'] in ['off', 'clock', 'lamp', 'animation']:
@@ -238,7 +238,6 @@ class BotClock(object):
         # initialize time variables
         self.sec = self.min = self.hr  = -1
         self.running = False
-        self.disabled = True
         # remember application start time
         self.tStartTime= datetime.now()
         # check if system booted/started recently
@@ -256,6 +255,7 @@ class BotClock(object):
         try:
             print ('starting clock {}'.format(self.thread_running))
 
+            prevMode= ''
             while self.thread_running:
                 self.tNow = datetime.now()
                 self.secNew = self.tNow.second
@@ -282,7 +282,6 @@ class BotClock(object):
                             print("error reading locales for language {0}, file {1}".format(self.language, i18nFile))
 
                     # get global settings
-                    self.disabled = settings.get("mode")== 'off'
                     startAnimation = settings.get("startAnimation")
                     self.currentTheme = self.getCurrentTheme()
                     self.refreshColorsForCurrentTheme()
@@ -295,30 +294,32 @@ class BotClock(object):
                     except:
                         print("error setting volume {0}".format(sys.exc_info()[0]))
 
-                    # reset background as current theme may have changed (but only if enabled)
-                    # if (not self.disabled and (not startAnimation or self.running)):
-                    #     self.colorWipeSpecial(self.colBg, self.colBg2, 50, 8)
-
                 # if not in clock mode, only check timers
                 if (settings.get("mode")!= 'clock'):
                     # check timers
-                    self.checkAndApplyTimers()
-                    # keep (unchanged) LEDs updated
-                    self.strip.show()
-                    # get new time
+                    if self.secNew== 0:
+                        self.checkAndApplyTimers()
+                    # remember time
                     self.sec = self.secNew
                     self.min = self.minNew
                     self.hr = self.hrNew
+                    # keep LEDs updated even if unchanged
+                    self.strip.show()
+                    # if mode didn't change skip all the reset
+                    if settings.get('mode')== prevMode:
+                        continue
+
+                # remember current function mode
+                prevMode= settings.get('mode')
 
                 # if disabled, stop if was running before or do nothing
-                if (self.disabled):
+                if (settings.get("mode")== 'off'):
                     # show stop animation and stop if still running
                     if (self.running):
                         self.running = False
                         black= (0,0,0)
                         self.colorWipeSpecial(black, black, 50, 8)
-                    # pause and skip all the rest
-                    time.sleep(1)
+                    # skip all the rest
                     continue
 
                 # it is enabled, so if not running yet play start animation if requested
@@ -332,7 +333,7 @@ class BotClock(object):
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
                     self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
                     # set background to prepare for clock if not disabled
-                    if (not self.disabled):
+                    if (settings.get("mode")!= 'off'):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
@@ -341,15 +342,13 @@ class BotClock(object):
                 # use clock as light, if just light is enabled, no further actions required
                 if (settings.get("mode")== 'lamp'):
                     self.colorWipe(ColorHelper.getColorFromRgb(settings.get("lightColor")), 30, 4)
-                    # pause and skip all the rest
-                    time.sleep(1)
+                    # skip all the rest
                     continue
 
                 # use clock to play an animation only, no further actions required
                 if (settings.get("mode")== 'animation'):
                     self.animations[settings.get('currentAnimation', 'colorDrop')]()
-                    # pause and skip all the rest
-                    time.sleep(0.1)
+                    # skip all the rest
                     continue
 
                 # else do all the clock magic
@@ -408,7 +407,7 @@ class BotClock(object):
                     self.hr = self.hrNew
 
                 self.strip.show()
-                time.sleep(0.01)
+                # time.sleep(0.01)
                 
         except:
             print("Unexpected error:", ', '.join(map(str, sys.exc_info())) )
