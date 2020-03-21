@@ -173,7 +173,7 @@ class BotClock(object):
                     continue
                 # switch function (off, clock, lamp, animation)
                 if tmr.get('action') == 'function' and tmr['params'] in ['off', 'clock', 'lamp', 'animation']:
-                    settings['mode']= tmr['params']
+                    self.mode= settings['mode']= tmr['params']
                     self.cfgChanged= True
                 # run given animation
                 if tmr.get('action') == 'animation':
@@ -238,6 +238,7 @@ class BotClock(object):
         # initialize time variables
         self.sec = self.min = self.hr  = -1
         self.running = False
+        self.mode= 'clock'
         # remember application start time
         self.tStartTime= datetime.now()
         # check if system booted/started recently
@@ -271,6 +272,8 @@ class BotClock(object):
                     self.cfgChanged= False
                     config= self.cfg.get('system', {})
                     settings= self.cfg.get('settings', {})
+                    self.mode= settings.get('mode')
+
                     # get language and read translations from i18n file
                     if self.language != settings.get('language', 'en'):
                         self.language= settings.get('language', 'en')
@@ -313,7 +316,7 @@ class BotClock(object):
                     self.checkAndApplyTimers()
 
                 # if not in clock mode, simple update
-                if (settings.get('mode')!= 'clock'):
+                if (self.mode!= 'clock'):
                     # remember time
                     self.sec = self.secNew
                     self.min = self.minNew
@@ -321,14 +324,14 @@ class BotClock(object):
                     # keep LEDs updated even if unchanged
                     self.strip.show()
                     # if mode didn't change skip all the rest
-                    if settings.get('mode')== prevMode:
+                    if self.mode== prevMode:
                         continue
 
                 # remember current function mode
-                prevMode= settings.get('mode')
+                prevMode= self.mode
 
                 # if disabled, stop if was running before or do nothing
-                if (settings.get('mode')== 'off'):
+                if (self.mode== 'off'):
                     # show stop animation and stop if still running
                     if (self.running):
                         self.running = False
@@ -348,20 +351,20 @@ class BotClock(object):
                     self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
                     self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
                     # set background to prepare for clock if not disabled
-                    if (settings.get('mode')!= 'off'):
+                    if (self.mode!= 'off'):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
                 self.running = True
 
                 # use clock as light, if just light is enabled, no further actions required
-                if (settings.get('mode')== 'lamp'):
+                if (self.mode== 'lamp'):
                     self.colorWipe(ColorHelper.getColorFromRgb(settings.get('lightColor')), 30, 4)
                     # skip all the rest
                     continue
 
                 # use clock to play an animation only, no further actions required
-                if (settings.get('mode')== 'animation'):
+                if (self.mode== 'animation'):
                     self.animations[settings.get('currentAnimation', 'colorDrop')]()
                     # skip all the rest
                     continue

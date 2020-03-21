@@ -1,6 +1,11 @@
 {
-  "version": 0.86,
+  "version": 0.87,
   "release_notes": [
+    {
+      "version": 0.87,
+      "date": "2020.03.21",
+      "info": "fix background after animation if mode is not clock"
+    },
     {
       "version": 0.86,
       "date": "2020.03.08",

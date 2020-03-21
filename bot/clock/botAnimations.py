@@ -63,8 +63,7 @@ class BotClock(BotClock):
     # Define functions which animate LEDs in various ways.
     def setBgColors(self, color, color2):
         for pixel in range(self.strip.n):
-            newCol = (0, 0, 0)
-            colBg = color2 if (pixel % 5) == 0 else color
+            colBg = (0, 0, 0) if self.mode!= 'clock' else color2 if (pixel % 5) == 0 else color
             self.strip[self.ledForPixel(pixel)]= colBg
     
     # Define functions which animate LEDs in various ways.
@@ -151,13 +150,13 @@ class BotClock(BotClock):
             time.sleep(wait_ms/1000.0)
         for i in range(groups, -1, -1):
             pixel = i
-            colBg = self.colBg2 if (pixel % 5) == 0 else self.colBg
+            colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
 
             self.strip[self.ledForPixel(pixel)]= colBg
             self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
             if (i not in (0, groups)):
                 pixel = max - i
-                colBg = self.colBg2 if (pixel % 5) == 0 else self.colBg
+                colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
                 self.strip[self.ledForPixel(pixel)]= colBg
                 self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
             self.strip.show()
