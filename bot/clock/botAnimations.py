@@ -149,16 +149,23 @@ class BotClock(BotClock):
                 wait_ms += 2
             time.sleep(wait_ms/1000.0)
         for i in range(groups, -1, -1):
-            pixel = i
-            colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
+            # set pixel color in inner ring
+            self.colorRingSet(self.colorForPixel(0, i), 0, i)
+            self.colorRingSet(self.colorForPixel(0, max- i), 0, max- i)
+            # set pixel color in outer ring
+            self.colorRingSet(self.colorForPixel(1, i), 1, i)
+            self.colorRingSet(self.colorForPixel(1, max- i), 1, max- i)
+            
+            # pixel = i
+            # colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
 
-            self.strip[self.ledForPixel(pixel)]= colBg
-            self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
-            if (i not in (0, groups)):
-                pixel = max - i
-                colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
-                self.strip[self.ledForPixel(pixel)]= colBg
-                self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
+            # self.strip[self.ledForPixel(pixel)]= colBg
+            # self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
+            # if (i not in (0, groups)):
+            #     pixel = max - i
+            #     colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
+            #     self.strip[self.ledForPixel(pixel)]= colBg
+            #     self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
             self.strip.show()
             if (i > (max // 4) and wait_ms > 0):
                 wait_ms -= 2
