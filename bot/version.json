@@ -1,6 +1,11 @@
 {
-  "version": 0.87,
+  "version": 0.88,
   "release_notes": [
+    {
+      "version": 0.88,
+      "date": "2020.11.02",
+      "info": "general rework, new function colorForPixel"
+    },
     {
       "version": 0.87,
       "date": "2020.03.21",

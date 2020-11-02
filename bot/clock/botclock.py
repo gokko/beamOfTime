@@ -345,10 +345,6 @@ class BotClock(object):
                         ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
                         Popen('espeak -v{0} -s 100 "{1}"'.format(self.language, ipText), shell=True)
 
-                # every full minute check for timers in config matching current time
-                if (self.secNew == 0):
-                    self.checkAndApplyTimers()
-
                 # if not in clock mode, simple update
                 if (self.mode!= 'clock'):
                     # remember time
@@ -357,22 +353,6 @@ class BotClock(object):
                     self.hr = self.hrNew
                     # keep LEDs updated even if unchanged
                     self.strip.show()
-                    # if mode didn't change skip all the rest
-                    # if self.mode== prevMode
-                    #     continue
-
-                # remember current function mode
-                prevMode= self.mode
-
-                # if disabled, stop if was running before or do nothing
-                if (self.mode== 'off'):
-                    # show stop animation and stop if still running
-                    if (self.running):
-                        self.running = False
-                        black= (0,0,0)
-                        self.colorWipeSpecial(black, black, 50, 8)
-                    # skip all the rest
-                    continue
 
                 # clock is enabled, so if it's not running yet play start animation if enabled
                 if (startAnimation and not self.running):
@@ -389,61 +369,40 @@ class BotClock(object):
                         self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
 
                 # if we are here, clock is running
-                self.running = True
+                if (self.mode!= 'off'):
+                    self.running = True
+
+                    # every full minute check for timers in config matching current time
+                    if (self.secNew == 0):
+                        self.checkAndApplyTimers()
+
+                # if disabled, stop if was running before
+                if (self.mode== 'off'):
+                    # show stop animation and stop if still running
+                    if (self.running):
+                        self.running = False
+                        black= (0,0,0)
+                        self.colorWipeSpecial(black, black, 50, 8)
 
                 # use clock as light, if just light is enabled, no further actions required
-                if (self.mode== 'lamp'):
+                elif (self.mode== 'lamp'):
                     self.colorWipe(self.lampColor, 30, 4)
-                    # skip all the rest
-                    continue
 
                 # use clock to play an animation only, no further actions required
-                if (self.mode== 'animation'):
+                elif (self.mode== 'animation'):
                     self.animations[settings.get('currentAnimation', 'colorDrop')]()
-                    # skip all the rest
-                    continue
 
-                # else do all the clock magic
-                if (self.sec != self.secNew):
+                # else update all LEDs to show current time (incl. background)
+                elif (self.mode== 'clock' and self.sec != self.secNew):
                     self.updateAllPixel()
-                    # always reset background first
-                    # self.setBgColors(self.colBg, self.colBg2)
-
-                    # if (self.hrCol != (0, 0, 0)):
-                    #     # set brightness range from 12h to current hour based on config
-                    #     if ('gradient' in self.currentTheme and self.currentTheme['gradient']['hr']):
-                    #         for i in range(1, self.hrNew):
-                    #             r= round(self.hrCol[0]/ self.hrNew* i)
-                    #             g= round(self.hrCol[1]/ self.hrNew* i)
-                    #             b= round(self.hrCol[2]/ self.hrNew* i)
-                    #             self.colorSet((r, g, b), i)
-                    #     # for hours set only inner ring
-                    #     self.colorSet(self.hrCol, self.hrNew)
-                    # if (self.minCol != (0, 0, 0)):
-                    #     # set brightness range from 12h to current hour based on config
-                    #     if ('gradient' in self.currentTheme and self.currentTheme['gradient']['min']):
-                    #         for i in range(1, self.minNew):
-                    #             r= round(self.minCol[0]/ self.minNew* i)
-                    #             g= round(self.minCol[1]/ self.minNew* i)
-                    #             b= round(self.minCol[2]/ self.minNew* i)
-                    #             self.colorSet((r, g, b), i+ self.LED_START2)
-                    #     # for minutes set only outer ring
-                    #     self.colorSet(self.minCol, self.minNew+ self.LED_START2)
-                    # if (self.secCol != (0, 0, 0)):
-                    #     # set seconds on inner ring
-                    #     self.colorSet(self.secCol, self.secNew)
-                    #     # if more than 60 LED, set seconds on outer ring
-                    #     if self.LED_COUNT> 60:
-                    #         self.colorSet(self.secCol, self.secNew+ self.LED_START2)
 
                     self.sec = self.secNew
                     self.min = self.minNew
                     self.hr = self.hrNew
-
-                # self.strip.show()
-
-                # time.sleep(0.01)
                 
+                # remember current function mode
+                prevMode= self.mode
+
         except:
             print('Unexpected error:', ', '.join(map(str, sys.exc_info())) )
             raise
