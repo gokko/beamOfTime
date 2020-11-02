@@ -61,6 +61,7 @@ class BotClock(object):
         # get system settings from config
         sysConfig= self.cfg.get('system', {})
         self.language= self.cfg.get('settings', {}).get('language', 'en')
+        self.lampColor= ColorHelper.getColorFromRgb(self.cfg.get('settings', {}).get('lightColor'))
         i18nFile= self.localesFolder+ '/'+ self.language+ '/translation.json'
         try:
             with open(i18nFile, 'r', encoding='utf-8') as f:
@@ -118,7 +119,7 @@ class BotClock(object):
     # ring: 0= inner, 1= outer
     def colorForPixel(self, ring, pixel):
         # get background color first
-        col = (0, 0, 0) 
+        col = self.lampColor if self.mode== 'lamp' else (0, 0, 0)
         if self.mode== 'clock':
             # get background color
             col= self.colBg2 if (pixel % 5) == 0 else self.colBg
@@ -126,7 +127,7 @@ class BotClock(object):
             if (ring== 0 and pixel== self.hrNew and self.hrCol != (0, 0, 0)):
                 col= self.hrCol
             # minutes are shown on outer ring only
-            if (ring== 1 and pixel== self.minNew and self.minCol != (0, 0, 0)):
+            if ((ring== 1 or self.LED_COUNT<= 60) and pixel== self.minNew and self.minCol != (0, 0, 0)):
                 col= self.minCol
             # seconds are shown on both inner and outer ring
             if (pixel== self.secNew and self.secCol != (0, 0, 0)):
@@ -136,7 +137,7 @@ class BotClock(object):
 
     # set all pixel for all available rings
     def updateAllPixel(self):
-        for ring in range(2):
+        for ring in range(2 if self.LED_COUNT> 60 else 1):
             for pixel in range(60):
                 col= self.colorForPixel(ring, pixel)
                 self.colorRingSet(col, ring, pixel)
@@ -304,6 +305,7 @@ class BotClock(object):
                     self.cfgChanged= False
                     config= self.cfg.get('system', {})
                     settings= self.cfg.get('settings', {})
+                    self.lampColor= ColorHelper.getColorFromRgb(settings.get('lightColor'))
                     self.mode= settings.get('mode')
 
                     # get language and read translations from i18n file
@@ -391,7 +393,7 @@ class BotClock(object):
 
                 # use clock as light, if just light is enabled, no further actions required
                 if (self.mode== 'lamp'):
-                    self.colorWipe(ColorHelper.getColorFromRgb(settings.get('lightColor')), 30, 4)
+                    self.colorWipe(self.lampColor, 30, 4)
                     # skip all the rest
                     continue
 

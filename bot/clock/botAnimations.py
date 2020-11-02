@@ -137,11 +137,13 @@ class BotClock(BotClock):
         max = 60 #self.strip.n
         groups = max // 2
         for i in range(groups + 1):
-            self.strip[self.ledForPixel(i)]= color
-            self.strip[self.ledForPixel(i+ self.LED_START2)]= color
-            if (i not in (0, groups)):
-                self.strip[self.ledForPixel(max - i)]= color
-                self.strip[self.ledForPixel(max + self.LED_START2 - i)]= color
+            # set pixel color in inner ring
+            self.colorRingSet(color, 0, i)
+            self.colorRingSet(color, 0, max- i)
+            # set pixel color in outer ring
+            if self.LED_COUNT> max and i not in (0, groups):
+                self.colorRingSet(color, 1, i)
+                self.colorRingSet(color, 1, max- i)
             self.strip.show()
             if (i < (max // 4) and wait_ms > 0):
                 wait_ms -= 2
@@ -153,19 +155,9 @@ class BotClock(BotClock):
             self.colorRingSet(self.colorForPixel(0, i), 0, i)
             self.colorRingSet(self.colorForPixel(0, max- i), 0, max- i)
             # set pixel color in outer ring
-            self.colorRingSet(self.colorForPixel(1, i), 1, i)
-            self.colorRingSet(self.colorForPixel(1, max- i), 1, max- i)
-            
-            # pixel = i
-            # colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
-
-            # self.strip[self.ledForPixel(pixel)]= colBg
-            # self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
-            # if (i not in (0, groups)):
-            #     pixel = max - i
-            #     colBg = (0, 0, 0) if self.mode!= 'clock' else self.colBg2 if (pixel % 5) == 0 else self.colBg
-            #     self.strip[self.ledForPixel(pixel)]= colBg
-            #     self.strip[self.ledForPixel(pixel+ self.LED_START2)]= colBg
+            if self.LED_COUNT> max and i not in (0, groups):
+                self.colorRingSet(self.colorForPixel(1, i), 1, i)
+                self.colorRingSet(self.colorForPixel(1, max- i), 1, max- i)
             self.strip.show()
             if (i > (max // 4) and wait_ms > 0):
                 wait_ms -= 2
