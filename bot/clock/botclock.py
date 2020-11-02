@@ -358,8 +358,8 @@ class BotClock(object):
                     # keep LEDs updated even if unchanged
                     self.strip.show()
                     # if mode didn't change skip all the rest
-                    if self.mode== prevMode:
-                        continue
+                    # if self.mode== prevMode
+                    #     continue
 
                 # remember current function mode
                 prevMode= self.mode
