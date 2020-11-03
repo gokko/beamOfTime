@@ -357,6 +357,9 @@ def get_config():
     # get current theme from clock (may have changed by timer)
     if clock.currentTheme.get('name', '')!= '':
         res['settings']['currentTheme']= clock.currentTheme.get('name', '')
+    # set default brightness for outer LEDs if not available in config
+    if 'ledBrightness2' not in res['system']:
+        res['system']['ledBrightness2']= 100
     # get list of animations from clock
     animations= []
     for anim in clock.animations.keys():
