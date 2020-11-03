@@ -4,7 +4,7 @@
     {
       "version": 0.88,
       "date": "2020.11.02",
-      "info": "general rework, new function colorForPixel"
+      "info": "internal rework for more stability and brightness of outer ring adjustable in global LED settings"
     },
     {
       "version": 0.87,
