@@ -34,6 +34,7 @@
       "ring1_start_lbl": "inner LEDs start",
       "ring2_dir_lbl": "outer LEDs direction",
       "ring2_start_lbl": "outer LEDs start",
+      "ring2_brightness_lbl": "brightness outer LEDs",
       "title": "LED settings"
     },
     "restart": {

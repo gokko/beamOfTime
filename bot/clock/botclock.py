@@ -62,6 +62,8 @@ class BotClock(object):
         sysConfig= self.cfg.get('system', {})
         self.language= self.cfg.get('settings', {}).get('language', 'en')
         self.lampColor= ColorHelper.getColorFromRgb(self.cfg.get('settings', {}).get('lightColor'))
+        self.ring2Brightness= float(self.cfg.get('system', {}).get('ledBrightness2', 100)/ 100)
+        self.ring2ColorMap= {}
         i18nFile= self.localesFolder+ '/'+ self.language+ '/translation.json'
         try:
             with open(i18nFile, 'r', encoding='utf-8') as f:
@@ -119,32 +121,28 @@ class BotClock(object):
     # ring: 0= inner, 1= outer
     def colorForPixel(self, ring, pixel):
         # get background color first
-        col = self.lampColor if self.mode== 'lamp' else (0, 0, 0)
+        color= self.lampColor if self.mode== 'lamp' else (0, 0, 0)
         if self.mode== 'clock':
             # get background color
-            col= self.colBg2 if (pixel % 5) == 0 else self.colBg
+            color= self.colBg2 if (pixel % 5) == 0 else self.colBg
             # hours are shown on inner ring only
             if (ring== 0 and pixel== self.hrNew and self.hrCol != (0, 0, 0)):
-                col= self.hrCol
+                color= self.hrCol
             # minutes are shown on outer ring only
             if ((ring== 1 or self.LED_COUNT<= 60) and pixel== self.minNew and self.minCol != (0, 0, 0)):
-                col= self.minCol
+                color= self.minCol
             # seconds are shown on both inner and outer ring
             if (pixel== self.secNew and self.secCol != (0, 0, 0)):
-                col= self.secCol
+                color= self.secCol
 
-        # increase brightness of outer ring
-        if ring== 1 or pixel>= 60:
-            fact= 1.2
-            col= (min(int(col[0]* fact), 255), min(int(col[0]* fact), 255), min(int(col[0]* fact), 255))
-        return col
+        return color
 
     # set all pixel for all available rings
     def updateAllPixel(self):
         for ring in range(2 if self.LED_COUNT> 60 else 1):
             for pixel in range(60):
-                col= self.colorForPixel(ring, pixel)
-                self.colorRingSet(col, ring, pixel)
+                color= self.colorForPixel(ring, pixel)
+                self.colorRingSet(color, ring, pixel)
         self.strip.show()
 
     # set one specific pixel in given ring to given color
@@ -155,6 +153,16 @@ class BotClock(object):
     def colorSet(self, color, pixel):
         """set one specific pixel to given color."""
         pixel= round(pixel)
+        
+        # increase brightness of outer ring
+        if pixel>= 60:
+            # create new color map if it's not available yet for given color
+            if color not in self.ring2ColorMap:
+                fact= min(self.ring2Brightness, 255/ max(color))
+                newColor= (min(int(color[0]* fact), 255), min(int(color[1]* fact), 255), min(int(color[2]* fact), 255))
+                self.ring2ColorMap[color]= newColor
+            color= self.ring2ColorMap[color]
+
         self.strip[self.ledForPixel(pixel)]= color
 
     def readCurrentIpAddress(self):
@@ -310,6 +318,8 @@ class BotClock(object):
                     config= self.cfg.get('system', {})
                     settings= self.cfg.get('settings', {})
                     self.lampColor= ColorHelper.getColorFromRgb(settings.get('lightColor'))
+                    self.ring2Brightness= float(self.cfg.get('system', {}).get('ledBrightness2', 100)/ 100)
+                    self.ring2ColorMap= {}
                     self.mode= settings.get('mode')
 
                     # get language and read translations from i18n file

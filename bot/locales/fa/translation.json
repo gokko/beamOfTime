@@ -34,6 +34,7 @@
       "ring1_start_lbl": "راه‌اندازی LED داخلی",
       "ring2_dir_lbl": "جهت LED خارجی",
       "ring2_start_lbl": "راه‌اندازی LED خارجی",
+      "ring2_brightness_lbl": "روشنایی LED بیرونی",
       "title": "تنظیمات LED"
     },
     "restart": {
