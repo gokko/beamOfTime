@@ -133,6 +133,10 @@ class BotClock(object):
             if (pixel== self.secNew and self.secCol != (0, 0, 0)):
                 col= self.secCol
 
+        # increase brightness of outer ring
+        if ring== 1 or pixel>= 60:
+            fact= 1.2
+            col= (min(int(col[0]* fact), 255), min(int(col[0]* fact), 255), min(int(col[0]* fact), 255))
         return col
 
     # set all pixel for all available rings
