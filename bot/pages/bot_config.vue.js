@@ -207,9 +207,11 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
           <v-subheader>{{$t('config.led.ring2_start_lbl')}}</v-subheader>
           <br/>
           <v-slider v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
+          <!--
           <v-subheader>{{$t('config.led.ring2_brightness_lbl')}}</v-subheader>
           <br/>
           <v-slider v-model="cfg.system.ledBrightness2" label="%" color="green" min="50" :max="200" step="10" thumb-label="always"></v-slider>
+          -->
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>

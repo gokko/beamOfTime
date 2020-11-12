@@ -1,6 +1,11 @@
 {
-  "version": 0.88,
+  "version": 0.89,
   "release_notes": [
+    {
+      "version": 0.89,
+      "date": "2020.11.12",
+      "info": "undo brightness of outer ring, seems to be buggy"
+    },
     {
       "version": 0.88,
       "date": "2020.11.02",

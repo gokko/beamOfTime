@@ -155,13 +155,13 @@ class BotClock(object):
         pixel= round(pixel)
         
         # increase brightness of outer ring
-        if pixel>= 60:
-            # create new color map if it's not available yet for given color
-            if color not in self.ring2ColorMap:
-                fact= min(self.ring2Brightness, 255/ max(color))
-                newColor= (min(int(color[0]* fact), 255), min(int(color[1]* fact), 255), min(int(color[2]* fact), 255))
-                self.ring2ColorMap[color]= newColor
-            color= self.ring2ColorMap[color]
+        # if pixel>= 60:
+        #     # create new color map if it's not available yet for given color
+        #     if color not in self.ring2ColorMap:
+        #         fact= min(self.ring2Brightness, 255/ max(color))
+        #         newColor= (min(int(color[0]* fact), 255), min(int(color[1]* fact), 255), min(int(color[2]* fact), 255))
+        #         self.ring2ColorMap[color]= newColor
+        #     color= self.ring2ColorMap[color]
 
         self.strip[self.ledForPixel(pixel)]= color
 
