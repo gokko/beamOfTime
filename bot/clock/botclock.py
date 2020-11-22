@@ -119,9 +119,8 @@ class BotClock(object):
         if pixel< 60:
             pixel= (self.LED_START+ pixel) % 60 if self.LED_DIRECTION== 1 else (self.LED_START- pixel) % 60
         else:
-            diff= 60 if pixel< self.LED_START2 or self.LED_START2<= 60 else 120
+            diff= 60 if pixel< self.LED_START2 else 120
             pixel= self.LED_START2+ pixel- diff if self.LED_DIRECTION2== 1 else (self.LED_START2- pixel+ diff) % 120
-            # pixel= pixel- 120 if pixel>= 180 else pixel- 60 if pixel>= 120 else pixel
 
         return pixel
 
