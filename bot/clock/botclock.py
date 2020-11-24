@@ -114,9 +114,9 @@ class BotClock(object):
     # get number of LED based on direction and start position in configuration
     def ledForPixel(self, pixel):
         if pixel< 60:
-            pixel= (self.LED_START+ pixel) % 60 if self.LED_DIRECTION== 1 else (60- self.LED_START+ pixel) % 60
+            pixel= (self.LED_START+ pixel) % 60 if self.LED_DIRECTION== 1 else (60- pixel+ self.LED_START) % 60
         else:
-            pixel= (self.LED_START2+ pixel) % 60 if self.LED_DIRECTION2== 1 else (60- self.LED_START2+ pixel) % 60
+            pixel= (self.LED_START2+ pixel) % 60 if self.LED_DIRECTION2== 1 else (60- pixel+ self.LED_START2) % 60
             pixel= pixel+ 60
 
         return pixel

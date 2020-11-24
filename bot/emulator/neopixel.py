@@ -21,9 +21,9 @@ class NeoPixel(object):
         self.mid = self.radius + self.windowBorder
         self.handsLength = 100                      # length of minutes
         self.handsWidth = 10                        # width/thickness of minutes
-        self.innerDir= -1                           # direction 1: clockwise, -1: anti-clockwise inner ring
+        self.innerDir= 1                           # direction 1: clockwise, -1: anti-clockwise inner ring
         self.innerStart= 30                         # starting pixel (top position) inner ring
-        self.outerDir= 1                            # direction 1: clockwise, -1: anti-clockwise inner ring
+        self.outerDir= -1                            # direction 1: clockwise, -1: anti-clockwise inner ring
         self.outerStart= 90                         # starting pixel (top position) outer ring
 
         # setup tkinter windows and canvas
@@ -103,9 +103,9 @@ class NeoPixel(object):
     def drawHand(self, hand, r, l, w, col):
         # transform LED position based on config
         if hand< 60:
-            hand= (self.innerStart+ hand) % 60 if self.innerDir== 1 else (60- self.innerStart+ hand) % 60
+            hand= (self.innerStart+ hand) % 60 if self.innerDir== 1 else (60- hand+ self.innerStart) % 60
         else:
-            hand= (self.outerStart+ hand) % 60 if self.outerDir== 1 else (60- self.outerStart+ hand) % 60
+            hand= (self.outerStart+ hand) % 60 if self.outerDir== 1 else (60- hand+ self.outerStart) % 60
             hand= hand+ 60
 
         angle= f2r(hand/ 60)
