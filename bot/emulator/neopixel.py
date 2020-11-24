@@ -107,7 +107,6 @@ class NeoPixel(object):
         else:
             hand= (self.outerStart+ hand) % 60 if self.outerDir== 1 else (60- self.outerStart+ hand) % 60
             hand= hand+ 60
-            # hand= self.outerStart+ hand- diff if self.outerDir== 1 else (self.outerStart- hand+ diff) % 120
 
         angle= f2r(hand/ 60)
         x1= self.mid + (sin(angle) * r)
