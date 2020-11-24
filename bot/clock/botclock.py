@@ -117,10 +117,12 @@ class BotClock(object):
         #     return (self.LED_COUNT- (pixel- self.LED_START2+ 1)) if (self.LED_DIRECTION2 == -1) else (self.LED_START2 + (pixel - self.LED_START2))
         # return (pixel * self.LED_DIRECTION + self.LED_START) % self.LED_COUNT 
         if pixel< 60:
-            pixel= (self.LED_START+ pixel) % 60 if self.LED_DIRECTION== 1 else (self.LED_START- pixel) % 60
+            pixel= (self.LED_START+ pixel) % 60 if self.LED_DIRECTION== 1 else (60- self.LED_START+ pixel) % 60
         else:
-            diff= 60 if pixel< self.LED_START2 else 120
-            pixel= self.LED_START2+ pixel- diff if self.LED_DIRECTION2== 1 else (self.LED_START2- pixel+ diff) % 120
+            pixel= (self.LED_START2+ pixel) % 60 if self.LED_DIRECTION2== 1 else (60- self.LED_START2+ pixel) % 60
+            pixel= pixel+ 60
+            # diff= 60 if pixel< self.LED_START2 else 120
+            # pixel= self.LED_START2+ pixel- diff if self.LED_DIRECTION2== 1 else (self.LED_START2- pixel+ diff) % 120
 
         return pixel
 
