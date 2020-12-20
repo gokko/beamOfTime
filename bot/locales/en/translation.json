@@ -129,12 +129,12 @@
     "hr_color_lbl": "hours hand color",
     "hr_gradient_lbl": "hours gradient",
     "min_color_lbl": "minutes hand color",
-    "min_gradient_lbl": "Minutes gradient",
+    "min_gradient_lbl": "minutes gradient",
     "name_lbl": "name",
     "remove_confirm_msg": "Are you sure to delete the current theme?",
     "remove_confirm_title": "Remove theme?",
     "sec_color_lbl": "seconds hand color",
-    "sec_gradient_lbl": "Seconds gradient",
+    "sec_gradient_lbl": "seconds gradient",
     "title": "themes"
   },
   "timers": {

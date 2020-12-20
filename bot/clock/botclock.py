@@ -129,15 +129,27 @@ class BotClock(object):
         if self.mode== 'clock':
             # get background color
             color= self.colBg2 if (pixel % 5) == 0 else self.colBg
-            # hours are shown on inner ring only
-            if (ring== 0 and pixel== self.hrNew and self.hrCol != (0, 0, 0)):
-                color= self.hrCol
-            # minutes are shown on outer ring only
-            if ((ring== 1 or self.LED_COUNT<= 60) and pixel== self.minNew and self.minCol != (0, 0, 0)):
-                color= self.minCol
             # seconds are shown on both inner and outer ring
-            if (pixel== self.secNew and self.secCol != (0, 0, 0)):
-                color= self.secCol
+            if self.secCol != (0, 0, 0):
+                if pixel== self.secNew:
+                    color= self.secCol
+                elif pixel< self.secNew and self.currentTheme['gradient']['sec']:
+                    factor= (1/ self.secNew)* pixel
+                    color= (int(self.secCol[0]* factor), int(self.secCol[1]* factor), int(self.secCol[2]* factor))
+            # minutes are shown on outer ring only
+            if ((ring== 1 or self.LED_COUNT<= 60) and self.minCol != (0, 0, 0)):
+                if pixel== self.minNew:
+                    color= self.minCol
+                elif pixel< self.minNew and pixel!= self.secNew and self.currentTheme['gradient']['min']:
+                    factor= (1/ self.minNew)* pixel
+                    color= (int(self.minCol[0]* factor), int(self.minCol[1]* factor), int(self.minCol[2]* factor))
+            # hours are shown on inner ring only
+            if (ring== 0 and self.hrCol != (0, 0, 0)):
+                if pixel== self.hrNew:
+                    color= self.hrCol
+                elif pixel< self.hrNew and pixel!= self.secNew and self.currentTheme['gradient']['hr']:
+                    factor= (1/ self.hrNew)* pixel
+                    color= (int(self.hrCol[0]* factor), int(self.hrCol[1]* factor), int(self.hrCol[2]* factor))
 
         return color
 
@@ -157,16 +169,6 @@ class BotClock(object):
     def colorSet(self, color, pixel):
         """set one specific pixel to given color."""
         pixel= round(pixel)
-        
-        # increase brightness of outer ring
-        # if pixel>= 60:
-        #     # create new color map if it's not available yet for given color
-        #     if color not in self.ring2ColorMap:
-        #         fact= min(self.ring2Brightness, 255/ max(color))
-        #         newColor= (min(int(color[0]* fact), 255), min(int(color[1]* fact), 255), min(int(color[2]* fact), 255))
-        #         self.ring2ColorMap[color]= newColor
-        #     color= self.ring2ColorMap[color]
-
         self.strip[self.ledForPixel(pixel)]= color
 
     def readCurrentIpAddress(self):
@@ -344,6 +346,7 @@ class BotClock(object):
                     self.SOUND_AVAILABLE = config.get('soundAvailable', False)
                     self.SOUND_VOLUME = config.get('soundVolume', 100)
                     try:
+                        # set volume on raspi
                         if self.SOUND_AVAILABLE and isRaspi:
                             Popen('amixer -q sset Master {0}%'.format(self.SOUND_VOLUME), shell=True)
                     except:
@@ -363,7 +366,7 @@ class BotClock(object):
                         ipText= i18nSpeak.get('current_ip_address', '').format(ipText)
                         Popen('espeak -v{0} -s 100 "{1}"'.format(self.language, ipText), shell=True)
 
-                # if not in clock mode, simple update
+                # if not in clock mode, keep updating LEDs
                 if (self.mode!= 'clock'):
                     # remember time
                     self.sec = self.secNew
@@ -372,22 +375,21 @@ class BotClock(object):
                     # keep LEDs updated even if unchanged
                     self.strip.show()
 
-                # clock is enabled, so if it's not running yet play start animation if enabled
-                if (startAnimation and not self.running):
-                    self.colorWipe((255, 0, 0), 30)  # Green wipe
-                    self.colorWipe((0, 255, 0), 20)  # Green wipe
-                    self.colorWipe((0, 0, 255), 10)  # Green wipe
-                    #self.rainbowCycle(10, 1)
-                    self.theaterChase((0, 0, 255))  # Blue theater chase
-                    self.colorWipe((0, 255, 0), 40, 4)  # red extra wipe
-                    self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
-                    self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
-                    # set background to prepare for clock if not disabled
-                    if (self.mode!= 'off'):
-                        self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
-
-                # if we are here, clock is running
+                # if not switched off
                 if (self.mode!= 'off'):
+                    # if it's not running yet play start animation if enabled
+                    if startAnimation and not self.running:
+                        self.colorWipe((255, 0, 0), 30)  # Green wipe
+                        self.colorWipe((0, 255, 0), 20)  # Green wipe
+                        self.colorWipe((0, 0, 255), 10)  # Green wipe
+                        #self.rainbowCycle(10, 1)
+                        self.theaterChase((0, 0, 255))  # Blue theater chase
+                        self.colorWipe((0, 255, 0), 40, 4)  # red extra wipe
+                        self.colorWipe((0, 0, 255), 30, 4)  # blue extra wipe
+                        self.colorWipe((255, 0, 0), 20, 4)  # green extra wipe
+                    # set background to prepare for clock
+                    if self.mode== 'clock' and prevMode!= 'clock':
+                        self.colorWipeSpecial(self.colBg, self.colBg2, 25, 4)
                     self.running = True
 
                     # every full minute check for timers in config matching current time
@@ -395,13 +397,11 @@ class BotClock(object):
                         self.checkAndApplyTimers()
 
                 # if disabled, stop if was running before
-                if (self.mode== 'off'):
+                if (self.mode== 'off') and self.running:
                     # show stop animation and stop if still running
-                    if (self.running):
-                        self.running = False
-                        black= (0,0,0)
-                        self.colorWipeSpecial(black, black, 50, 8)
-
+                    self.running = False
+                    black= (0,0,0)
+                    self.colorWipeSpecial(black, black, 50, 8)
                 # use clock as light, if just light is enabled, no further actions required
                 elif (self.mode== 'lamp'):
                     self.colorWipe(self.lampColor, 30, 4)

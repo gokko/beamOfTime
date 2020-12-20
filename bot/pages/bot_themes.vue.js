@@ -44,6 +44,7 @@ const botThemesTemplate= `<v-container mt-4 mb-12>
         </v-container>
         <v-switch hide-details color="#04BF3D" v-model="theme.gradient.hr" inset :label="$t('themes.hr_gradient_lbl')"></v-switch>
         <v-switch hide-details color="#04BF3D" v-model="theme.gradient.min" inset :label="$t('themes.min_gradient_lbl')"></v-switch>
+        <v-switch hide-details color="#04BF3D" v-model="theme.gradient.sec" inset :label="$t('themes.sec_gradient_lbl')"></v-switch>
         <!-- <v-switch hide-details color="#04BF3D" v-model="theme.gradient.sec" inset :label="$t('themes.sec_gradient_lbl')"></v-switch> -->
 
         <br/>
