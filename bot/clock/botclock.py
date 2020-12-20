@@ -140,7 +140,7 @@ class BotClock(object):
             if ((ring== 1 or self.LED_COUNT<= 60) and self.minCol != (0, 0, 0)):
                 if pixel== self.minNew:
                     color= self.minCol
-                elif pixel== self.secNew:
+                elif pixel== self.secNew or pixel== 0:
                     pass
                 elif pixel< self.minNew and self.currentTheme['gradient']['min']:
                     factor= (1/ self.minNew)* pixel
@@ -149,7 +149,7 @@ class BotClock(object):
             if (ring== 0 and self.hrCol != (0, 0, 0)):
                 if pixel== self.hrNew:
                     color= self.hrCol
-                elif pixel== self.secNew:
+                elif pixel== self.secNew or pixel== 0:
                     pass
                 elif pixel< self.hrNew and self.currentTheme['gradient']['hr']:
                     factor= (1/ self.hrNew)* pixel
