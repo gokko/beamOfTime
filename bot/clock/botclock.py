@@ -140,14 +140,18 @@ class BotClock(object):
             if ((ring== 1 or self.LED_COUNT<= 60) and self.minCol != (0, 0, 0)):
                 if pixel== self.minNew:
                     color= self.minCol
-                elif pixel< self.minNew and pixel!= self.secNew and self.currentTheme['gradient']['min']:
+                elif pixel== self.secNew:
+                    pass
+                elif pixel< self.minNew and self.currentTheme['gradient']['min']:
                     factor= (1/ self.minNew)* pixel
                     color= (int(self.minCol[0]* factor), int(self.minCol[1]* factor), int(self.minCol[2]* factor))
             # hours are shown on inner ring only
             if (ring== 0 and self.hrCol != (0, 0, 0)):
                 if pixel== self.hrNew:
                     color= self.hrCol
-                elif pixel< self.hrNew and pixel!= self.secNew and self.currentTheme['gradient']['hr']:
+                elif pixel== self.secNew:
+                    pass
+                elif pixel< self.hrNew and self.currentTheme['gradient']['hr']:
                     factor= (1/ self.hrNew)* pixel
                     color= (int(self.hrCol[0]* factor), int(self.hrCol[1]* factor), int(self.hrCol[2]* factor))
 
