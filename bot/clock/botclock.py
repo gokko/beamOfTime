@@ -133,6 +133,8 @@ class BotClock(object):
             if self.secCol != (0, 0, 0):
                 if pixel== self.secNew:
                     color= self.secCol
+                elif pixel== 0:
+                    pass
                 elif pixel< self.secNew and self.currentTheme['gradient']['sec']:
                     factor= (1/ self.secNew)* pixel
                     color= (int(self.secCol[0]* factor), int(self.secCol[1]* factor), int(self.secCol[2]* factor))
