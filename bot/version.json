@@ -1,6 +1,11 @@
 {
-  "version": 0.89,
+  "version": 0.90,
   "release_notes": [
+    {
+      "version": 0.90,
+      "date": "2020.12.20",
+      "info": "fix startup animations and color gradients"
+    },
     {
       "version": 0.89,
       "date": "2020.11.12",
