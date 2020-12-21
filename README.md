@@ -55,6 +55,9 @@ main application folder containing
 - botclock.py containing main BotClock with major logic to control the clock
 - botAnimations.py module containing animations, can be used for extensions
 - folder css, js, fonts, files, locales, pages used in vue.js configuration website
+- index.html starting page for configuration website
+- version.json version history used in configuration website to show available updates
+- timedatectl.json contains time zone information
 
 ## folder: bot/emulator
 tkinter based clock emulator, can be used to test clock on desktop computer
