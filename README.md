@@ -66,7 +66,7 @@ tkinter based clock emulator, can be used to test clock on desktop computer
 STL model files to print the clock with 3D printer
 
 ## folder: info
-collection of information files like logos/ images used on website
+collection of information files like logos/ images used on external website (https://www.beamoftime.com)
 
 ## folder: raspi-setup
 contains the scripts required to setup the service on the raspberry pi
