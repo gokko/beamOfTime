@@ -48,6 +48,9 @@ app.py in bot folder
 - contains the webserver flask app to manage the (vue.js) configuration website
 - the BotClock from bot/clock/botclock.py is started from here as main thread, the flask webserver in a second thread
 
+## simple test: test.py
+test.py script contains a basic test and can be used to check if emulator works properly without loading all the clock/website logic
+
 ## folder: bot
 main application folder containing
 - sounds: collection of sound files that can be used in timers
