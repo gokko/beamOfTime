@@ -28,6 +28,11 @@ http://www.beamoftime.com
   - python beamoftime/bot/emulator/setup.py install
   - python beamoftime/bot/parse-crontab/setup.py install
 
+- install espeak http://espeak.sourceforge.net/download.html
+  (make sure on Windows folder with executable is included in PATH)
+- install mpg123 https://www.mpg123.de/download.shtml
+  (make sure on Windows folder with executable is included in PATH)
+
 run botclock:
 - python beamoftime/bot/app.py
 

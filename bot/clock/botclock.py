@@ -21,7 +21,7 @@ from subprocess import Popen, PIPE, STDOUT
 from crontab import CronTab
 from datetime import datetime
 from subprocess import call
-from math import *
+from math import floor
 
 isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
 
