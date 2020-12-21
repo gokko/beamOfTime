@@ -41,4 +41,18 @@ run botclock:
 
 for configuration from browser connect to:
 - http://localhost:8080
+
+# project structure
+## main start script
+app.py in bot folder
+- it contains the flask server to manage the configuration website
+- and in parallel starts the BotClock in a second thread
+
+## folder: raspi-setup
+contains the scripts required to setup the service on the raspberry pi
+
+## folder info
+collection of information files like logos/ images used on website
+
+## 
  
