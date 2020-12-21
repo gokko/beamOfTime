@@ -16,7 +16,7 @@ http://www.beamoftime.com
   - on linux install tkinter:
     sudo apt-get install python3-tk
 
-- install github
+- install git client https://git-scm.com/downloads
 - fork/clone repository (https://github.com/gokko/beamOfTime)
 - fork/clone repository (https://github.com/gokko/wpasupplicantconf)
 - fork/clone repository (https://github.com/gokko/parse-crontab)
