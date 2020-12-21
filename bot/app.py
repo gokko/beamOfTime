@@ -21,6 +21,27 @@ from wpasupplicantconf import WpaSupplicantConf
 from clock.botclock import BotClock
 from clock.botAnimations import *
 
+import re
+
+def check_raspi():
+  """Detect if it's a Raspberry Pi"""
+  # Check /proc/cpuinfo for the Hardware field value.
+  # 2708 is pi 1, 2709 is pi 2, 2835 is pi 3 on 4.9.x kernel, anything else is not a pi.
+  try:
+    with open('/proc/cpuinfo', 'r') as infile:
+        cpuinfo = infile.read()
+    # Match a line like 'Hardware   : BCM2709'
+    match = re.search(r'^Hardware\s+:\s+(\w+)$', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
+    if not match:
+        return False
+    if match.group(1) == 'BCM2708' or match.group(1) == 'BCM2709' or match.group(1) == 'BCM2835':
+        return True
+    else:
+        # Something else, not a pi.
+        return False
+  except:
+    return False
+
 app = Flask(__name__)
 # set cache for static files globally to 24 hours
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60*60*24
@@ -34,7 +55,7 @@ def add_header(response):
     return response
 
 # determine if this script is running on a raspberry pi (Linux with arm processor)
-isRaspi= (platform.system() == 'Linux' and platform.machine()[0:3] == 'arm')
+isRaspi= check_raspi()
 
 clock = None
 rootFolder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -452,7 +473,10 @@ if __name__ == '__main__':
     clock = BotClock()
 
     app.config['JSON_AS_ASCII'] = False
-    t = Thread(target=app.run, args=('0.0.0.0', 80, False))
+    port= 80
+    if not isRaspi:
+        port= 8080
+    t = Thread(target=app.run, args=('0.0.0.0', port, False))
     t.start()
     
     clock.run()

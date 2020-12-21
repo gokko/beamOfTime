@@ -27,3 +27,9 @@ http://www.beamoftime.com
   - python wpasupplicantconf/setup.py install
   - python beamoftime/bot/emulator/setup.py install
   - python beamoftime/bot/parse-crontab/setup.py install
+
+run botclock:
+- python beamoftime/bot/app.py
+
+for configuration from browser connect to:
+- http://localhost:8080
