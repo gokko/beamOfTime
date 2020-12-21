@@ -1,3 +1,4 @@
 {
-    "i18next.i18nPaths": "c:/develop/beamoftime/bot/locales"
+    "i18next.i18nPaths": "c:/develop/beamoftime/bot/locales",
+    "python.pythonPath": "C:\\Tools\\Python\\python.exe"
 }

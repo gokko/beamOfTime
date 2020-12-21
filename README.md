@@ -6,3 +6,22 @@ raspberry pi powered 3D printed LED clock with many color options, animations an
 still work in progress, check back later for more details
 and see the website for some intermediate pics:
 http://www.beamoftime.com
+
+
+development environment setup:
+- install python (version 3.x or above) https://www.python.org/downloads/
+  - on windows tkinter is installed together with python
+  - on linux install tkinter:
+    sudo apt-get install python3-tk
+
+- install github
+- fork/clone repository (https://github.com/gokko/beamOfTime)
+- fork/clone repository (https://github.com/gokko/wpasupplicantconf)
+- fork/clone repository (https://github.com/gokko/parse-crontab)
+
+- install libraries
+  - pip3 install ifaddr
+  - pip3 install flask
+  - python wpasupplicantconf/setup.py install
+  - python beamoftime/bot/emulator/setup.py install
+  - python beamoftime/bot/parse-crontab/setup.py install
