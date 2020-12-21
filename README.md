@@ -3,6 +3,8 @@ beam of time clock project
 
 raspberry pi powered 3D printed LED clock with many color options, animations and even sound.
 
+![alt clock image](https://www.beamoftime.com/onewebmedia/IMG_20190727_134228.jpg)
+
 work in progress
 see the website for some intermediate pics:
 http://www.beamoftime.com
