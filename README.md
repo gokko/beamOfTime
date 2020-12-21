@@ -8,7 +8,9 @@ and see the website for some intermediate pics:
 http://www.beamoftime.com
 
 
-development environment setup:
+# development environment setup
+(incl. tkinter based emulator)
+
 - install python (version 3.x or above) https://www.python.org/downloads/
   - on windows tkinter is installed together with python
   - on linux install tkinter:
