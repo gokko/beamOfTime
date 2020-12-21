@@ -45,13 +45,13 @@ for configuration from browser connect to:
 # project structure
 ## start script
 app.py in bot folder
-- contains (and starts) the webserver flask app to manage the (vue.js) configuration website
-- and in parallel starts the BotClock in a second thread (from clock/botclock.py)
+- contains the webserver flask app to manage the (vue.js) configuration website
+- the BotClock from bot/clock/botclock.py is started from here as main thread, the flask webserver in a second thread
 
 ## folder: bot
 main application folder containing
 - sounds: collection of sound files that can be used in timers
-- app.py start script containing flask webserver and starting BotClock as parallel thread
+- app.py start script (see above)
 - botclock.py containing main BotClock with major logic to control the clock
 - botAnimations.py module containing animations, can be used for extensions
 - folder css, js, fonts, files, locales, pages used in vue.js configuration website
