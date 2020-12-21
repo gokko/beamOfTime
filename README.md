@@ -7,7 +7,7 @@ work in progress
 see the website for some intermediate pics:
 http://www.beamoftime.com
 
-# note: master branch is protected
+## note: master branch is protected
 - to protect the users changes to the master branch will only be commited after an approval
 - to contribute, please create another branch and submit to master via pull request
 
@@ -43,16 +43,27 @@ for configuration from browser connect to:
 - http://localhost:8080
 
 # project structure
-## main start script
+## start script
 app.py in bot folder
-- it contains the flask server to manage the configuration website
-- and in parallel starts the BotClock in a second thread
+- contains (and starts) the webserver flask app to manage the (vue.js) configuration website
+- and in parallel starts the BotClock in a second thread (from clock/botclock.py)
+
+## folder: bot
+main application folder containing
+- sounds: collection of sound files that can be used in timers
+- app.py start script containing flask webserver and starting BotClock as parallel thread
+- botclock.py containing main BotClock with major logic to control the clock
+- botAnimations.py module containing animations, can be used for extensions
+- folder css, js, fonts, files, locales, pages used in vue.js configuration website
+
+## folder: bot/emulator
+tkinter based clock emulator, can be used to test clock on desktop computer
+
+## folder: 3D
+STL model files to print the clock with 3D printer
+
+## folder: info
+collection of information files like logos/ images used on website
 
 ## folder: raspi-setup
 contains the scripts required to setup the service on the raspberry pi
-
-## folder info
-collection of information files like logos/ images used on website
-
-## 
- 
