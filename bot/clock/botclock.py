@@ -175,9 +175,10 @@ class BotClock(object):
     def colorSet(self, color, pixel):
         """set one specific pixel to given color."""
         pixel= round(pixel)
-        if self.ledForPixel(pixel)> self.LED_COUNT:
+        idx= self.ledForPixel(pixel)
+        if idx< 0 or idx> self.strip.n:
             return
-        self.strip[self.ledForPixel(pixel)]= color
+        self.strip[idx]= color
 
     def readCurrentIpAddress(self):
         ipAddress= ''

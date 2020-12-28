@@ -141,7 +141,7 @@ class BotClock(BotClock):
             self.colorRingSet(color, 0, i)
             self.colorRingSet(color, 0, max- i)
             # set pixel color in outer ring
-            if self.LED_COUNT> max and i not in (0, groups):
+            if self.LED_COUNT> max:
                 self.colorRingSet(color, 1, i)
                 self.colorRingSet(color, 1, max- i)
             self.strip.show()
@@ -155,7 +155,7 @@ class BotClock(BotClock):
             self.colorRingSet(self.colorForPixel(0, i), 0, i)
             self.colorRingSet(self.colorForPixel(0, max- i), 0, max- i)
             # set pixel color in outer ring
-            if self.LED_COUNT> max and i not in (0, groups):
+            if self.LED_COUNT> max:
                 self.colorRingSet(self.colorForPixel(1, i), 1, i)
                 self.colorRingSet(self.colorForPixel(1, max- i), 1, max- i)
             self.strip.show()
