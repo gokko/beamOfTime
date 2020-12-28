@@ -175,7 +175,7 @@ class BotClock(object):
     def colorSet(self, color, pixel):
         """set one specific pixel to given color."""
         pixel= round(pixel)
-        if pixel> self.LED_COUNT:
+        if self.ledForPixel(pixel)> self.LED_COUNT:
             return
         self.strip[self.ledForPixel(pixel)]= color
 
