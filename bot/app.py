@@ -326,7 +326,11 @@ def send_wifi():
 
 @app.route('/update')
 def send_update():
-    proc= Popen('git -C {0} pull origin master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True, shell=True)
+    proc= None
+    if isRaspi:
+        proc= Popen('git -C {0} reset --hard origin/master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True, shell=True)
+    else:
+        proc= Popen('git -C {0} pull origin master'.format(rootFolder), stdout=PIPE, stderr=STDOUT, close_fds=True, shell=True)
     res= proc.stdout.read()
     proc.stdout.close()
     return res

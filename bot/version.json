@@ -1,6 +1,11 @@
 {
-  "version": 0.90,
+  "version": 0.91,
   "release_notes": [
+    {
+      "version": 0.91,
+      "date": "2020.12.28",
+      "info": "use git hard reset as update method to make sure local changes are replaced"
+    },
     {
       "version": 0.90,
       "date": "2020.12.20",
