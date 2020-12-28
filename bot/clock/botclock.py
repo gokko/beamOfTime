@@ -178,7 +178,7 @@ class BotClock(object):
         pixel= round(pixel)
         idx= self.ledForPixel(pixel)
         print('pixel: {}, idx: {}, color: {}'.format(pixel, idx, color))
-        if idx< 0 or idx> self.strip.n:
+        if idx< 0 or idx>= self.strip.n:
             return
         self.strip[idx]= color
 
