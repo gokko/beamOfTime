@@ -16,6 +16,7 @@ import board
 import neopixel
 import argparse
 import platform
+import traceback
 from subprocess import Popen, PIPE, STDOUT
 
 from crontab import CronTab
@@ -240,7 +241,8 @@ class BotClock(object):
                     try:
                         self.animations[tmr['params']]()
                     except Exception as ex:
-                        print('animation {0} error for timer {1} '.format(tmr['params'], tmr['name']), ex)
+                        print('animation {0} error for timer {1} '.format(tmr['params'], tmr['name']))
+                        traceback.print_exc()
                 # apply new theme
                 elif tmr.get('action') == 'theme':
                     if ([x for x in self.cfg['themes'] if x['name'] == tmr['params']]):
