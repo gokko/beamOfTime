@@ -139,11 +139,11 @@ class BotClock(BotClock):
         for i in range(groups + 1):
             # set pixel color in inner ring
             self.colorRingSet(color, 0, i)
-            self.colorRingSet(color, 0, max- i)
+            self.colorRingSet(color, 0, (max- i)% 60)
             # set pixel color in outer ring
             if self.LED_COUNT> max:
                 self.colorRingSet(color, 1, i)
-                self.colorRingSet(color, 1, max- i)
+                self.colorRingSet(color, 1, (max- i)% 60)
             self.strip.show()
             if (i < (max // 4) and wait_ms > 0):
                 wait_ms -= 2
@@ -153,11 +153,11 @@ class BotClock(BotClock):
         for i in range(groups, -1, -1):
             # set pixel color in inner ring
             self.colorRingSet(self.colorForPixel(0, i), 0, i)
-            self.colorRingSet(self.colorForPixel(0, max- i), 0, max- i)
+            self.colorRingSet(self.colorForPixel(0, max- i), 0, (max- i)% 60)
             # set pixel color in outer ring
             if self.LED_COUNT> max:
                 self.colorRingSet(self.colorForPixel(1, i), 1, i)
-                self.colorRingSet(self.colorForPixel(1, max- i), 1, max- i)
+                self.colorRingSet(self.colorForPixel(1, max- i), 1, (max- i)% 60)
             self.strip.show()
             if (i > (max // 4) and wait_ms > 0):
                 wait_ms -= 2

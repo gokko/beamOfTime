@@ -198,7 +198,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.ring1_start_lbl')}}</v-subheader>
           <br/>
-          <v-slider v-model="cfg.system.ledStart" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
+          <v-slider :value="cfg.system.ledStart" @change="v => cfg.system.ledStart = v" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
           <v-subheader>{{$t('config.led.ring2_dir_lbl')}}</v-subheader>
           <v-btn-toggle v-model="cfg.system.ledDirection2" mandatory>
             <v-btn outlined :value="1" color="green"><v-icon>mdi-rotate-right</v-icon></v-btn>
@@ -206,7 +206,7 @@ const botConfigTemplate= `<v-container mt-4 mb-12>
           </v-btn-toggle>
           <v-subheader>{{$t('config.led.ring2_start_lbl')}}</v-subheader>
           <br/>
-          <v-slider v-model="cfg.system.ledStart2" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
+          <v-slider :value="cfg.system.ledStart2" @change="v => cfg.system.ledStart2 = v" color="green" min="0" :max="cfg.system.ledCount" thumb-label="always"></v-slider>
           <!--
           <v-subheader>{{$t('config.led.ring2_brightness_lbl')}}</v-subheader>
           <br/>

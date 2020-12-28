@@ -64,23 +64,25 @@ function sendUpdatedConfig(newConfig) {
     data: newConfig,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json'
-  }).then((data) => {
-    // success
-    model.ui.snackbar_text= app.$t('main.msg_config_saved');
-    model.ui.snackbar_color= 'green';
-    model.ui.snackbar= true;
-  },
-  (data) => {
-    if (data.status== 200) {
-      model.ui.snackbar_text= app.$t('main.msg_config_saved');
-      model.ui.snackbar_color= 'green';
-      model.ui.snackbar= true;  
-    }
-    else {
-      model.ui.snackbar_text= app.$t('main.msg_config_save_error') + data.status;
-      model.ui.snackbar_color= 'orange';
-      model.ui.snackbar= true;
-    }
+  }).then(
+    (data) => {
+        // success
+        model.ui.snackbar_text= app.$t('main.msg_config_saved');
+        model.ui.snackbar_color= 'green';
+        model.ui.snackbar= true;
+    },
+    (data) => {
+      // error
+      if (data.status== 200) {
+        model.ui.snackbar_text= app.$t('main.msg_config_saved');
+        model.ui.snackbar_color= 'green';
+        model.ui.snackbar= true;  
+      }
+      else {
+        model.ui.snackbar_text= app.$t('main.msg_config_save_error') + data.status;
+        model.ui.snackbar_color= 'orange';
+        model.ui.snackbar= true;
+      }
   });
 }
 
