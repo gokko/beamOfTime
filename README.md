@@ -26,12 +26,12 @@ http://www.beamoftime.com
 - fork/clone wpa helper repository https://github.com/gokko/wpasupplicantconf
 - fork/clone crontab helper repository https://github.com/gokko/parse-crontab
 
-- install libraries
+- install libraries (on linux you might need sudo for python setup....)
   - pip3 install ifaddr
   - pip3 install flask
-  - python wpasupplicantconf/setup.py install
-  - python beamoftime/bot/emulator/setup.py install
-  - python beamoftime/bot/parse-crontab/setup.py install
+  - cd wpasupplicantconf; python setup.py install
+  - cd beamoftime/bot/emulator; python setup.py install
+  - cd parse-crontab; python setup.py install
 
 - install espeak http://espeak.sourceforge.net/download.html
   (make sure on Windows folder with executable is included in PATH)
