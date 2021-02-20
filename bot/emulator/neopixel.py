@@ -31,7 +31,7 @@ class NeoPixel(object):
         self.mainWindow.configure(background='white')
         self.canvas = Canvas(self.mainWindow, width=self.windowWidth, height=self.windowHight, bg="black")
         self.canvas.pack(expand = YES, fill = BOTH)
-        img = PhotoImage(file= os.path.dirname(os.path.realpath(__file__))+ '\\blackCircle.gif')
+        img = PhotoImage(file= os.path.dirname(os.path.realpath(__file__))+ '/blackCircle.gif')
         self.canvas.create_image(45, 45, image=img, anchor=NW)
         label = Label(image= img)
         label.image = img # keep a reference!
