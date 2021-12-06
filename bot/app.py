@@ -391,11 +391,13 @@ def get_config():
         animations.append(anim)
     res['animations']= animations
     # create list of sound files based on sound folder
-    sounds= ['cuckoo-hours'] # special cuckoo sound for hours count
+    sounds= []
     for subdir, dirs, files in os.walk(soundsFolder):
         # skip special folder for cuckoo hours sound
         subfolder= os.path.basename(subdir)
-        if subfolder== 'cuckoo-hours':
+        # special cuckoo sound for hours count
+        if '-hours' in subfolder:
+            sounds.append(subfolder)
             continue
         for file in files:
             sounds.append(subfolder+ '/'+ file)

@@ -255,11 +255,11 @@ class BotClock(object):
                 elif tmr.get('action') == 'sound' and self.SOUND_AVAILABLE:
                     try:
                         # play special cuckoo sound once per hour count
-                        if tmr['params'] == 'cuckoo-hours':
+                        if '-hours' in tmr['params']:
                             hr= self.tNow.hour % 12
                             if hr== 0:
                                 hr= 12
-                            file= self.mediaFolder+ '/cuckoo-hours/'+ str(hr)+ '.mp3'
+                            file= os.path.join(self.mediaFolder, tmr['params'], str(hr)+ '.mp3')
                         # play given sound file
                         else:
                             file= self.mediaFolder+ '/'+ tmr['params']
