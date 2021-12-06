@@ -13,6 +13,7 @@ class BotClock(BotClock):
         self.animations["colorWipeQuarter"] = self.animationColorWipeQuarter
         self.animations["theaterChase"] = self.animationTheaterChase
         self.animations["rainbow"] = self.animationRainbow
+        self.animations["1.FC Koeln"] = self.animationFCKoeln
         # keep random and nothing at the end to allow random to pick only valid ones (count- 2)
         self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
@@ -41,6 +42,9 @@ class BotClock(BotClock):
     def animationRainbow(self):
         self.rainbow(10, 1)
 
+    def animationFCKoeln(self):
+        self.fcKoeln(5)
+
     def animationRandom(self):
         animationNames= list(self.animations.keys())
         anim= self.animations[animationNames[random.randrange(0, len(animationNames)- 2)]]
@@ -48,6 +52,51 @@ class BotClock(BotClock):
 
     def animationNothing(self):
         return
+
+    # Define functions which animate LEDs in various ways.
+    def fcKoeln(self, wait_ms=20):
+        for i in range(30):
+            listWhite= []
+            listWhite.extend(range(8, 15))
+            listWhite.extend(range(38, 45))
+            color= (0xBB, 0xBB, 0xBB) if i in listWhite else (0xBB, 0, 0)
+            self.colorRingSet(color, 0, i)
+            self.colorRingSet(color, 1, i)
+            color= (0xBB, 0xBB, 0xBB) if (60- i) in listWhite else (0xBB, 0, 0)
+            self.colorRingSet(color, 0, 60- i)
+            self.colorRingSet(color, 1, 60- i)
+            listBlack= []
+            listBlack.extend(range(25, 36))
+            listBlack.extend(range(58, 61))
+            listBlack.extend(range(1, 3))
+            if i in listBlack:
+                self.colorRingSet((0, 0, 0), 0, i)
+            if i in [59, 1]:
+                self.colorRingSet((0, 0, 0), 1, i)
+            if (60- i) in listBlack:
+                self.colorRingSet((0, 0, 0), 0, 60- i)
+            if (60- i) in [59, 1]:
+                self.colorRingSet((0, 0, 0), 1, 60- i)
+            self.strip.show()
+            time.sleep(wait_ms/1000.0)
+        time.sleep(1.0)
+        max= 60
+        groups= max// 2
+        wait_ms= 10
+        for i in range(groups, -1, -1):
+            # set pixel color in inner ring
+            self.colorRingSet(self.colorForPixel(0, i), 0, i)
+            self.colorRingSet(self.colorForPixel(0, max- i), 0, (max- i)% 60)
+            # set pixel color in outer ring
+            if self.LED_COUNT> max:
+                self.colorRingSet(self.colorForPixel(1, i), 1, i)
+                self.colorRingSet(self.colorForPixel(1, max- i), 1, (max- i)% 60)
+            self.strip.show()
+            if (i > (max // 4) and wait_ms > 0):
+                wait_ms -= 2
+            else:
+                wait_ms += 2
+            time.sleep(wait_ms/1000.0)
 
     # Define functions which animate LEDs in various ways.
     def colorWipe(self, color, wait_ms=50, group=1):

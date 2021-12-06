@@ -254,7 +254,7 @@ class BotClock(object):
                 # play audio file if sound module available
                 elif tmr.get('action') == 'sound' and self.SOUND_AVAILABLE:
                     try:
-                        # play special cuckoo sound once per hour count
+                        # play special sound per hour count
                         if '-hours' in tmr['params']:
                             hr= self.tNow.hour % 12
                             if hr== 0:
@@ -262,7 +262,7 @@ class BotClock(object):
                             file= os.path.join(self.mediaFolder, tmr['params'], str(hr)+ '.mp3')
                         # play given sound file
                         else:
-                            file= self.mediaFolder+ '/'+ tmr['params']
+                            file= os.path.join(self.mediaFolder, tmr['params'])
                         res= Popen('mpg123 "{0}"'.format(file), shell=True)
                     except Exception as ex:
                         print('sound {0} error for timer {1} '.format(tmr['params'], tmr['name']), ex)
