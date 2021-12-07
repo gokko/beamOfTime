@@ -14,6 +14,7 @@ class BotClock(BotClock):
         self.animations["theaterChase"] = self.animationTheaterChase
         self.animations["rainbow"] = self.animationRainbow
         self.animations["1.FC Koeln"] = self.animationFCKoeln
+        self.animations["1.FC Koeln Dom"] = self.animationFCKoelnDome
         # keep random and nothing at the end to allow random to pick only valid ones (count- 2)
         self.animations["random"] = self.animationRandom
         self.animations["nothing"] = self.animationNothing
@@ -45,6 +46,9 @@ class BotClock(BotClock):
     def animationFCKoeln(self):
         self.fcKoeln(5)
 
+    def animationFCKoelnDome(self):
+        self.fcKoeln(5, showDome= True)
+
     def animationRandom(self):
         animationNames= list(self.animations.keys())
         anim= self.animations[animationNames[random.randrange(0, len(animationNames)- 2)]]
@@ -54,32 +58,40 @@ class BotClock(BotClock):
         return
 
     # Define functions which animate LEDs in various ways.
-    def fcKoeln(self, wait_ms=20):
+    def fcKoeln(self, wait_ms=20, showDome= False):
         for i in range(30):
             listWhite= []
             listWhite.extend(range(8, 15))
-            listWhite.extend(range(38, 45))
+            listWhite.extend(range(39, 46))
             color= (0xBB, 0xBB, 0xBB) if i in listWhite else (0xBB, 0, 0)
             self.colorRingSet(color, 0, i)
             self.colorRingSet(color, 1, i)
             color= (0xBB, 0xBB, 0xBB) if (60- i) in listWhite else (0xBB, 0, 0)
-            self.colorRingSet(color, 0, 60- i)
-            self.colorRingSet(color, 1, 60- i)
-            listBlack= []
-            listBlack.extend(range(25, 36))
-            listBlack.extend(range(58, 61))
-            listBlack.extend(range(1, 3))
-            if i in listBlack:
-                self.colorRingSet((0, 0, 0), 0, i)
-            if i in [59, 1]:
-                self.colorRingSet((0, 0, 0), 1, i)
-            if (60- i) in listBlack:
-                self.colorRingSet((0, 0, 0), 0, 60- i)
-            if (60- i) in [59, 1]:
-                self.colorRingSet((0, 0, 0), 1, 60- i)
+            self.colorRingSet(color, 0, 59- i)
+            self.colorRingSet(color, 1, 59- i)
+            if showDome:
+                listBlack= []
+                listBlack.extend(range(25, 36))
+                listBlack.extend([58, 59, 0, 1, 2])
+                # listBlack.extend(range(1, 3))
+                # inner ring black (dome)
+                if i in listBlack:
+                    self.colorRingSet((0, 0, 0), 0, i)
+                if (59- i) in listBlack:
+                    self.colorRingSet((0, 0, 0), 0, 59- i)
+                # outer ring black (dome)
+                if i in [59, 1]:
+                    self.colorRingSet((0, 0, 0), 1, i)
+                if (59- i) in [59, 1]:
+                    self.colorRingSet((0, 0, 0), 1, 59- i)
+                # white text in dome
+                if i in [27, 29, 31, 33]:
+                    self.colorRingSet((0xBB, 0xBB, 0xBB), 0, i)
+                if (59- i) in [27, 29, 31, 33]:
+                    self.colorRingSet((0xBB, 0xBB, 0xBB), 0, 59- i)
             self.strip.show()
             time.sleep(wait_ms/1000.0)
-        time.sleep(1.0)
+        time.sleep(1.5)
         max= 60
         groups= max// 2
         wait_ms= 10
